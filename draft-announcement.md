@@ -12,7 +12,7 @@
 | bbchallenge seed-database ID | **168016** (also its index in the 2026-10-30 BB(6) holdout list of 608) |
 | Result | Does **not** halt (halts iff state E reads a 0) |
 | Proof status | Complete human-level proof, unconditional; independently reproduced (75 checks, 0 failures, 2 theorem-irrelevant findings, both corrected as dated errata); Rocq mechanisation **in progress** — non-halting from the record configuration R is assembled modulo one explicit hypothesis (loop iteration at the remaining entry sections); the blank-tape → R transient is **not** yet mechanised |
-| Package | `<PACKAGE URL>` |
+| Package | `https://github.com/naoki-3015/bb6-168016` |
 
 ---
 
@@ -73,7 +73,7 @@ proof shows this pattern never occurs.
 
 - The proof is a complete human-level proof (no remaining
   hypotheses); the full text and all derivation files are in the
-  package: `<PACKAGE URL>`.
+  package: `https://github.com/naoki-3015/bb6-168016`.
 - It has been **independently reproduced** with a clean-room
   checker written from the proof documents alone
   (`reproduce_168016.py`): 75 checks, **0 failures** — ≈186,000
@@ -133,10 +133,15 @@ with left triple (0,1,0), lemmas M1–M4) and shows the post-R
 dynamics is an ascending loop of derived rule systems
 (β ↦ 2β + 34), so the pattern never occurs. The human-level
 proof is complete and was independently reproduced by a
-clean-room checker (75/75 checks); a Rocq mechanisation is in
-progress (M1–M4 and the finite segments done). Full write-up,
-proof files, checker and Rocq sources: `<PACKAGE URL>` —
-forum post: `<FORUM POST URL>`. Happy to answer questions!
+clean-room checker (75/75 checks); a Rocq mechanisation is
+well advanced (22 files, all closed under the global
+context, no axioms/admits — non-halting from the record
+configuration R is proved modulo a single remaining loop
+hypothesis: settled entries discharged for every
+3 ≤ B2 ≤ 36, ESC entries for every even R ≤ 602).
+Full write-up,
+proof files, checker and Rocq sources: `https://github.com/naoki-3015/bb6-168016` —
+forum post: `https://discuss.bbchallenge.org/t/168016-1rb1ra-1rc1lb-0ld0ra-1rf1le-1lf-1lc0lf-does-not-halt/544`. Happy to answer questions!
 
 ---
 
@@ -156,9 +161,12 @@ forum, by the author or by community editors.
 (bbchallenge ID **168016**) is a six-state, two-symbol Turing
 machine from the list of BB(6) holdouts. Started on a blank
 tape, it **does not halt**. A human-level proof has been
-announced on the forum (`<FORUM POST URL>`), independently
+announced on the forum (`https://discuss.bbchallenge.org/t/168016-1rb1ra-1rc1lb-0ld0ra-1rf1le-1lf-1lc0lf-does-not-halt/544`), independently
 reproduced by a clean-room checker; a machine-checked Rocq
-proof is in preparation (foundation components proved).
+proof is in preparation (22 files, all closed under the
+global context, no axioms/admits; non-halting from the
+record configuration R is proved modulo a single remaining
+loop hypothesis).
 
 The machine's only undefined transition is E reading a 0.
 After a long transient through two bounce families, the tape
@@ -172,7 +180,7 @@ without bound, so the run never repeats and never halts.
 | bbchallenge ID | 168016 |
 | Behaviour | Two bounce families, then a two-regime pushdown dynamics in eras; loop map β ↦ 2β + 34 |
 | Post-R entry point | record tape R = `1^17 0 1^97 0 1^137 0` reached at step 1,770,887,431,134,099,605,707 |
-| Proofs | Human proof + independent reproduction (package: `<PACKAGE URL>`); Rocq foundation (M1–M4, finite segments, four standard rules) |
+| Proofs | Human proof + independent reproduction (package: `https://github.com/naoki-3015/bb6-168016`); Rocq mechanisation (22 files, no axioms/admits): M1–M4, finite segments, all rule systems; NONHALT_FROM_R modulo the single hypothesis H_LOOP (settled entries 3 ≤ B2 ≤ 36 and ESC entries at even R ≤ 602 discharged) |
 
 ## Transition table
 
@@ -222,21 +230,35 @@ read has left triple (0,1,0).
 ## Proof status
 
 - **Human proof:** complete and unconditional; announced on
-  the forum (`<FORUM POST URL>`).
+  the forum (`https://discuss.bbchallenge.org/t/168016-1rb1ra-1rc1lb-0ld0ra-1rf1le-1lf-1lc0lf-does-not-halt/544`).
 - **Independent reproduction:** clean-room checker, 75 checks,
   0 failures; two theorem-irrelevant discrepancies found and
   corrected as errata (finite corollary bound; CGAP2 cost
   accounting).
-- **Rocq (Coq 8.18):** in progress — M1–M4 fully proved;
-  finite segments kernel-verified; TDN/PUSH/POP-general/
-  Stage A proved for all parameters; full theorem not yet
-  assembled. Not yet submitted to busycoq.
+- **Rocq (Coq 8.18):** in progress — 22 files, every result
+  closed under the global context (no axioms or admits).
+  M1–M4 fully proved; finite segments kernel-verified; all
+  rule systems proved for all parameters; the cross-era loop
+  is assembled and non-halting from the record configuration
+  R (NONHALT_FROM_R) is proved modulo the single remaining
+  hypothesis H_LOOP (H_STD discharged in Phase 34). Of
+  H_LOOP's entry cases, the settled entries are discharged
+  for every 3 ≤ B2 ≤ 36 (odd residues via ERA_GEN,
+  Phase 35; even residues via ERA_GEN_even, a frame-rotation
+  argument, Phase 39) and the ESC entries for every even
+  R ≤ 602 (era law β_next = 2β + 4; Phases 37–38). Still
+  open: ESC entries at R ≥ 604; settled entries at B2 ≥ 37
+  (fenced — simulation shows they are not one uniform
+  family, and mechanising them needs a sub-frame
+  edge-grind theory); re-formed entries (iterations ≥ 3);
+  the blank-tape → R transient is not yet mechanised. Full
+  theorem not yet assembled. Not yet submitted to busycoq.
 
 ## References
 
 - Proof package (proof text, derivation files, reproduction
-  checker and report, Rocq sources): `<PACKAGE URL>`
-- Forum announcement: `<FORUM POST URL>`
+  checker and report, Rocq sources): `https://github.com/naoki-3015/bb6-168016`
+- Forum announcement: `https://discuss.bbchallenge.org/t/168016-1rb1ra-1rc1lb-0ld0ra-1rf1le-1lf-1lc0lf-does-not-halt/544`
 
 ---
 
@@ -252,7 +274,7 @@ user's own actions (or need the user's explicit authorisation).
 2. **Host the package.** Create a public repository (e.g. a new
    GitHub repo) and upload the contents of this `submission/`
    folder, or prepare to attach the files to the forum post.
-   Put the resulting URL in place of every `<PACKAGE URL>`.
+   Put the resulting URL in place of every `https://github.com/naoki-3015/bb6-168016`.
    (Optional but recommended: tag the upload, e.g. `v1.0`, so
    later corrections — errata, mechanisation progress — are
    visible as new versions rather than silent edits.)
@@ -263,7 +285,7 @@ user's own actions (or need the user's explicit authorisation).
    category **Individual machines** → title from draft A (it
    contains the seed-database ID 168016, as the contribute page
    requires) → paste the body of draft A → publish. Copy the
-   post's URL into `<FORUM POST URL>`.
+   post's URL into `https://discuss.bbchallenge.org/t/168016-1rb1ra-1rc1lb-0ld0ra-1rf1le-1lf-1lc0lf-does-not-halt/544`.
 5. **(Optional) Discord.** Join the bbchallenge Discord server
    (linked from https://bbchallenge.org) and post draft B in
    the BB(6) discussion channel.
