@@ -126,7 +126,7 @@ rocq/
   EraGen.v                   general-residue era law ERA_GEN for every odd rho <= 33 (proved)
   EraEven.v                  even-residue era law ERA_GEN_even for every even rho <= 34: rotation absorption, beta' = 2m + 4 independent of rho (proved)
   Esc.v                      single-block escape pieces: POP2 + probe prefix (proved)
-  Dev.v                      deviation step lists: PUSHX/PX2A/PX2B/CGAP2/TRANS2/TUP2/defect + PX2A0/PX2B0 (proved)
+  Dev.v                      deviation step lists: PUSHX/PX2A/PX2B/CGAP2/TRANS2/TUP2/defect + PX2A0/PX2B0 + PX2Bgen (the uniform single-block family, b >= 5) (proved)
   Grind.v                    word model + soundness, grind prefix, Predecessor analysis (proved)
   Grind2.v                   G'' endpoint induction + ESC-era law for R <= 10 (proved)
   Grind3.v                   REBASE (R >= 12 re-basing) + ESC-era law for every even R <= 40 (proved)
@@ -135,6 +135,7 @@ rocq/
   Grind6.v                   merged unwind at R = 116 + phase-4/5 continuations: ESC-era law for every even R <= 268 (proved)
   Grind7.v                   phase-6 merged unwind: general boundary descent DIPDESC + GRIND39_MID: ESC-era law for every even R <= 602 (proved)
   Grind8.v                   phase-7 merged unwind: DIPDESC at [110; 19; 0] + hPX2A + GRIND108_MID: ESC-era law for every even R <= 1276 (proved)
+  Grind9.v                   phase-8 entry (R >= 1278): funnel PHASE8_TO_MID + continuation stages A-C + DIPDESC_even (proved); the continuation past stage C is a full-stack cascade, fenced with machine evidence (era law still closes at R <= 1276)
   Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36)
   Std.v                      standard-regime assembly: STD_reach_entry, H_STD discharged, NONHALT_FROM_R_std (proved)
   gen_configs.py             generator for Configs.v
@@ -149,12 +150,13 @@ rocq/
   hsim37.py                  pre-verification of the Phase 37 merged unwind (word simulator + machine recogniser)
   hsim38.py                  pre-verification of the Phase 38 phase-6 unwind (word simulator + machine recogniser)
   hsim40.py                  pre-verification of the Phase 40 phase-7 unwind (word simulator + machine recogniser)
+  hsim41.py                  pre-verification of the Phase 41 phase-8 entry/stages + the cascade fence evidence (word simulator + machine recogniser)
   mechanisation-status.md    component-by-component mechanisation status
   coqcw, env.sh              build wrapper for the authors' local Coq 8.18 toolchain
 ```
 
 Not included: the internal project log (`NOTES.md`, Phases
-1–40), simulators and run artefacts of the working phases, and
+1–41), simulators and run artefacts of the working phases, and
 the still-running long simulation from R (component #7 is
 corroboration only; the proof does not depend on it).
 
@@ -222,12 +224,13 @@ coqc Grind5.v
 coqc Grind6.v
 coqc Grind7.v
 coqc Grind8.v
+coqc Grind9.v
 coqc Loop.v
 coqc Std.v
 ```
 
 (With the authors' workspace toolchain, `./coqcw <file>` does
-the same via `env.sh`.) Expected: all twenty-three files compile with
+the same via `env.sh`.) Expected: all twenty-four files compile with
 **no errors**; the only warnings are benign large-nat-literal
 notices in `Finite.v`. Every headline lemma was checked with
 `Print Assumptions`: "Closed under the global context" — no
@@ -235,9 +238,9 @@ axioms, no admits.
 
 *Package verification (2026-11-25):* the packaged sources were
 copied to a clean directory and rebuilt from scratch: **all
-twenty-three files compiled successfully**, producing `.vo` files
+twenty-four files compiled successfully**, producing `.vo` files
 identical in size to the authors' build (re-verified after the
-Phase 40 mechanisation update).
+Phase 41 mechanisation update).
 
 ## Authorship and disclosure
 

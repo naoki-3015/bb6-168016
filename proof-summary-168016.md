@@ -419,11 +419,36 @@ with the corresponding loop iterations discharged in
 Loop.v (ESC_ITER_1276). No new deviation step list
 was needed. The remaining ESC fence is R ≥ 1278, a
 phase-8 deviation of the same character.
+And (Phase 41) the **phase-8 entry** itself: every
+entry with m ≥ 616 takes the maximal 334 rounds at
+frame ([235; 42; 19], 334) — there are no phase-8
+finishes — and the funnel (`PHASE8_TO_MID` in
+`Grind9.v`) plus the continuation's first three
+stages (stages A–C, each over an arbitrary carried
+rest) are mechanised. Two general additions were
+needed: a new deviation step list `PX2Bgen`
+(Dev.v; the uniform PX2B dispatch at a single
+block [b], b ≥ 5, cost b + 32) for stage A's dip
+at [19], and the even boundary descent
+`DIPDESC_even` (Grind9.v). Past stage C's landing,
+however, the continuation is **not** of the same
+character as phases 6–8: it consumes the entire
+remaining passenger stack and cascades through a
+growing frame with no closed form, ending (at the
+verified analogues) at a B-section over the empty
+stack where the word model has no rule — a
+full-stack cascade, fenced with machine evidence
+in `rocq/hsim41.py`. The ESC-era law therefore
+still closes at R ≤ 1276; closing phase 8 needs a
+totality/landing theorem for the
+deviation-inclusive grind, not another unwind.
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
-through R ≤ 1276; the phase-8 boundary grind
-is not yet formalised), and the
+through R ≤ 1276; the phase-8 entry and its first
+three continuation stages are formalised in
+Grind9.v, but the era-law closure is blocked by
+the full-stack cascade past stage C), and the
 general-residue era law at residues ρ ≥ 35 (both
 parities) are not yet formalised
 (`rocq/mechanisation-status.md` maps every proof component to
@@ -452,13 +477,13 @@ Rocq sources under `rocq/`.)*
   `phase21-derivations.md` — the post-R regimes and the loop.
 * `reproduce_168016.py`, `reproduction-report.md` — the
   independent reproduction (Phase 22).
-* `rocq/` — the Rocq mechanisation (Phases 23/25–40): `TM.v`,
+* `rocq/` — the Rocq mechanisation (Phases 23/25–41): `TM.v`,
   `Configs.v`, `Finite.v`, `Sections.v`, `Mirror.v`, `TokenPass.v`,
   `DiagPass.v`, `Recoord.v`, `Era.v`, `EraGen.v`, `EraEven.v`,
   `Esc.v`, `Dev.v`,
   `Grind.v`, `Grind2.v`, `Grind3.v`, `Grind4.v`, `Grind5.v`,
-  `Grind6.v`, `Grind7.v`, `Grind8.v`, `Loop.v`, `Std.v`, and
+  `Grind6.v`, `Grind7.v`, `Grind8.v`, `Grind9.v`, `Loop.v`, `Std.v`, and
   `mechanisation-status.md`.
-* `NOTES.md` — the project log (Phases 1–40). *(Not included in
+* `NOTES.md` — the project log (Phases 1–41). *(Not included in
   this package — internal working log; available from the
   authors on request.)*
