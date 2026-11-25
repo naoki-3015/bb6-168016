@@ -138,7 +138,8 @@ rocq/
   Grind9.v                   phase-8 entry (R >= 1278): funnel PHASE8_TO_MID + continuation stages A-C + DIPDESC_even (proved); the continuation past stage C is a full-stack cascade, fenced with machine evidence (era law still closes at R <= 1276)
   Grind10.v                  the cascade landing (Phase 42): CASCADE_STAGE4 + CASCADE_POPFIN (the cascade's last two stages, proved in general); the phase-8 era law for every even R >= 1278 proved modulo the single statement CASCADE_LANDING (the cascade's landing on the era shape, stress-tested in hsim42.py)
   Grind11.v                  the cascade's stages 1-3 in the era regime (Phase 43): GG_odd (the odd-pair g0 = 1 grind totality), CASCADE_STAGE1, the merged CASCADE_STAGE23 with its r2 = 2 / r2 = 4 dispatch branches; CASCADE_LANDING proved modulo the strictly smaller core CASCADE_STAGE4_BIG (the stage-4 boundary grind at M >= 1441, one pair at one fixed frame); ESC_ERA_LAW_43
-  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo CASCADE_LANDING above)
+  Grind12.v                  the stage-4 boundary grind's segments (Phase 44): GG_boundary (the dip-aware rounds totality), STAGE4_SEG1 / SEG2 / T1 / T2 / T3 / T4; CASCADE_STAGE4_BIG proved modulo the strictly smaller core CASCADE_STAGE4_TAIL (the tail traversal at the bottom frame, era parities baked in); ESC_ERA_LAW_44
+  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo CASCADE_STAGE4_TAIL above)
   Std.v                      standard-regime assembly: STD_reach_entry, H_STD discharged, NONHALT_FROM_R_std (proved)
   gen_configs.py             generator for Configs.v
   trace_rules.py             zipper traces used to fix the segment lemmas' forms
@@ -155,6 +156,7 @@ rocq/
   hsim41.py                  pre-verification of the Phase 41 phase-8 entry/stages + the cascade fence evidence (word simulator + machine recogniser)
   hsim42.py                  stress test of CASCADE_LANDING: ~50 shrunk-family cascade landings on the era shape, the odd-residue parity fence, machine REGEN at the terminal (word simulator + machine recogniser)
   hsim43.py                  pre-verification of the Phase 43 stage decomposition: every stage boundary of the cascade asserted exactly on the shrunk family in the era (odd-r1) regime, both dispatch branches, the M = 618 stage-4 branch, and two stage-4 boundary landings (word simulator + machine recogniser)
+  hsim44.py                  pre-verification of the Phase 44 stage-4 decomposition: every segment boundary (SEG1 / SEG2 / T1 / T2 / T3 clean+boundary / T4) asserted verbatim at nine stage-4 points on the general 3-block frame family, five T4-source points, and one growth probe (word simulator + machine recogniser)
   mechanisation-status.md    component-by-component mechanisation status
   coqcw, env.sh              build wrapper for the authors' local Coq 8.18 toolchain
 ```
@@ -231,12 +233,13 @@ coqc Grind8.v
 coqc Grind9.v
 coqc Grind10.v
 coqc Grind11.v
+coqc Grind12.v
 coqc Loop.v
 coqc Std.v
 ```
 
 (With the authors' workspace toolchain, `./coqcw <file>` does
-the same via `env.sh`.) Expected: all twenty-six files compile with
+the same via `env.sh`.) Expected: all twenty-seven files compile with
 **no errors**; the only warnings are benign large-nat-literal
 notices in `Finite.v`. Every headline lemma was checked with
 `Print Assumptions`: "Closed under the global context" — no
@@ -244,9 +247,9 @@ axioms, no admits.
 
 *Package verification (2026-11-25):* the packaged sources were
 copied to a clean directory and rebuilt from scratch: **all
-twenty-six files compiled successfully**, producing `.vo` files
+twenty-seven files compiled successfully**, producing `.vo` files
 identical in size to the authors' build (re-verified after the
-Phase 43 mechanisation update).
+Phase 44 mechanisation update).
 
 ## Authorship and disclosure
 
