@@ -126,7 +126,8 @@ Require Import List Bool Arith Lia ZArith.
 Import ListNotations.
 Require Import TM Configs Finite Sections Mirror TokenPass DiagPass
                Recoord Era EraGen EraEven Esc Dev Grind Grind2 Grind3
-               Grind4 Grind5 Grind6 Grind7 Grind8 Grind9 Grind10.
+               Grind4 Grind5 Grind6 Grind7 Grind8 Grind9 Grind10
+               Grind11.
 
 (* ----------------------------------------------------------------- *)
 (* Part 0: run-totality infrastructure.                              *)
@@ -808,6 +809,59 @@ Proof.
 Qed.
 
 (* ----------------------------------------------------------------- *)
+(* Part 4d (Phase 43): the same discharge modulo the strictly        *)
+(* smaller core CASCADE_STAGE4_BIG (Grind11.v).  Phase 43 proved     *)
+(* CASCADE_LANDING's stages 1-3 in the era regime (CASCADE_STAGE1,   *)
+(* the merged CASCADE_STAGE23 with its r2 = 2 / r2 = 4 dispatch      *)
+(* branches, and the M = 618 stage-4 degeneration), so via           *)
+(* CASCADE_LANDING_of + ESC_ERA_LAW_43 the ESC instances at every    *)
+(* even R >= 1278 now rest on CASCADE_STAGE4_BIG alone: the          *)
+(* stage-4 boundary grind of the single pair (2 * M - 1234, 2) at    *)
+(* the fixed era frame [428; 57; 5], counter 822, for M >= 1441.     *)
+(* H_LOOP's ESC side is NOT closed -- but its residual is one pair   *)
+(* at one frame, in place of the whole three-stage cascade.          *)
+(* ----------------------------------------------------------------- *)
+
+Lemma ESC_ITER_BIG8_43 : CASCADE_STAGE4_BIG ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (2 * M + 52)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros Hbig M beta HM Hb.
+  destruct (PASS (false :: repeat true (2 * M + 52)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (2 * M + 52) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_43 Hbig M beta HM ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+Lemma ESC_ITER_BIG8_43_step : CASCADE_STAGE4_BIG ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  loop_step (false :: repeat true (2 * M + 52)) beta.
+Proof.
+  intros Hbig M beta HM Hb.
+  destruct (ESC_ITER_BIG8_43 Hbig M beta HM Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* ----------------------------------------------------------------- *)
 (* Part 5: the first two iterations, fully proved.                   *)
 (* ----------------------------------------------------------------- *)
 
@@ -947,6 +1001,8 @@ Print Assumptions ESC_ITER_1276.
 Print Assumptions ESC_ITER_1276_step.
 Print Assumptions ESC_ITER_BIG8.
 Print Assumptions ESC_ITER_BIG8_step.
+Print Assumptions ESC_ITER_BIG8_43.
+Print Assumptions ESC_ITER_BIG8_43_step.
 Print Assumptions TWO_ITERS.
 Print Assumptions loop_chain.
 Print Assumptions LOOP_NONHALT.
