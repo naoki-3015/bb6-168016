@@ -141,7 +141,8 @@ rocq/
   Grind12.v                  the stage-4 boundary grind's segments (Phase 44): GG_boundary (the dip-aware rounds totality), STAGE4_SEG1 / SEG2 / T1 / T2 / T3 / T4; CASCADE_STAGE4_BIG proved modulo the strictly smaller core CASCADE_STAGE4_TAIL (the tail traversal at the bottom frame, era parities baked in); ESC_ERA_LAW_44
   Grind13.v                  the stage-4 tail at the era slice (Phase 45): TAIL_LAYER0 / TAIL_LAYER1 (the tail's layers 0-1), TAIL2_CLEAN (the layer-2 residue, clean range vM <= 1652); CASCADE_STAGE4_BIG and the era law proved modulo the strictly smaller core TAIL2_BIG (the layer-2 residue totality at one fixed state, boundary range vM >= 1653 only); ESC_ERA_LAW_45
   Grind14.v                  the TAIL2_BIG descent (Phase 46): DIPGRIND (the boundary rounds at a general counter), CLEANG_odd / CLEANG_even (the clean grinds at counter 3), TAIL2_FRONT, DESCENT46 (the descent to the END state, uniform in (k, beta)), END46_1 / END46_2 / END46_3 / END46_big (the END state closed for k <= 3713); TAIL2_BIG proved for vM <= 5365 and the era law proved modulo the strictly smaller core TAIL2_END (the END totality, k >= 3714 only); ESC_ERA_LAW_46
-  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo TAIL2_END above)
+  Grind15.v                  the END re-descent (Phase 47): END47_FRONT, CASCADE47 (the 34-segment fixed parse at an arbitrary carried tail - not a return to END), END47_TO_TOP, TOP47_2 / TOP47_4 / TOP47_6 / TOP47_BAND (the TOP closings at rho = 2, 4, 6 and in band 1, rho <= 14858); TAIL2_END proved for the whole first k-band 3714 <= k <= 11142 and the era law proved modulo the strictly smaller core TAIL2_END2 (the TOP totality at rho = 2j, j >= 7430 only, where the second descent is a new cascade with different constants); ESC_ERA_LAW_47
+  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo TAIL2_END2 above)
   Std.v                      standard-regime assembly: STD_reach_entry, H_STD discharged, NONHALT_FROM_R_std (proved)
   gen_configs.py             generator for Configs.v
   trace_rules.py             zipper traces used to fix the segment lemmas' forms
@@ -161,6 +162,7 @@ rocq/
   hsim44.py                  pre-verification of the Phase 44 stage-4 decomposition: every segment boundary (SEG1 / SEG2 / T1 / T2 / T3 clean+boundary / T4) asserted verbatim at nine stage-4 points on the general 3-block frame family, five T4-source points, and one growth probe (word simulator + machine recogniser)
   hsim45.py                  pre-verification of the Phase 45 era-slice tail: primitive walks from the tail source at four small points; macro walks (proved lemmas as macros) at seven era points in the clean range with every layer boundary and final counter asserted verbatim; boundary-regime completions at vM = 1653 / 2000 / 5366 (word simulator + machine recogniser)
   hsim46.py                  pre-verification of the Phase 46 descent: all 51 descent waypoints asserted verbatim, in order, at k in {1, 2, 3, 48, 348, 3713} x beta in {2, 3}; END parses and finals for k <= 3713; full TAIL2_BIG source walks for vM <= 5365; the k >= 3714 fence finals at k = 3714 / 5000 (word simulator + machine recogniser)
+  hsim47.py                  pre-verification of the Phase 47 END re-descent: the 37-waypoint chain asserted verbatim, in order, at (k, beta) in {(3714, 2), (3714, 3), (3715, 2), (4000, 2), (5000, 3), (11142, 2), (11143, 2), (12000, 2)}; band finals asserted verbatim; the cycle-2 fence (GRIND2 state + second DIPGRIND landing) at k = 11143 / 12000 / 20000 (word simulator + machine recogniser)
   mechanisation-status.md    component-by-component mechanisation status
   coqcw, env.sh              build wrapper for the authors' local Coq 8.18 toolchain
 ```
@@ -240,22 +242,23 @@ coqc Grind11.v
 coqc Grind12.v
 coqc Grind13.v
 coqc Grind14.v
+coqc Grind15.v
 coqc Loop.v
 coqc Std.v
 ```
 
 (With the authors' workspace toolchain, `./coqcw <file>` does
-the same via `env.sh`.) Expected: all twenty-nine files compile with
+the same via `env.sh`.) Expected: all thirty files compile with
 **no errors**; the only warnings are benign large-nat-literal
 notices in `Finite.v`. Every headline lemma was checked with
 `Print Assumptions`: "Closed under the global context" — no
 axioms, no admits.
 
-*Package verification (2026-11-25):* the packaged sources were
+*Package verification (2026-11-26):* the packaged sources were
 copied to a clean directory and rebuilt from scratch: **all
-twenty-nine files compiled successfully**, producing `.vo` files
+thirty files compiled successfully**, producing `.vo` files
 identical in size to the authors' build (re-verified after the
-Phase 46 mechanisation update).
+Phase 47 mechanisation update).
 
 ## Authorship and disclosure
 

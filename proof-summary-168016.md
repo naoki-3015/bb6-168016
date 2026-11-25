@@ -550,23 +550,53 @@ strictly smaller statement **TAIL2_END** — the
 totality of the one pair (2k, 2) at the one
 fixed END state, k ≥ 3714 only
 (`ESC_ERA_LAW_46`, `ESC_ITER_BIG8_46`).
+And (Phase 47) the **END re-descent is
+mechanised** (`rocq/hsim47.py`: the 37-waypoint
+chain asserted verbatim at eight (k, β) points;
+the cycle-2 fence at k = 11143 / 12000 / 20000).
+The re-descent is **not** a return to the END
+state — no END-shaped configuration recurs —
+it is another fixed parse, uniform in (k, β):
+the END front and DIPGRIND (3710, ρ) with
+ρ = 2(k − 3713), then the 34-segment
+**CASCADE47** at an arbitrary carried tail,
+landing on the TOP state
+`HB [1279; 745; 151; 77; 35; 20; 0] 4001 1 7427`,
+which closes at ρ = 2, 4, 6 and throughout
+band 1 (ρ ≤ 14858, the pair grinding cleanly
+by CLEANG_even at counter 7426) (`Grind15.v`).
+The result: TAIL2_END is **proved for the
+whole first band 3714 ≤ k ≤ 11142**, and for
+k ≥ 11143 the era law / loop iterations are
+discharged modulo the strictly smaller
+statement **TAIL2_END2** — the totality of
+the one pair (2j, 2) at the one fixed TOP
+state, j ≥ 7430 only, where the second
+descent is a new cascade with different
+constants, so the bands are finite parses
+rather than a cycle induction
+(`ESC_ERA_LAW_47`, `ESC_ITER_BIG8_47`).
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
 through R ≤ 1276 unconditionally, and for every
 even R ≥ 1278 modulo the single statement
-TAIL2_END — the totality of one pair at the one
-fixed END state
-`HB [317; 40; 14; 5] 2204 1 3711`, k ≥ 3714 —
+TAIL2_END2 — the totality of one pair (2j, 2)
+at the one fixed TOP state
+`HB [1279; 745; 151; 77; 35; 20; 0] 4001 1 7427`,
+j ≥ 7430 —
 via the tail at the era slice and the descent in
 Grind14.v, which proves the previous core
-TAIL2_BIG for vM ≤ 5365; the phase-8 entry, its first
+TAIL2_BIG for vM ≤ 5365, and the END re-descent
+in Grind15.v, which proves the previous core
+TAIL2_END for 3714 ≤ k ≤ 11142; the phase-8 entry, its first
 three continuation stages, the cascade's stages
 1–3 and its last two stages are formalised in
 Grind9.v / Grind10.v / Grind11.v, the stage-4
 boundary grind's segments in Grind12.v, the
-tail's layers in Grind13.v, and the TAIL2_BIG
-descent in Grind14.v), and the
+tail's layers in Grind13.v, the TAIL2_BIG
+descent in Grind14.v, and the END re-descent in
+Grind15.v), and the
 general-residue era law at residues ρ ≥ 35 (both
 parities) are not yet formalised
 (`rocq/mechanisation-status.md` maps every proof component to
