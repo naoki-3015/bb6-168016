@@ -97,11 +97,15 @@
 (*     R <= 114 (fully, ESC_ITER_114, Phase 33) and with every even  *)
 (*     R <= 268 (fully, ESC_ITER_268, Phase 37) and with every even  *)
 (*     R <= 602 (fully, ESC_ITER_602, Phase 38) and with every even  *)
-(*     R <= 1276 (fully, ESC_ITER_1276, Phase 40).  The              *)
+(*     R <= 1276 (fully, ESC_ITER_1276, Phase 40) and with every    *)
+(*     even R >= 1278 modulo Grind10.CASCADE_LANDING                *)
+(*     (ESC_ITER_BIG8, Phase 42: the phase-8 cascade's landing       *)
+(*     on the era shape, stress-tested in hsim42.py).  The           *)
 (*     undischarged instances are exactly: ESC entries with         *)
-(*     R >= 1278 (the phase-7 finish's rounds and final grind at    *)
-(*     the frame [235; 42; 19] hit their floors at m = 616 -- a      *)
-(*     phase-8 deviation, fenced in Grind8.v),                       *)
+(*     R >= 1278 modulo CASCADE_LANDING (the cascade's stages        *)
+(*     1-3 over the era-shaped stack family; the landing itself,     *)
+(*     its last two stages and the whole reduction are proved        *)
+(*     in Grind10.v),                                                *)
 (*     settled entries at entryP B2 with B2 >= 37 (residues          *)
 (*     beyond the frame-16 era laws of both parities, fenced in      *)
 (*     EraGen.v / EraEven.v), and entry sections whose prefix is     *)
@@ -122,7 +126,7 @@ Require Import List Bool Arith Lia ZArith.
 Import ListNotations.
 Require Import TM Configs Finite Sections Mirror TokenPass DiagPass
                Recoord Era EraGen EraEven Esc Dev Grind Grind2 Grind3
-               Grind4 Grind5 Grind6 Grind7 Grind8.
+               Grind4 Grind5 Grind6 Grind7 Grind8 Grind9 Grind10.
 
 (* ----------------------------------------------------------------- *)
 (* Part 0: run-totality infrastructure.                              *)
@@ -744,6 +748,66 @@ Proof.
 Qed.
 
 (* ----------------------------------------------------------------- *)
+(* Part 4c (Phase 42): the ESC iteration at every even R >= 1278,    *)
+(* modulo Grind10.CASCADE_LANDING.                                   *)
+(* ----------------------------------------------------------------- *)
+
+(* One ESC iteration at a single-block prefix 0 1^(R+6) for every    *)
+(* even R >= 1278 (R = 2M + 46, M >= 616): PASS + esc_bridge +       *)
+(* ESC_ERA_LAW_42 (Grind10.v), which is PHASE7_TO_MID +              *)
+(* PHASE8_TO_STAGE_D + CASCADE_LANDING + ESC_ERA_LAW_of.  Phase 42   *)
+(* re-read Phase 41's cascade fence: the cascade's terminal config   *)
+(* IS the era-landing shape HB pb a 1 (2 beta + 1) [] 1 (the          *)
+(* ERA_TAIL source, closed at machine level by REGEN_gen for         *)
+(* arbitrary pb), so the phase-8 era law reduces to the single       *)
+(* statement CASCADE_LANDING about the cascade over the era-         *)
+(* shaped stack family -- stress-tested in rocq/hsim42.py            *)
+(* (~50 shrunk-family landings, the odd-residue parity fence,        *)
+(* machine REGEN at the terminal; no counterexample on the            *)
+(* family).  beta  |->  beta' = 2 beta + 4.  This discharges          *)
+(* H_LOOP's ESC instances for every even R >= 1278 modulo            *)
+(* CASCADE_LANDING; with ESC_ITER_1276, EVERY even R is covered      *)
+(* (unconditionally for R <= 1276, modulo CASCADE_LANDING above).    *)
+Lemma ESC_ITER_BIG8 : CASCADE_LANDING ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (2 * M + 52)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros HCasc M beta HM Hb.
+  destruct (PASS (false :: repeat true (2 * M + 52)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (2 * M + 52) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_42 HCasc M beta HM ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+Lemma ESC_ITER_BIG8_step : CASCADE_LANDING ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  loop_step (false :: repeat true (2 * M + 52)) beta.
+Proof.
+  intros HCasc M beta HM Hb.
+  destruct (ESC_ITER_BIG8 HCasc M beta HM Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* ----------------------------------------------------------------- *)
 (* Part 5: the first two iterations, fully proved.                   *)
 (* ----------------------------------------------------------------- *)
 
@@ -881,6 +945,8 @@ Print Assumptions ESC_ITER_268.
 Print Assumptions ESC_ITER_268_step.
 Print Assumptions ESC_ITER_1276.
 Print Assumptions ESC_ITER_1276_step.
+Print Assumptions ESC_ITER_BIG8.
+Print Assumptions ESC_ITER_BIG8_step.
 Print Assumptions TWO_ITERS.
 Print Assumptions loop_chain.
 Print Assumptions LOOP_NONHALT.
