@@ -514,16 +514,39 @@ landing, with the era parities baked in — and
 the era law / loop iterations are discharged
 modulo that core (`ESC_ERA_LAW_44`,
 `ESC_ITER_BIG8_44`).
+And (Phase 45) the **tail is mechanised at the
+era slice** (28, 34, 822) — the only
+instantiation of CASCADE_STAGE4_TAIL the proof
+uses (`rocq/hsim45.py`: primitive walks from the
+tail source, macro walks with every layer
+boundary asserted verbatim). Its three layers
+are proved (`Grind13.v`): layer 0 (two
+GG_boundary grinds and the PX2Bgen dip), layer 1
+(the hGRIND_even 119 descent), and the layer-2
+residue in the clean range vM ≤ 1652. The
+result: CASCADE_STAGE4_BIG is proved modulo the
+strictly smaller statement **TAIL2_BIG** — the
+layer-2 residue totality at the single fixed
+state `HB [243; 135; 35; 20; 0] 893 1 1651`,
+for the boundary range vM ≥ 1653 only — and
+the era law / loop iterations are discharged
+modulo that core (`ESC_ERA_LAW_45`,
+`ESC_ITER_BIG8_45`). The universal
+CASCADE_STAGE4_TAIL remains unproved; it is
+strictly stronger than the proof needs.
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
 through R ≤ 1276 unconditionally, and for every
 even R ≥ 1278 modulo the single statement
-CASCADE_STAGE4_TAIL; the phase-8 entry, its first
+TAIL2_BIG — the layer-2 residue totality at one
+fixed state, vM ≥ 1653 — via the tail at the era
+slice; the phase-8 entry, its first
 three continuation stages, the cascade's stages
 1–3 and its last two stages are formalised in
-Grind9.v / Grind10.v / Grind11.v, and the stage-4
-boundary grind's segments in Grind12.v), and the
+Grind9.v / Grind10.v / Grind11.v, the stage-4
+boundary grind's segments in Grind12.v, and the
+tail's layers in Grind13.v), and the
 general-residue era law at residues ρ ≥ 35 (both
 parities) are not yet formalised
 (`rocq/mechanisation-status.md` maps every proof component to
