@@ -136,7 +136,8 @@ rocq/
   Grind7.v                   phase-6 merged unwind: general boundary descent DIPDESC + GRIND39_MID: ESC-era law for every even R <= 602 (proved)
   Grind8.v                   phase-7 merged unwind: DIPDESC at [110; 19; 0] + hPX2A + GRIND108_MID: ESC-era law for every even R <= 1276 (proved)
   Grind9.v                   phase-8 entry (R >= 1278): funnel PHASE8_TO_MID + continuation stages A-C + DIPDESC_even (proved); the continuation past stage C is a full-stack cascade, fenced with machine evidence (era law still closes at R <= 1276)
-  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36)
+  Grind10.v                  the cascade landing (Phase 42): CASCADE_STAGE4 + CASCADE_POPFIN (the cascade's last two stages, proved in general); the phase-8 era law for every even R >= 1278 proved modulo the single statement CASCADE_LANDING (the cascade's landing on the era shape, stress-tested in hsim42.py)
+  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo CASCADE_LANDING above)
   Std.v                      standard-regime assembly: STD_reach_entry, H_STD discharged, NONHALT_FROM_R_std (proved)
   gen_configs.py             generator for Configs.v
   trace_rules.py             zipper traces used to fix the segment lemmas' forms
@@ -151,12 +152,13 @@ rocq/
   hsim38.py                  pre-verification of the Phase 38 phase-6 unwind (word simulator + machine recogniser)
   hsim40.py                  pre-verification of the Phase 40 phase-7 unwind (word simulator + machine recogniser)
   hsim41.py                  pre-verification of the Phase 41 phase-8 entry/stages + the cascade fence evidence (word simulator + machine recogniser)
+  hsim42.py                  stress test of CASCADE_LANDING: ~50 shrunk-family cascade landings on the era shape, the odd-residue parity fence, machine REGEN at the terminal (word simulator + machine recogniser)
   mechanisation-status.md    component-by-component mechanisation status
   coqcw, env.sh              build wrapper for the authors' local Coq 8.18 toolchain
 ```
 
 Not included: the internal project log (`NOTES.md`, Phases
-1–41), simulators and run artefacts of the working phases, and
+1–42), simulators and run artefacts of the working phases, and
 the still-running long simulation from R (component #7 is
 corroboration only; the proof does not depend on it).
 
@@ -225,12 +227,13 @@ coqc Grind6.v
 coqc Grind7.v
 coqc Grind8.v
 coqc Grind9.v
+coqc Grind10.v
 coqc Loop.v
 coqc Std.v
 ```
 
 (With the authors' workspace toolchain, `./coqcw <file>` does
-the same via `env.sh`.) Expected: all twenty-four files compile with
+the same via `env.sh`.) Expected: all twenty-five files compile with
 **no errors**; the only warnings are benign large-nat-literal
 notices in `Finite.v`. Every headline lemma was checked with
 `Print Assumptions`: "Closed under the global context" — no
@@ -238,9 +241,9 @@ axioms, no admits.
 
 *Package verification (2026-11-25):* the packaged sources were
 copied to a clean directory and rebuilt from scratch: **all
-twenty-four files compiled successfully**, producing `.vo` files
+twenty-five files compiled successfully**, producing `.vo` files
 identical in size to the authors' build (re-verified after the
-Phase 41 mechanisation update).
+Phase 42 mechanisation update).
 
 ## Authorship and disclosure
 

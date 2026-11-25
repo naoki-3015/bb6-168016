@@ -442,13 +442,40 @@ in `rocq/hsim41.py`. The ESC-era law therefore
 still closes at R ≤ 1276; closing phase 8 needs a
 totality/landing theorem for the
 deviation-inclusive grind, not another unwind.
+And (Phase 42) the **landing theorem attacked
+directly** — with a correction to Phase 41's
+reading: the cascade's terminal configuration
+*is* the era-landing shape `HB pb a 1 (2β + 1)
+[] 1` (the target of every ESC_TO_REGEN lemma,
+closed at machine level by REGEN for arbitrary
+prefixes), so over the era-shaped stack family
+the landing is the precise statement
+**CASCADE_LANDING**. It is stress-tested in
+`rocq/hsim42.py` (~50 shrunk-family landings,
+all on the era shape; machine REGEN confirmed at
+the terminal; and a genuine parity fence — for
+odd residues the landing shuttle is 2β + r, not
+2β + 1, so the closed form is an even-residue
+phenomenon). The cascade's last two stages are
+proved in general (`CASCADE_STAGE4`,
+`CASCADE_POPFIN` in `Grind10.v`), and the
+phase-8 era law for **every even R ≥ 1278** is
+proved modulo CASCADE_LANDING
+(`ESC_ERA_LAW_42`), with the loop iterations
+discharged in Loop.v (`ESC_ITER_BIG8`). The
+remaining core is the cascade's first three
+stages, whose parses are parameter-dependent:
+a proof needs a totality theorem for the
+segment grind itself.
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
-through R ≤ 1276; the phase-8 entry and its first
-three continuation stages are formalised in
-Grind9.v, but the era-law closure is blocked by
-the full-stack cascade past stage C), and the
+through R ≤ 1276 unconditionally, and for every
+even R ≥ 1278 modulo the single statement
+CASCADE_LANDING; the phase-8 entry, its first
+three continuation stages and the cascade's
+last two stages are formalised in Grind9.v /
+Grind10.v), and the
 general-residue era law at residues ρ ≥ 35 (both
 parities) are not yet formalised
 (`rocq/mechanisation-status.md` maps every proof component to
