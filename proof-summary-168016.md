@@ -407,10 +407,22 @@ and ρ = 38, 40 show no absorption landing of either
 form within 60,000,000 steps — mechanising them needs
 a sub-frame edge-grind theory the current vocabulary
 does not contain (`rocq/mechanisation-status.md`).
+And (Phase 40) the **phase-7 merged unwind** on the ESC
+side: at the phase-6 finish's new frame the maximal
+164 clean rounds leave the final grind at exactly
+t = a2, a boundary descent (DIPDESC) whose dip fires
+the existing PX2A dispatch, and the continuation
+grind at g0 = 108 is assembled explicitly
+(GRIND108_MID in `Grind8.v`), extending the ESC-era
+law to **every even R ≤ 1276** (ESC_ERA_LAW_1276),
+with the corresponding loop iterations discharged in
+Loop.v (ESC_ITER_1276). No new deviation step list
+was needed. The remaining ESC fence is R ≥ 1278, a
+phase-8 deviation of the same character.
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
-ESC entries at R ≥ 604 (the ESC-era law is proved
-through R ≤ 602; the phase-7 boundary grind
+ESC entries at R ≥ 1278 (the ESC-era law is proved
+through R ≤ 1276; the phase-8 boundary grind
 is not yet formalised), and the
 general-residue era law at residues ρ ≥ 35 (both
 parities) are not yet formalised
@@ -440,13 +452,13 @@ Rocq sources under `rocq/`.)*
   `phase21-derivations.md` — the post-R regimes and the loop.
 * `reproduce_168016.py`, `reproduction-report.md` — the
   independent reproduction (Phase 22).
-* `rocq/` — the Rocq mechanisation (Phases 23/25–39): `TM.v`,
+* `rocq/` — the Rocq mechanisation (Phases 23/25–40): `TM.v`,
   `Configs.v`, `Finite.v`, `Sections.v`, `Mirror.v`, `TokenPass.v`,
   `DiagPass.v`, `Recoord.v`, `Era.v`, `EraGen.v`, `EraEven.v`,
   `Esc.v`, `Dev.v`,
   `Grind.v`, `Grind2.v`, `Grind3.v`, `Grind4.v`, `Grind5.v`,
-  `Grind6.v`, `Grind7.v`, `Loop.v`, `Std.v`, and
+  `Grind6.v`, `Grind7.v`, `Grind8.v`, `Loop.v`, `Std.v`, and
   `mechanisation-status.md`.
-* `NOTES.md` — the project log (Phases 1–39). *(Not included in
+* `NOTES.md` — the project log (Phases 1–40). *(Not included in
   this package — internal working log; available from the
   authors on request.)*
