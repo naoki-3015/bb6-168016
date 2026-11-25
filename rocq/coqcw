@@ -1,0 +1,4 @@
+#!/bin/sh
+# Wrapper: compile with the workspace Coq 8.18.0 toolchain.
+. "$(dirname "$0")/env.sh"
+exec coqc "$@"
