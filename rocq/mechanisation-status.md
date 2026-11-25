@@ -1,4 +1,4 @@
-# Mechanisation status — BB(6) holdout #168016 in Rocq (Phase 49, 2026-11-26)
+# Mechanisation status — BB(6) holdout #168016 in Rocq (Phase 50, 2026-11-26)
 
 Step 2 of the user-approved community sequence (reproduction ✓ Phase 22 →
 **mechanisation** → submission prep ✓ Phase 24). This document maps every
@@ -1562,6 +1562,130 @@ phase10 background run was not disturbed
 (read-only checks only; its checkpoint/log
 timestamps remain 2026-11-24).
 
+**Phase 50 (2026-11-26): the TOP3 state's fourth
+descent mechanised as a fixed parse; TAIL2_END4
+proved for 32606 ≤ j ≤ 99728 and reduced to the
+TOP4-state core TAIL2_END5.** Phase 49 left the
+core TAIL2_END4 — the TOP3 totality at r3 = 2j,
+j ≥ 32606, where the GRIND4 pair (r3 − 6, 2) at
+counter 32602 exceeds the `CLEANG_even` floor
+r3 ≤ 65210 and the rounds take the DIPDESC boundary
+a fourth time. Phase 50 traces that fourth descent
+in the new harness `rocq/hsim50.py` (**ALL PHASE 50
+CHECKS PASS**: the 82-waypoint CASCADE50 chain
+asserted verbatim, in order, at
+(j, β) ∈ {(32606, 2), (32606, 3), (32607, 2),
+(40000, 2), (99728, 2)}, including a junk-tail
+probe proving the parse is tail-blind; the TOP4
+band finals asserted verbatim at nine points;
+the fifth fence — the GRIND5 state and the
+DIPGRIND (67120, r4 − 134246) landing — asserted at
+j = 99729 / 99800 / 120000; a primitive-step audit)
+and finds the fourth descent is again a **fixed
+parse, uniform in (j, β)**:
+
+- **TOP50_TO_TOP4**: TOP3's front (TUP +
+  `hGRIND_even` 16299 + TUP2_1 + TDN + TUP — the
+  `TOP49_BAND` front shape) reaches GRIND4, and
+  **DIPGRIND (32602, 2(j − 32605))** lands on the
+  DIP4 spine `HC [16899; 7493; 3816; 259; 93; 50;
+  14; 5] 0 3 2 ((1, 2)^32602 ++ W)`,
+  W = ((2(j − 32605), 2) :: (1, 1) :: (1, 2)^(β − 1)).
+- **CASCADE50** (a fixed parse of 64 segments;
+  every frame and counter a literal; stated for an
+  **arbitrary tail w**): eleven DIPGRIND levels
+  at (7491, 1911), (257, 3296), (612, 2066),
+  (12, 279), (32, 209), (3, 5), (3, 2), (74, 55),
+  (3, 37), (3, 2), (13, 5), six full fronts (TUP +
+  `hGRIND_even` t + TUP2_1 + TDN + TUP) at pairs
+  3296, 279, 209, 55, 2066, 1911 and one partial
+  front at pair 5, three PX2A + PUSH + TDN + TUP
+  descents, two PX2Bgen dips, one PX2B0 dip, three
+  PUSHX bottom excursions, and the `CLEANG_odd`
+  levels 23, 951 and `CLEANG_even` level 1029,
+  landing at the **TOP4 state**
+  `HB [9558; 1285; 774; 112; 20; 0] 47594 1
+  67121 W`.
+- **TOP4 closes by the size of r4 = 2(j − 32605)**:
+  r4 = 2 (**TOP50_2**: TRANS2_1 + CASCADE_POPFIN,
+  A = 67121 + β); r4 = 4 (**TOP50_4**: TUP +
+  `hGRIND_even` 33558 + TRANS2_2 + CASCADE_POPFIN,
+  A = β + 2); r4 = 6 (**TOP50_6**: TUP +
+  `hGRIND_even` 33558 + TUP2_1 + TDN + TRANS2_1 +
+  CASCADE_POPFIN, A = β + 4); and band 4,
+  8 ≤ r4 ≤ 134246 (**TOP50_BAND**, r4 = 2j₄,
+  4 ≤ j₄ ≤ 67123: TUP + `hGRIND_even` 33558 +
+  TUP2_1 + TDN + TUP onto
+  `HC [47594; 9558; …] 67120 3 2 ((r4 − 6, 2) ::
+  tail)`, whose pair grinds **cleanly** by
+  CLEANG_even — the floor (r4 − 8)/2 + 1 ≤ 67120 is
+  exactly r4 ≤ 134246 — then TRANS2_1 +
+  CASCADE_POPFIN, A = r4 + β − 2).
+
+No harness-caught correction this phase either:
+the characterisation matched the Phase 46–49
+pattern on the first full run (the streaming
+walker of hsim49 is reused unchanged).
+
+For r4 ≥ 134248 (j₄ ≥ 67124, i.e. TOP3-parameter
+j ≥ 99729) the pair (r4 − 6, 2) at counter 67120
+exceeds the CLEANG_even floor and the rounds take
+the DIPDESC boundary a **fifth** time (hsim50
+Part 3: the GRIND5 state and the
+DIPGRIND (67120, r4 − 134246) landing both occur at
+j = 99729, 99800, 120000). The fifth descent is
+expected to be again a **new cascade with
+different constants**, not the fourth one repeated,
+so the bands remain finite parses rather than a
+cycle induction in the current vocabulary.
+
+What remains is the strictly smaller residual core:
+
+> **TAIL2_END5**: for every j ≥ 67124 and β ≥ 2, the
+> TOP4 state `HB [9558; 1285; 774; 112; 20; 0]
+> 47594 1 67121 ((2 * j, 2) :: (1, 1) ::
+> repeat (1, 2) (β − 1)) 1` reaches
+> `HB pb A 1 (2 * β + 1) [] 1` for some pb, A
+> with β ≤ A.
+
+It is smaller than TAIL2_END4 on every axis: one
+pair at one fixed TOP4 state (one full cycle below
+the TOP3 state), and only the range j ≥ 99729 in
+TOP3 parameters — the whole range
+32606 ≤ j ≤ 99728 is proved. The core's range
+shrank from [32606, ∞) to [99729, ∞); the band
+width roughly doubled again (32606 → 99728).
+Stated plainly: **TAIL2_END4 does NOT fall outright
+in Phase 50 — it is PROVED for
+32606 ≤ j ≤ 99728 and reduced, above that, to
+TAIL2_END5**: via **`TAIL2_END4_of50`** and
+**`ESC_ERA_LAW_50`**, and Loop.v Part 4k's
+**`ESC_ITER_BIG8_50` / `ESC_ITER_BIG8_50_step`**,
+**H_LOOP's ESC side now rests on TAIL2_END5
+alone**. The reduction chain CASCADE_LANDING →
+CASCADE_STAGE4_BIG → CASCADE_STAGE4_TAIL →
+TAIL2_BIG → TAIL2_END → TAIL2_END2 → TAIL2_END3 →
+TAIL2_END4 → TAIL2_END5 is fully mechanised. No
+F-13: every Phase 50 segment statement was
+machine-tested in hsim50.py before mechanisation.
+
+**Mechanised (new file `rocq/Grind18.v`, 1333
+lines; Loop.v 1461 lines).** `CASCADE50`,
+`TOP50_TO_TOP4`, `TOP50_2`, `TOP50_4`, `TOP50_6`,
+`TOP50_BAND`, the Definition `TAIL2_END5`,
+`TAIL2_END4_of50`, `ESC_ERA_LAW_50`; Loop.v
+Part 4k adds `ESC_ITER_BIG8_50` /
+`ESC_ITER_BIG8_50_step`. Full clean rebuild of all
+**thirty-three** files passes (~9 min); Grind18.v's
+own 8 audits and Loop.v's 41 audits report "Closed
+under the global context" (215 closed audits
+across all thirty-three build logs, no Axioms
+sections); no Admitted / Axiom / Parameter in the
+22,551 lines of .v sources. The checkpointed
+phase10 background run was not disturbed
+(read-only checks only; its checkpoint/log
+timestamps remain 2026-11-24).
+
 ## Toolchain
 
 - **Coq 8.18.0** (the proof assistant, pre-Rocq rename; compiled with OCaml
@@ -1602,7 +1726,8 @@ timestamps remain 2026-11-24).
   ./coqcw Grind15.v   # #19: the END re-descent (CASCADE47, TOP47) + TAIL2_END for 3714 <= k <= 11142, reduction to TAIL2_END2 (Phase 47)
   ./coqcw Grind16.v   # #19: the TOP second descent (CASCADE48, TOP48) + TAIL2_END2 for 7430 <= j <= 23730, reduction to TAIL2_END3 (Phase 48)
   ./coqcw Grind17.v   # #19: the TOP2 third descent (CASCADE49, TOP49) + TAIL2_END3 for 16302 <= j <= 48906, reduction to TAIL2_END4 (Phase 49)
-  ./coqcw Loop.v      # cross-era loop assembly (Phase 32; ESC_ITER_114 Phase 33; ESC_ITER_268 Phase 37; ESC_ITER_602 Phase 38; ESC_ITER_1276 Phase 40; ESC_ITER_BIG8 Phase 42; ESC_ITER_BIG8_43 Phase 43; ESC_ITER_BIG8_44 Phase 44; ESC_ITER_BIG8_45 Phase 45; ESC_ITER_BIG8_46 Phase 46; ESC_ITER_BIG8_47 Phase 47; ESC_ITER_BIG8_48 Phase 48; ESC_ITER_BIG8_49 Phase 49)
+  ./coqcw Grind18.v   # #19: the TOP3 fourth descent (CASCADE50, TOP50) + TAIL2_END4 for 32606 <= j <= 99728, reduction to TAIL2_END5 (Phase 50)
+  ./coqcw Loop.v      # cross-era loop assembly (Phase 32; ESC_ITER_114 Phase 33; ESC_ITER_268 Phase 37; ESC_ITER_602 Phase 38; ESC_ITER_1276 Phase 40; ESC_ITER_BIG8 Phase 42; ESC_ITER_BIG8_43 Phase 43; ESC_ITER_BIG8_44 Phase 44; ESC_ITER_BIG8_45 Phase 45; ESC_ITER_BIG8_46 Phase 46; ESC_ITER_BIG8_47 Phase 47; ESC_ITER_BIG8_48 Phase 48; ESC_ITER_BIG8_49 Phase 49; ESC_ITER_BIG8_50 Phase 50)
   ./coqcw Std.v       # standard-regime assembly: H_STD discharged (Phase 34)
   ```
 
@@ -1686,6 +1811,15 @@ timestamps remain 2026-11-24).
   audits are closed; Loop.v's audit list is now 39
   lemmas, all closed; 205 closed audits across all
   thirty-two build logs.)
+  (Phase 50: the same clean rebuild over all
+  thirty-three files, Grind18.v included, passes in
+  ~9 min; Grind18.v's own audits — CASCADE50,
+  TOP50_TO_TOP4, TOP50_2, TOP50_4, TOP50_6,
+  TOP50_BAND, TAIL2_END4_of50, ESC_ERA_LAW_50 — and
+  Loop.v's new ESC_ITER_BIG8_50 / ESC_ITER_BIG8_50_step
+  audits are closed; Loop.v's audit list is now 41
+  lemmas, all closed; 215 closed audits across all
+  thirty-three build logs.)
 - Representation: list-zipper configurations `(state, left, right)`,
   head on `hd right`, blanks implicit — the list-based style of the
   bbchallenge Coq developments (Coq-BB5), specialised to this machine.
@@ -3121,6 +3255,67 @@ four finishes: ALL CHECKS PASS).
   recording walker was OOM-killed on the ~50k-pair
   stacks of this descent).
 
+### Grind18.v — the TOP3 fourth descent, and the TAIL2_END5 core — Phase 50
+
+- **`CASCADE50` — PROVED**: the fourth re-descent
+  cascade as a fixed parse of 64 segments over an
+  **arbitrary carried tail w** (the stack is never
+  inspected): eleven DIPGRIND levels at
+  (7491, 1911), (257, 3296), (612, 2066), (12, 279),
+  (32, 209), (3, 5), (3, 2), (74, 55), (3, 37),
+  (3, 2), (13, 5), six full fronts (TUP +
+  `hGRIND_even` t + TUP2_1 + TDN + TUP) at pairs
+  3296, 279, 209, 55, 2066, 1911 and one partial
+  front at pair 5, three PX2A + PUSH + TDN + TUP
+  descents, two PX2Bgen dips, one PX2B0, three
+  PUSHX bottom excursions, and the `CLEANG_odd`
+  levels 23, 951 and `CLEANG_even` level 1029,
+  landing at
+  `HB [9558; 1285; 774; 112; 20; 0] 47594 1
+  67121 w`
+  from the DIP4 spine
+  `HC [16899; 7493; 3816; 259; 93; 50; 14; 5]
+  0 3 2 ((1, 2)^32602 ++ w)`.
+- **`TOP50_TO_TOP4` — PROVED**: TOP3 → front (the
+  `TOP49_BAND` front shape) → GRIND4 →
+  DIPGRIND (32602, 2(j − 32605)) → CASCADE50 → the
+  TOP4 state
+  `HB [9558; 1285; 774; 112; 20; 0] 47594 1
+  67121 ((2(j − 32605), 2) :: (1, 1) ::
+  (1, 2)^(β − 1))`,
+  uniform for every j ≥ 32606.
+- **`TOP50_2` / `TOP50_4` / `TOP50_6` — PROVED**:
+  TOP4 closes at r4 = 2 (TRANS2_1 + CASCADE_POPFIN,
+  A = 67121 + β), r4 = 4 (TUP + `hGRIND_even` 33558 +
+  TRANS2_2 + CASCADE_POPFIN, A = β + 2) and r4 = 6
+  (TUP + `hGRIND_even` 33558 + TUP2_1 + TDN +
+  TRANS2_1 + CASCADE_POPFIN, A = β + 4).
+- **`TOP50_BAND` — PROVED**: TOP4 closes in band 4,
+  r4 = 2j₄ with 4 ≤ j₄ ≤ 67123 (8 ≤ r4 ≤ 134246): the
+  pair (r4 − 6, 2) at counter 67120 grinds cleanly by
+  `CLEANG_even` (floor exactly r4 ≤ 134246 — the
+  counter is the shuttle 67121 moved into the
+  counter slot by TUP2_1, not the frame head 47594),
+  then TRANS2_1 + CASCADE_POPFIN, A = r4 + β − 2.
+- **`TAIL2_END5` (Definition)**: the residual core
+  — the TOP4-state totality for r4 = 2j, j ≥ 67124
+  (r4 ≥ 134248, i.e. TOP3 parameter j ≥ 99729), where
+  the GRIND5 pair takes the DIPDESC boundary a
+  fifth time and descends through a fifth cascade
+  with different constants.
+- **`TAIL2_END4_of50` — PROVED**: Grind17's
+  TAIL2_END4 modulo TAIL2_END5; the whole range
+  32606 ≤ j ≤ 99728 is discharged outright.
+- **`ESC_ERA_LAW_50` — PROVED**: the phase-8 era
+  law (β ↦ 2β + 4 at every even R ≥ 1278) modulo
+  TAIL2_END5, via ESC_ERA_LAW_49 ∘ TAIL2_END4_of50.
+- Evidence: `rocq/hsim50.py` (ALL PHASE 50 CHECKS
+  PASS — the 82-waypoint chain asserted verbatim at
+  five (j, β) points incl. a junk-tail probe; TOP4
+  band finals at nine points; the fifth fence at
+  j = 99729 / 99800 / 120000; the walker is the
+  streaming variant of the hsim45 recorder).
+
 ### Loop.v — the cross-era loop assembly — Phase 32
 
 The ascending loop of `168016-proof.md` §4, composed from the
@@ -3338,7 +3533,7 @@ for the identifications and the pre-verification).
 | 16 | Re-coordinatisation to the single-block I-frame | **PROVED in full** (Phase 27, Recoord.v: `STAGE1`/`STAGE1_exit`, `STAGE3` for all B2 ≥ 2; Phase 30: stage 2 in general — `DSTAGE2` for every frozen prefix, DiagPass.v — giving `STAGE2_proved` and the unconditional composition `RECOORD2_uncond`). The seven kernel-verified stage-2 instances (B2 = 31 for n ∈ {2, 4, 6, 8, 10}; n = 2 for B2 ∈ {15, 47}) remain as regression checks. The single-block (ESC) frame's delivered pieces are in Esc.v (see #19). |
 | 17 | REGEN; POP-general | **PROVED** (Phase 25: POP-general in Sections.v (Phase 23); `REGEN` assembled from POP_terminal + StageA_blank + PUSH_T, with `REGEN_tape`). |
 | 18 | Era / reset map (Grind Lemma G′, s₁ = 2β_E + 31, β′ = 2β_E + 34) | **Deviation-free assembly PROVED** (Phase 27, Era.v: `ENTRY_gen`, `GRIND` (G′ endpoint form, frame floor as its hypothesis), `POP_CHAIN`, `ERA_LAW` with s₁ = 2β_E + 31, odd-G excluded, β′ = 2β_E + 34 > β_E). **Fenced**: the dip clause as a sequence statement (precise statement + route in the Era.v summary above; the Loop.v assembly does not use it — ERA_LAW discharges GRIND's floor directly). **Cross-era loop assembly DONE** (Phase 32, Loop.v: `PASS`, `SETTLED_ITER`, `ESC_ITER`, `TWO_ITERS`, `LOOP_NONHALT`, `NONHALT_FROM_R`; Phase 33: `ESC_ITER_114`), modulo the explicit hypotheses H_STD (#10 — **discharged Phase 34**, Std.v), ERA_GEN (**proved on its domain — odd ρ ≤ 33 — Phase 35**, EraGen.v; the general settled iteration is discharged for odd B2 ≤ 35 via `SETTLED_ITER_GEN_odd`) and, **Phase 39**, the even era law `ERA_GEN_even` (EraEven.v: even ρ ≤ 34, β′ = 2m + 4 independent of ρ; the general settled iteration is discharged for even 4 ≤ B2 ≤ 36 via `SETTLED_ITER_GEN_even` — together: every 3 ≤ B2 ≤ 36) and the undischarged H_LOOP instances (ESC entries at R ≥ 1278, modulo CASCADE_LANDING since Phase 42, reduced to modulo CASCADE_STAGE4_BIG in Phase 43, and to modulo CASCADE_STAGE4_TAIL in Phase 44 (Grind12.v: GG_boundary + the stage-4 segments SEG1–T4 mechanised; the residual is the tail traversal at the bottom frame []); settled entries at B2 ≥ 37; ESC-landing prefixes). |
-| 19 | Re-formation (iteration 2) + deviation rules (PUSHX, PX2A/PX2B, TRANS2/TUP2, CGAP2; G″ induction) | **Step lists PROVED** (Phase 27, Esc.v: `POP2`, `PROBE_PREFIX`; Phase 28, Dev.v: PUSHX + follow-on, PX2A (incl. b = 2), PX2B b = 2..6, CGAP2 probe + both dispatches, TUP2 k = 1, TRANS2 k = 1/2, TUP2 defect with the F-3-corrected landing — all for all parameters). **Word model PROVED** (Phase 28, Grind.v: frame-general lists, `hstep` (20 rules) + `hstep_sound`/`hsteps_sound`, `grind_prefix` + `grind_prefix_dev`, `pred_cases`). **G″ endpoint induction PROVED in the clean regime and at the ESC frame** (Phase 29, Grind2.v: `hGRIND`, `GG_clean` for all frames under the floor, `hGRIND_dev` for the boundary frame, `ESC_GRIND_10`); **era stack invariant + Predecessor discharge PROVED** (`grind_inv`, `PRED_inv`, `PUSHX_only`, threaded `hstepsP` grind chains); **ESC-era law β_next = 2β + 4 PROVED for R ∈ {2, 4, 6, 8, 10}** (`ESC_ERA_LAW`). **Re-basing segment PROVED** (Phase 31, Grind3.v: `REBASE` from the F-4-corrected source, `ESC_GRIND_BIG`, endpoints for R = 12 / 14 / 2m + 16) and **ESC-era law extended to every even R ≤ 40** (`ESC_ERA_LAW_31`). **Second re-basing PROVED for R ≤ 114** (Phase 33, Grind4.v: `hGRIND_dev5` (the pb = [5] deviated grind, base case `hPX2B5`), `hGRIND_even`, `rounds_from4`/`rounds_from6`, endpoints for R = 42 / 44 / 2m + 46, `ESC_ERA_LAW_33`, and the combined **`ESC_ERA_LAW_114`**). **Third re-basing PROVED through R ≤ 268** (Phase 37, Grind6.v: the merged unwind — `DEV20_DESCEND`, `GRIND16_MID`, `PHASE3_DEEP`, endpoints `ESC_TO_REGEN_116` / `_118` / `_120` / `ESC_TO_REGEN_BIG3`, and the combined **`ESC_ERA_LAW_268`**). **Phase-6 merged unwind PROVED through R ≤ 602** (Phase 38, Grind7.v: the general boundary tools `LOOPN` and `DIPDESC` (the t = a2 descent, no floor hypothesis), `GRIND39_MID`, `TAIL2`, `PHASE6_PREFIX`, `PHASE6_TO_MID`, endpoints `ESC_TO_REGEN_112` / `_113` / `_114` / `ESC_TO_REGEN_BIG6`, and the combined **`ESC_ERA_LAW_602`**). **Phase-7 merged unwind PROVED through R ≤ 1276** (Phase 40, Grind8.v: `GRIND108_MID`, `PHASE7_TRANS19`, `PHASE7_TRANS42`, `PHASE7_TO_MID`, endpoints `ESC_TO_REGEN_604` / `_606` / `_608` / `ESC_TO_REGEN_BIG7`, and the combined **`ESC_ERA_LAW_1276`**). **Phase-8 entry + continuation stages A–C PROVED** (Phase 41, Grind9.v: `DIPDESC_even`, `PHASE8_TO_MID`, `PHASE8_STAGE_A` / `_B` / `_C`, `PHASE8_TO_STAGE_D`; new step list `PX2Bgen` (Dev.v) / constructor `hPX2Bgen` (Grind.v) for the stage-A dip at [19]). **Phase-8 cascade landing reduced to one statement** (Phase 42, Grind10.v: `CASCADE_STAGE4` and `CASCADE_POPFIN` — the cascade's last two stages — PROVED in general; `ESC_TO_REGEN_BIG8_of` / `ESC_ERA_LAW_42` PROVED modulo `CASCADE_LANDING`; Phase 41's "not an era REGEN landing" reading corrected — the cascade's terminal IS the era-landing shape, closed at machine level by `REGEN_gen` for arbitrary pb; evidence `hsim42.py`, incl. the odd-residue parity fence s = 2b + r2). **Cascade stages 1–3 PROVED in the era regime** (Phase 43, Grind11.v: `GG_odd` — the odd-pair g0 = 1 totality over an arbitrary deeper tail, floor m + 1 ≤ a2 — `CASCADE_STAGE1`, the merged `CASCADE_STAGE23` with its r2 = 2 / r2 = 4 dispatch branches, and the five-way stage-4 dispatch in `CASCADE_LANDING_of`, incl. the M = 618 degeneration; evidence `hsim43.py`). **Stage-4 boundary grind segments PROVED** (Phase 44, Grind12.v: `GG_boundary` — the dip-aware rounds totality: a − 1 clean rounds via `GG_rounds_part`, then the budget-exhaustion round through `DIPDESC` — `STAGE4_SEG1`, `STAGE4_SEG2`, `STAGE4_T1`, `STAGE4_T2`, `STAGE4_T3`, `STAGE4_T4`, and `CASCADE_STAGE4_BIG_of`: CASCADE_STAGE4_BIG modulo CASCADE_STAGE4_TAIL; evidence `hsim44.py`). **Cascade residual reduced to `TAIL2_END2`** (Phase 45, Grind13.v: the stage-4 tail mechanised at the era slice, residual `TAIL2_BIG`; Phase 46, Grind14.v: the TAIL2_BIG descent a fixed parse — `DESCENT46` — TAIL2_BIG proved for vM ≤ 5365, residual `TAIL2_END`; Phase 47, Grind15.v: the END re-descent a fixed parse `CASCADE47` at an arbitrary tail — not a return to END — TAIL2_END proved for the first k-band 3714 ≤ k ≤ 11142, residual `TAIL2_END2`, the TOP-state totality at ρ = 2j, j ≥ 7430, where the second descent is a new cascade with different constants, so the bands are finite parses rather than a cycle induction; evidence `hsim45.py` / `hsim46.py` / `hsim47.py`). The ESC iteration is composed into the cross-era loop in Loop.v (`ESC_ITER`, `TWO_ITERS`, Phase 32; `ESC_ITER_114`, Phase 33; `ESC_ITER_268`, Phase 37; `ESC_ITER_602`, Phase 38; `ESC_ITER_1276`, Phase 40; `ESC_ITER_BIG8`, Phase 42, modulo CASCADE_LANDING; `ESC_ITER_BIG8_43`, Phase 43, modulo CASCADE_STAGE4_BIG; `ESC_ITER_BIG8_44`, Phase 44, modulo CASCADE_STAGE4_TAIL; `ESC_ITER_BIG8_45`, Phase 45, modulo TAIL2_BIG — the tail mechanised at the era slice in Grind13.v; `ESC_ITER_BIG8_46`, Phase 46, modulo TAIL2_END — the TAIL2_BIG descent mechanised in Grind14.v, TAIL2_BIG proved for vM ≤ 5365; `ESC_ITER_BIG8_47`, Phase 47, modulo TAIL2_END2 — the END re-descent mechanised in Grind15.v, TAIL2_END proved for 3714 ≤ k ≤ 11142; `ESC_ITER_BIG8_48`, Phase 48, modulo TAIL2_END3 — the TOP second descent mechanised in Grind16.v, TAIL2_END2 proved for 7430 ≤ j ≤ 23730; `ESC_ITER_BIG8_49`, Phase 49, modulo TAIL2_END4 — the TOP2 third descent mechanised in Grind17.v, TAIL2_END3 proved for 16302 ≤ j ≤ 48906); the R ≥ 1278 instances modulo TAIL2_END4 are the remaining ESC instances of hypothesis H_LOOP there. (The fenced TUP2 stage-2 shape (k ≥ 2, r_k = 1) is proven unreachable in era grinds at human level; it remains fenced.) |
+| 19 | Re-formation (iteration 2) + deviation rules (PUSHX, PX2A/PX2B, TRANS2/TUP2, CGAP2; G″ induction) | **Step lists PROVED** (Phase 27, Esc.v: `POP2`, `PROBE_PREFIX`; Phase 28, Dev.v: PUSHX + follow-on, PX2A (incl. b = 2), PX2B b = 2..6, CGAP2 probe + both dispatches, TUP2 k = 1, TRANS2 k = 1/2, TUP2 defect with the F-3-corrected landing — all for all parameters). **Word model PROVED** (Phase 28, Grind.v: frame-general lists, `hstep` (20 rules) + `hstep_sound`/`hsteps_sound`, `grind_prefix` + `grind_prefix_dev`, `pred_cases`). **G″ endpoint induction PROVED in the clean regime and at the ESC frame** (Phase 29, Grind2.v: `hGRIND`, `GG_clean` for all frames under the floor, `hGRIND_dev` for the boundary frame, `ESC_GRIND_10`); **era stack invariant + Predecessor discharge PROVED** (`grind_inv`, `PRED_inv`, `PUSHX_only`, threaded `hstepsP` grind chains); **ESC-era law β_next = 2β + 4 PROVED for R ∈ {2, 4, 6, 8, 10}** (`ESC_ERA_LAW`). **Re-basing segment PROVED** (Phase 31, Grind3.v: `REBASE` from the F-4-corrected source, `ESC_GRIND_BIG`, endpoints for R = 12 / 14 / 2m + 16) and **ESC-era law extended to every even R ≤ 40** (`ESC_ERA_LAW_31`). **Second re-basing PROVED for R ≤ 114** (Phase 33, Grind4.v: `hGRIND_dev5` (the pb = [5] deviated grind, base case `hPX2B5`), `hGRIND_even`, `rounds_from4`/`rounds_from6`, endpoints for R = 42 / 44 / 2m + 46, `ESC_ERA_LAW_33`, and the combined **`ESC_ERA_LAW_114`**). **Third re-basing PROVED through R ≤ 268** (Phase 37, Grind6.v: the merged unwind — `DEV20_DESCEND`, `GRIND16_MID`, `PHASE3_DEEP`, endpoints `ESC_TO_REGEN_116` / `_118` / `_120` / `ESC_TO_REGEN_BIG3`, and the combined **`ESC_ERA_LAW_268`**). **Phase-6 merged unwind PROVED through R ≤ 602** (Phase 38, Grind7.v: the general boundary tools `LOOPN` and `DIPDESC` (the t = a2 descent, no floor hypothesis), `GRIND39_MID`, `TAIL2`, `PHASE6_PREFIX`, `PHASE6_TO_MID`, endpoints `ESC_TO_REGEN_112` / `_113` / `_114` / `ESC_TO_REGEN_BIG6`, and the combined **`ESC_ERA_LAW_602`**). **Phase-7 merged unwind PROVED through R ≤ 1276** (Phase 40, Grind8.v: `GRIND108_MID`, `PHASE7_TRANS19`, `PHASE7_TRANS42`, `PHASE7_TO_MID`, endpoints `ESC_TO_REGEN_604` / `_606` / `_608` / `ESC_TO_REGEN_BIG7`, and the combined **`ESC_ERA_LAW_1276`**). **Phase-8 entry + continuation stages A–C PROVED** (Phase 41, Grind9.v: `DIPDESC_even`, `PHASE8_TO_MID`, `PHASE8_STAGE_A` / `_B` / `_C`, `PHASE8_TO_STAGE_D`; new step list `PX2Bgen` (Dev.v) / constructor `hPX2Bgen` (Grind.v) for the stage-A dip at [19]). **Phase-8 cascade landing reduced to one statement** (Phase 42, Grind10.v: `CASCADE_STAGE4` and `CASCADE_POPFIN` — the cascade's last two stages — PROVED in general; `ESC_TO_REGEN_BIG8_of` / `ESC_ERA_LAW_42` PROVED modulo `CASCADE_LANDING`; Phase 41's "not an era REGEN landing" reading corrected — the cascade's terminal IS the era-landing shape, closed at machine level by `REGEN_gen` for arbitrary pb; evidence `hsim42.py`, incl. the odd-residue parity fence s = 2b + r2). **Cascade stages 1–3 PROVED in the era regime** (Phase 43, Grind11.v: `GG_odd` — the odd-pair g0 = 1 totality over an arbitrary deeper tail, floor m + 1 ≤ a2 — `CASCADE_STAGE1`, the merged `CASCADE_STAGE23` with its r2 = 2 / r2 = 4 dispatch branches, and the five-way stage-4 dispatch in `CASCADE_LANDING_of`, incl. the M = 618 degeneration; evidence `hsim43.py`). **Stage-4 boundary grind segments PROVED** (Phase 44, Grind12.v: `GG_boundary` — the dip-aware rounds totality: a − 1 clean rounds via `GG_rounds_part`, then the budget-exhaustion round through `DIPDESC` — `STAGE4_SEG1`, `STAGE4_SEG2`, `STAGE4_T1`, `STAGE4_T2`, `STAGE4_T3`, `STAGE4_T4`, and `CASCADE_STAGE4_BIG_of`: CASCADE_STAGE4_BIG modulo CASCADE_STAGE4_TAIL; evidence `hsim44.py`). **Cascade residual reduced to `TAIL2_END2`** (Phase 45, Grind13.v: the stage-4 tail mechanised at the era slice, residual `TAIL2_BIG`; Phase 46, Grind14.v: the TAIL2_BIG descent a fixed parse — `DESCENT46` — TAIL2_BIG proved for vM ≤ 5365, residual `TAIL2_END`; Phase 47, Grind15.v: the END re-descent a fixed parse `CASCADE47` at an arbitrary tail — not a return to END — TAIL2_END proved for the first k-band 3714 ≤ k ≤ 11142, residual `TAIL2_END2`, the TOP-state totality at ρ = 2j, j ≥ 7430, where the second descent is a new cascade with different constants, so the bands are finite parses rather than a cycle induction; evidence `hsim45.py` / `hsim46.py` / `hsim47.py`). The ESC iteration is composed into the cross-era loop in Loop.v (`ESC_ITER`, `TWO_ITERS`, Phase 32; `ESC_ITER_114`, Phase 33; `ESC_ITER_268`, Phase 37; `ESC_ITER_602`, Phase 38; `ESC_ITER_1276`, Phase 40; `ESC_ITER_BIG8`, Phase 42, modulo CASCADE_LANDING; `ESC_ITER_BIG8_43`, Phase 43, modulo CASCADE_STAGE4_BIG; `ESC_ITER_BIG8_44`, Phase 44, modulo CASCADE_STAGE4_TAIL; `ESC_ITER_BIG8_45`, Phase 45, modulo TAIL2_BIG — the tail mechanised at the era slice in Grind13.v; `ESC_ITER_BIG8_46`, Phase 46, modulo TAIL2_END — the TAIL2_BIG descent mechanised in Grind14.v, TAIL2_BIG proved for vM ≤ 5365; `ESC_ITER_BIG8_47`, Phase 47, modulo TAIL2_END2 — the END re-descent mechanised in Grind15.v, TAIL2_END proved for 3714 ≤ k ≤ 11142; `ESC_ITER_BIG8_48`, Phase 48, modulo TAIL2_END3 — the TOP second descent mechanised in Grind16.v, TAIL2_END2 proved for 7430 ≤ j ≤ 23730; `ESC_ITER_BIG8_49`, Phase 49, modulo TAIL2_END4 — the TOP2 third descent mechanised in Grind17.v, TAIL2_END3 proved for 16302 ≤ j ≤ 48906; `ESC_ITER_BIG8_50`, Phase 50, modulo TAIL2_END5 — the TOP3 fourth descent mechanised in Grind18.v, TAIL2_END4 proved for 32606 ≤ j ≤ 99728); the R ≥ 1278 instances modulo TAIL2_END5 are the remaining ESC instances of hypothesis H_LOOP there. (The fenced TUP2 stage-2 shape (k ≥ 2, r_k = 1) is proven unreachable in era grinds at human level; it remains fenced.) |
 
 ## Remaining components — precise statements, obstructions, routes
 
@@ -3426,7 +3621,7 @@ for the identifications and the pre-verification).
   ρ ≥ 35 remains fenced, in both parities, with
   machine-checked evidence (EraGen.v / EraEven.v).
   **(H_LOOP rest)** `loop_step` at the entry sections not discharged
-  in Loop.v: ESC entries with R ≥ 1278, modulo TAIL2_END4
+  in Loop.v: ESC entries with R ≥ 1278, modulo TAIL2_END5
   (the phase-8 cascade: the phase-7 range R ≤ 1276 was discharged
   in Phase 40, the phase-8 entry and stages A–C mechanised in
   Phase 41, and the era law at every even R ≥ 1278 reduced to
@@ -3479,6 +3674,15 @@ for the identifications and the pre-verification).
   (TOP2 parameter j ≥ 48907), one full cycle below
   the TOP2 state — via `TAIL2_END3_of49` /
   `ESC_ITER_BIG8_49`;
+  and the TOP3 fourth descent mechanised in Phase 50
+  (Grind18.v: `CASCADE50`, `TOP50_TO_TOP4`,
+  `TOP50_2` / `TOP50_4` / `TOP50_6` / `TOP50_BAND`),
+  proving TAIL2_END4 for 32606 ≤ j ≤ 99728 and
+  reducing the residual to TAIL2_END5 — the
+  TOP4-state totality at r4 = 2j, j ≥ 67124
+  (TOP3 parameter j ≥ 99729), one full cycle below
+  the TOP3 state — via `TAIL2_END4_of50` /
+  `ESC_ITER_BIG8_50`;
   the second
   re-basing R ≤ 114 was discharged in Phase 33,
   the third, R ≤ 268, in Phase 37, and the phase-6 range
@@ -3713,6 +3917,13 @@ for the identifications and the pre-verification).
   proved for 16302 ≤ j ≤ 48906, and the residual is
   the TOP3 totality at r3 = 2j, j ≥ 32606); the chain
   now ends … → TAIL2_END3 → TAIL2_END4.)
+  **Phase 50**: the ESC instances at R ≥ 1278 are
+  discharged modulo TAIL2_END5 alone (Grind18.v:
+  the TOP3 fourth descent is a fixed parse,
+  `CASCADE50`, at an arbitrary tail; TAIL2_END4 is
+  proved for 32606 ≤ j ≤ 99728, and the residual is
+  the TOP4 totality at r4 = 2j, j ≥ 67124); the chain
+  now ends … → TAIL2_END4 → TAIL2_END5.)
 - Suggested next order: iterations ≥ 3 re-formation
   (incl. the settled instances at B2 ≥ 37, which would
   need the sub-frame edge-grind theory fenced in
@@ -3901,7 +4112,18 @@ for the identifications and the pre-verification).
   proved for 16302 ≤ j ≤ 48906) and
   `ESC_ERA_LAW_49`. Pre-verification:
   `rocq/hsim49.py`.
-- `rocq/Loop.v` (1396 lines) — the cross-era loop assembly
+- `rocq/Grind18.v` (1333 lines) — #19: the TOP3
+  fourth descent (Phase 50): `CASCADE50`
+  (the 64-segment fixed parse at an arbitrary tail),
+  `TOP50_TO_TOP4`, `TOP50_2` / `TOP50_4` / `TOP50_6` /
+  `TOP50_BAND` (the TOP4 closings: r4 = 2, 4, 6 and
+  band 4, r4 ≤ 134246), the residual core `TAIL2_END5`
+  (the TOP4 totality, r4 = 2j, j ≥ 67124),
+  `TAIL2_END4_of50` (TAIL2_END4 modulo TAIL2_END5;
+  proved for 32606 ≤ j ≤ 99728) and
+  `ESC_ERA_LAW_50`. Pre-verification:
+  `rocq/hsim50.py`.
+- `rocq/Loop.v` (1461 lines) — the cross-era loop assembly
   (Phase 32; `ESC_ITER_114` added Phase 33;
   `SETTLED_ITER_GEN_odd` added Phase 35; `ESC_ITER_268`
   added Phase 37; `ESC_ITER_602` added Phase 38;
@@ -3913,7 +4135,8 @@ for the identifications and the pre-verification).
   `ESC_ITER_BIG8_46` added Phase 46;
   `ESC_ITER_BIG8_47` added Phase 47;
   `ESC_ITER_BIG8_48` added Phase 48;
-  `ESC_ITER_BIG8_49` added Phase 49):
+  `ESC_ITER_BIG8_49` added Phase 49;
+  `ESC_ITER_BIG8_50` added Phase 50):
   run-totality
   infrastructure (`run_trans_sim`, `total_transfer`),
   `entry_sec` / `loop_step`, `PASS`
@@ -3944,6 +4167,8 @@ for the identifications and the pre-verification).
   every even R ≥ 1278, modulo TAIL2_END3),
   `ESC_ITER_BIG8_49` (β ↦ 2β + 4,
   every even R ≥ 1278, modulo TAIL2_END4),
+  `ESC_ITER_BIG8_50` (β ↦ 2β + 4,
+  every even R ≥ 1278, modulo TAIL2_END5),
   `TWO_ITERS` (the first
   two iterations composed: β ↦ 4n + 80), `loop_chain` /
   `LOOP_NONHALT` (the ascending-loop engine), and

@@ -138,7 +138,7 @@ Require Import TM Configs Finite Sections Mirror TokenPass DiagPass
                Recoord Era EraGen EraEven Esc Dev Grind Grind2 Grind3
                Grind4 Grind5 Grind6 Grind7 Grind8 Grind9 Grind10
                Grind11 Grind12 Grind13 Grind14 Grind15 Grind16
-               Grind17.
+               Grind17 Grind18.
 
 (* ----------------------------------------------------------------- *)
 (* Part 0: run-totality infrastructure.                              *)
@@ -1237,6 +1237,69 @@ Proof.
 Qed.
 
 (* ----------------------------------------------------------------- *)
+(* Part 4k (Phase 50): the same discharge modulo the strictly       *)
+(* smaller core TAIL2_END5 (Grind18.v).  Phase 50 characterised     *)
+(* the fourth re-descent of the TOP3 state (rocq/hsim50.py, ALL     *)
+(* PASS): TOP3's front + GRIND4 + DIPGRIND (32602, 2(j - 32605))    *)
+(* lands on the DIP4 spine, from which a FIXED 82-waypoint parse    *)
+(* CASCADE50 (arbitrary tail; DIPGRIND levels (7491, 1911),         *)
+(* (257, 3296), (612, 2066), (12, 279), (32, 209), (3, 5),          *)
+(* (3, 2), (74, 55), (3, 37), (3, 2), (13, 5)) regrows the stack    *)
+(* onto the TOP4 state                                              *)
+(* HB [9558; 1285; 774; 112; 20; 0] 47594 1 67121                   *)
+(* ((r4, 2) :: (1, 1) :: (1, 2)^(beta - 1)), r4 = 2(j - 32605).     *)
+(* TOP4 closes for r4 = 2, 4, 6 outright and for                    *)
+(* 8 <= r4 <= 134246 by CLEANG_even at counter 67120 (floor         *)
+(* exactly r4 <= 134246; the counter is again the shuttle moved     *)
+(* into the counter slot by TUP2_1), so TAIL2_END4 is proved        *)
+(* for 32606 <= j <= 99728.  For r4 >= 134248 the GRIND5 pair       *)
+(* takes the DIPDESC boundary a fifth time and the walk             *)
+(* descends through a FIFTH cascade (new constants again, not       *)
+(* a periodic cycle); the residual is TAIL2_END5: the TOP4          *)
+(* totality at r4 = 2j, j >= 67124.  Via TAIL2_END4_of50 +          *)
+(* ESC_ERA_LAW_50 the ESC instances at every even R >= 1278 now     *)
+(* rest on TAIL2_END5 alone.                                        *)
+(* ----------------------------------------------------------------- *)
+
+Lemma ESC_ITER_BIG8_50 : TAIL2_END5 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (2 * M + 52)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (PASS (false :: repeat true (2 * M + 52)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (2 * M + 52) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_50 Hend M beta HM ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+Lemma ESC_ITER_BIG8_50_step : TAIL2_END5 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  loop_step (false :: repeat true (2 * M + 52)) beta.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (ESC_ITER_BIG8_50 Hend M beta HM Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* ----------------------------------------------------------------- *)
 (* Part 5: the first two iterations, fully proved.                   *)
 (* ----------------------------------------------------------------- *)
 
@@ -1390,6 +1453,8 @@ Print Assumptions ESC_ITER_BIG8_48.
 Print Assumptions ESC_ITER_BIG8_48_step.
 Print Assumptions ESC_ITER_BIG8_49.
 Print Assumptions ESC_ITER_BIG8_49_step.
+Print Assumptions ESC_ITER_BIG8_50.
+Print Assumptions ESC_ITER_BIG8_50_step.
 Print Assumptions TWO_ITERS.
 Print Assumptions loop_chain.
 Print Assumptions LOOP_NONHALT.
