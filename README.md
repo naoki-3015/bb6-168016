@@ -145,7 +145,8 @@ rocq/
   Grind16.v                  the TOP second descent (Phase 48): CASCADE48 (the 24-segment fixed parse at an arbitrary carried tail), TOP48_TO_TOP2, TOP48_2 / TOP48_4 / TOP48_6 / TOP48_BAND (the TOP2 closings at r = 2, 4, 6 and in band 2, r <= 32602); TAIL2_END2 proved for 7430 <= j <= 23730 and the era law proved modulo the strictly smaller core TAIL2_END3 (the TOP2 totality at r = 2j, j >= 16302 only, where the third descent is a new cascade with different constants); ESC_ERA_LAW_48
   Grind17.v                  the TOP2 third descent (Phase 49): CASCADE49 (the 47-segment fixed parse at an arbitrary carried tail), TOP49_TO_TOP3, TOP49_2 / TOP49_4 / TOP49_6 / TOP49_BAND (the TOP3 closings at r3 = 2, 4, 6 and in band 3, r3 <= 65210); TAIL2_END3 proved for 16302 <= j <= 48906 and the era law proved modulo the strictly smaller core TAIL2_END4 (the TOP3 totality at r3 = 2j, j >= 32606 only, where the fourth descent is a new cascade with different constants); ESC_ERA_LAW_49
   Grind18.v                  the TOP3 fourth descent (Phase 50): CASCADE50 (the 64-segment fixed parse at an arbitrary carried tail), TOP50_TO_TOP4, TOP50_2 / TOP50_4 / TOP50_6 / TOP50_BAND (the TOP4 closings at r4 = 2, 4, 6 and in band 4, r4 <= 134246); TAIL2_END4 proved for 32606 <= j <= 99728 and the era law proved modulo the strictly smaller core TAIL2_END5 (the TOP4 totality at r4 = 2j, j >= 67124 only, where the fifth descent is a new cascade with different constants); ESC_ERA_LAW_50
-  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo TAIL2_END5 above)
+  Grind19.v                  the TOP4 fifth descent (Phase 51): CASCADE51 (the 12-segment fixed parse at an arbitrary carried tail), TOP51_TO_TOP5, TOP51_2 / TOP51_4 / TOP51_6 / TOP51_BAND (the TOP5 closings at r5 = 2, 4, 6 and in band 5, r5 <= 268498); TAIL2_END5 proved for 67124 <= j <= 201372 and the era law proved modulo the strictly smaller core TAIL2_END6 (the TOP5 totality at r5 = 2j, j >= 134250 only, where the sixth descent is a new cascade with different constants); ESC_ERA_LAW_51
+  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo TAIL2_END6 above)
   Std.v                      standard-regime assembly: STD_reach_entry, H_STD discharged, NONHALT_FROM_R_std (proved)
   gen_configs.py             generator for Configs.v
   trace_rules.py             zipper traces used to fix the segment lemmas' forms
@@ -169,6 +170,7 @@ rocq/
   hsim48.py                  pre-verification of the Phase 48 TOP second descent: the 26-waypoint CASCADE48 chain asserted verbatim, in order, at (j, beta) in {(7430, 2), (7430, 3), (7431, 2), (8000, 2), (23730, 2), (23731, 2)} incl. a junk-tail probe; TOP2 band finals asserted verbatim at eight points; the third fence (GRIND3 state + third DIPGRIND landing) at j = 23731 / 24000 / 30000 (word simulator + machine recogniser)
   hsim49.py                  pre-verification of the Phase 49 TOP2 third descent: the 49-waypoint CASCADE49 chain asserted verbatim, in order, at (j, beta) in {(16302, 2), (16302, 3), (16303, 2), (20000, 2), (48906, 2)} incl. a junk-tail probe; TOP3 band finals asserted verbatim at eight points; the fourth fence (GRIND4 state + fourth DIPGRIND landing) at j = 48907 / 49000 / 60000 (word simulator + machine recogniser; streaming walker)
   hsim50.py                  pre-verification of the Phase 50 TOP3 fourth descent: the 82-waypoint CASCADE50 chain asserted verbatim, in order, at (j, beta) in {(32606, 2), (32606, 3), (32607, 2), (40000, 2), (99728, 2)} incl. a junk-tail probe; TOP4 band finals asserted verbatim at nine points; the fifth fence (GRIND5 state + fifth DIPGRIND landing) at j = 99729 / 99800 / 120000 (word simulator + machine recogniser; streaming walker)
+  hsim51.py                  pre-verification of the Phase 51 TOP4 fifth descent: the 16-waypoint CASCADE51 chain asserted verbatim, in order, at (j, beta) in {(67124, 2), (67124, 3), (67125, 2), (100000, 2), (201372, 2)} incl. a junk-tail probe; TOP5 finals asserted verbatim; the sixth fence (GRIND6 state + sixth DIPGRIND landing) at j = 201373 / 201374 / 210000 (word simulator + machine recogniser; streaming walker)
   mechanisation-status.md    component-by-component mechanisation status
   coqcw, env.sh              build wrapper for the authors' local Coq 8.18 toolchain
 ```
@@ -252,12 +254,13 @@ coqc Grind15.v
 coqc Grind16.v
 coqc Grind17.v
 coqc Grind18.v
+coqc Grind19.v
 coqc Loop.v
 coqc Std.v
 ```
 
 (With the authors' workspace toolchain, `./coqcw <file>` does
-the same via `env.sh`.) Expected: all thirty-three files compile with
+the same via `env.sh`.) Expected: all thirty-four files compile with
 **no errors**; the only warnings are benign large-nat-literal
 notices in `Finite.v`. Every headline lemma was checked with
 `Print Assumptions`: "Closed under the global context" — no
@@ -265,9 +268,9 @@ axioms, no admits.
 
 *Package verification (2026-11-26):* the packaged sources were
 copied to a clean directory and rebuilt from scratch: **all
-thirty-three files compiled successfully**, producing `.vo` files
+thirty-four files compiled successfully**, producing `.vo` files
 identical in size to the authors' build (re-verified after the
-Phase 50 mechanisation update).
+Phase 51 mechanisation update).
 
 ## Authorship and disclosure
 
