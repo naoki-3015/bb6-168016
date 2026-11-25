@@ -58,6 +58,11 @@
 (*     DIPDESC at [41; 14; 5], hPX2A, GRIND39_MID and the new-frame   *)
 (*     finishes): beta  |->  beta' = 2 beta + 4 for every even        *)
 (*     R <= 602.                                                     *)
+(*   - ESC_ITER_1276 (Phase 40): the same iteration via              *)
+(*     ESC_ERA_LAW_1276 of Grind8.v (the phase-7 merged unwind:      *)
+(*     DIPDESC at [110; 19; 0], hPX2A, GRIND108_MID and the          *)
+(*     new-frame finishes): beta  |->  beta' = 2 beta + 4 for        *)
+(*     every even R <= 1276.                                         *)
 (*   - TWO_ITERS: the first two loop iterations composed from the    *)
 (*     entry landing entry_tgt 30 n, for n = 2j + 3, j <= 12         *)
 (*     (so iteration 2's residue R = n + 13 = 2j + 16 <= 40):        *)
@@ -91,11 +96,12 @@
 (*     prefixes with R <= 40 (fully, ESC_ITER) and with every even  *)
 (*     R <= 114 (fully, ESC_ITER_114, Phase 33) and with every even  *)
 (*     R <= 268 (fully, ESC_ITER_268, Phase 37) and with every even  *)
-(*     R <= 602 (fully, ESC_ITER_602, Phase 38).  The undischarged   *)
-(*     instances are exactly: ESC entries with R >= 604 (the         *)
-(*     phase-6 finish's rounds and final grind at the new frame      *)
-(*     [110; 19; 0] hit their floors at m = 279 -- a phase-7         *)
-(*     deviation, fenced in Grind7.v),                               *)
+(*     R <= 602 (fully, ESC_ITER_602, Phase 38) and with every even  *)
+(*     R <= 1276 (fully, ESC_ITER_1276, Phase 40).  The              *)
+(*     undischarged instances are exactly: ESC entries with         *)
+(*     R >= 1278 (the phase-7 finish's rounds and final grind at    *)
+(*     the frame [235; 42; 19] hit their floors at m = 616 -- a      *)
+(*     phase-8 deviation, fenced in Grind8.v),                       *)
 (*     settled entries at entryP B2 with B2 >= 37 (residues          *)
 (*     beyond the frame-16 era laws of both parities, fenced in      *)
 (*     EraGen.v / EraEven.v), and entry sections whose prefix is     *)
@@ -116,7 +122,7 @@ Require Import List Bool Arith Lia ZArith.
 Import ListNotations.
 Require Import TM Configs Finite Sections Mirror TokenPass DiagPass
                Recoord Era EraGen EraEven Esc Dev Grind Grind2 Grind3
-               Grind4 Grind5 Grind6 Grind7.
+               Grind4 Grind5 Grind6 Grind7 Grind8.
 
 (* ----------------------------------------------------------------- *)
 (* Part 0: run-totality infrastructure.                              *)
@@ -617,9 +623,8 @@ Qed.
 (* One ESC iteration at a single-block prefix 0 1^(R+6) for every    *)
 (* even R <= 602: PASS + esc_bridge + ESC_ERA_LAW_602 (Grind7.v).    *)
 (* beta  |->  beta' = 2 beta + 4.  This discharges H_LOOP's ESC        *)
-(* instances for 270 <= R <= 602; R >= 604 remains fenced            *)
-(* (Grind7.v: the phase-6 finish's new-frame floors bind at          *)
-(* m = 279 -- a phase-7 deviation).                                   *)
+(* instances for 270 <= R <= 602; R >= 604 is discharged by          *)
+(* ESC_ITER_1276 below (Phase 40, Grind8.v).                          *)
 Lemma ESC_ITER_602 : forall R beta,
   (((R = 2 \/ R = 4 \/ R = 6 \/ R = 8 \/ R = 10 \/ R = 12 \/ R = 14
     \/ (exists m, R = 2 * m + 16 /\ m <= 12)
@@ -667,6 +672,72 @@ Lemma ESC_ITER_602_step : forall R beta,
 Proof.
   intros R beta HR Hb.
   destruct (ESC_ITER_602 R beta HR Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* ----------------------------------------------------------------- *)
+(* Part 4d (Phase 40): the ESC iteration past the phase-7 unwind.    *)
+(* ----------------------------------------------------------------- *)
+
+(* One ESC iteration at a single-block prefix 0 1^(R+6) for every    *)
+(* even R <= 1276: PASS + esc_bridge + ESC_ERA_LAW_1276 (Grind8.v).  *)
+(* beta  |->  beta' = 2 beta + 4.  This discharges H_LOOP's ESC        *)
+(* instances for 604 <= R <= 1276; R >= 1278 remains fenced          *)
+(* (Grind8.v: the phase-7 finish's rounds and final grind at the     *)
+(* frame [235; 42; 19] bind at m = 616 -- a phase-8 deviation).      *)
+Lemma ESC_ITER_1276 : forall R beta,
+  ((((R = 2 \/ R = 4 \/ R = 6 \/ R = 8 \/ R = 10 \/ R = 12 \/ R = 14
+    \/ (exists m, R = 2 * m + 16 /\ m <= 12)
+    \/ R = 42 \/ R = 44 \/ (exists m, R = 2 * m + 46 /\ m <= 34))
+   \/ (R = 116 \/ R = 118 \/ R = 120
+       \/ (exists m, R = 2 * m + 46 /\ 38 <= m <= 111)))
+   \/ (R = 270 \/ R = 272 \/ R = 274
+       \/ (exists m, R = 2 * m + 46 /\ 115 <= m <= 278)))
+   \/ (R = 604 \/ R = 606 \/ R = 608
+       \/ (exists m, R = 2 * m + 46 /\ 282 <= m <= 615))) ->
+  4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (R + 6)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros R beta HR Hb.
+  destruct (PASS (false :: repeat true (R + 6)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (R + 6) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_1276 R beta HR ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+Lemma ESC_ITER_1276_step : forall R beta,
+  ((((R = 2 \/ R = 4 \/ R = 6 \/ R = 8 \/ R = 10 \/ R = 12 \/ R = 14
+    \/ (exists m, R = 2 * m + 16 /\ m <= 12)
+    \/ R = 42 \/ R = 44 \/ (exists m, R = 2 * m + 46 /\ m <= 34))
+   \/ (R = 116 \/ R = 118 \/ R = 120
+       \/ (exists m, R = 2 * m + 46 /\ 38 <= m <= 111)))
+   \/ (R = 270 \/ R = 272 \/ R = 274
+       \/ (exists m, R = 2 * m + 46 /\ 115 <= m <= 278)))
+   \/ (R = 604 \/ R = 606 \/ R = 608
+       \/ (exists m, R = 2 * m + 46 /\ 282 <= m <= 615))) ->
+  4 <= beta -> loop_step (false :: repeat true (R + 6)) beta.
+Proof.
+  intros R beta HR Hb.
+  destruct (ESC_ITER_1276 R beta HR Hb) as [P' [t [c [Hr [Hs Ht]]]]].
   unfold loop_step.
   exists P', (2 * beta + 4), t, c.
   split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
@@ -808,6 +879,8 @@ Print Assumptions ESC_ITER_114.
 Print Assumptions ESC_ITER_114_step.
 Print Assumptions ESC_ITER_268.
 Print Assumptions ESC_ITER_268_step.
+Print Assumptions ESC_ITER_1276.
+Print Assumptions ESC_ITER_1276_step.
 Print Assumptions TWO_ITERS.
 Print Assumptions loop_chain.
 Print Assumptions LOOP_NONHALT.
