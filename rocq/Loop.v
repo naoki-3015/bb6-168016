@@ -137,7 +137,7 @@ Import ListNotations.
 Require Import TM Configs Finite Sections Mirror TokenPass DiagPass
                Recoord Era EraGen EraEven Esc Dev Grind Grind2 Grind3
                Grind4 Grind5 Grind6 Grind7 Grind8 Grind9 Grind10
-               Grind11 Grind12 Grind13 Grind14.
+               Grind11 Grind12 Grind13 Grind14 Grind15.
 
 (* ----------------------------------------------------------------- *)
 (* Part 0: run-totality infrastructure.                              *)
@@ -1054,6 +1054,64 @@ Proof.
 Qed.
 
 (* ----------------------------------------------------------------- *)
+(* Part 4h (Phase 47): the same discharge modulo the strictly       *)
+(* smaller core TAIL2_END2 (Grind15.v).  Phase 47 characterised     *)
+(* the first re-descent cycle of the END state (rocq/hsim47.py,     *)
+(* ALL PASS): it is a FIXED parse, uniform in (k, beta) -- front,   *)
+(* DIPGRIND (3710, rho) with rho = 2(k - 3713), the 34-segment      *)
+(* CASCADE47 at an arbitrary carried tail, pop12 3712 -- landing    *)
+(* on the TOP state HB [1279; 745; 151; 77; 35; 20; 0] 4001 1       *)
+(* 7427 ((rho, 2) :: (1, 1) :: (1, 2)^(beta - 1)).  TOP closes      *)
+(* for rho = 2, 4, 6 outright and for 8 <= rho <= 14858 by          *)
+(* CLEANG_even at counter 7426 (floor exactly rho <= 14858), so     *)
+(* TAIL2_END is proved for 3714 <= k <= 11142.  For rho >= 14860    *)
+(* the GRIND2 pair takes the DIPDESC boundary a second time and     *)
+(* the walk descends through a NEW cascade (different constants,    *)
+(* not a periodic cycle); the residual is TAIL2_END2: the TOP       *)
+(* totality at rho = 2j, j >= 7430.  Via TAIL2_END_of47 +           *)
+(* ESC_ERA_LAW_47 the ESC instances at every even R >= 1278 now     *)
+(* rest on TAIL2_END2 alone.                                        *)
+(* ----------------------------------------------------------------- *)
+
+Lemma ESC_ITER_BIG8_47 : TAIL2_END2 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (2 * M + 52)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (PASS (false :: repeat true (2 * M + 52)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (2 * M + 52) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_47 Hend M beta HM ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+Lemma ESC_ITER_BIG8_47_step : TAIL2_END2 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  loop_step (false :: repeat true (2 * M + 52)) beta.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (ESC_ITER_BIG8_47 Hend M beta HM Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* ----------------------------------------------------------------- *)
 (* Part 5: the first two iterations, fully proved.                   *)
 (* ----------------------------------------------------------------- *)
 
@@ -1201,6 +1259,8 @@ Print Assumptions ESC_ITER_BIG8_45.
 Print Assumptions ESC_ITER_BIG8_45_step.
 Print Assumptions ESC_ITER_BIG8_46.
 Print Assumptions ESC_ITER_BIG8_46_step.
+Print Assumptions ESC_ITER_BIG8_47.
+Print Assumptions ESC_ITER_BIG8_47_step.
 Print Assumptions TWO_ITERS.
 Print Assumptions loop_chain.
 Print Assumptions LOOP_NONHALT.
