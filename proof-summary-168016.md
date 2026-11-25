@@ -534,19 +534,39 @@ modulo that core (`ESC_ERA_LAW_45`,
 `ESC_ITER_BIG8_45`). The universal
 CASCADE_STAGE4_TAIL remains unproved; it is
 strictly stronger than the proof needs.
+And (Phase 46) the **TAIL2_BIG descent is
+mechanised** (`rocq/hsim46.py`: all 51 descent
+waypoints asserted verbatim). The descent from
+the PX2A landing is a fixed parse, uniform in
+(k, β) with k = vM − 1652 — four dip levels
+closed by the new DIPGRIND lemma — landing on
+the END state
+`HB [317; 40; 14; 5] 2204 1 3711`, which closes
+uniformly for k ≤ 3713 (`Grind14.v`). The
+result: TAIL2_BIG is **proved for
+1653 ≤ vM ≤ 5365**, and for vM ≥ 5366 the era
+law / loop iterations are discharged modulo the
+strictly smaller statement **TAIL2_END** — the
+totality of the one pair (2k, 2) at the one
+fixed END state, k ≥ 3714 only
+(`ESC_ERA_LAW_46`, `ESC_ITER_BIG8_46`).
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
 through R ≤ 1276 unconditionally, and for every
 even R ≥ 1278 modulo the single statement
-TAIL2_BIG — the layer-2 residue totality at one
-fixed state, vM ≥ 1653 — via the tail at the era
-slice; the phase-8 entry, its first
+TAIL2_END — the totality of one pair at the one
+fixed END state
+`HB [317; 40; 14; 5] 2204 1 3711`, k ≥ 3714 —
+via the tail at the era slice and the descent in
+Grind14.v, which proves the previous core
+TAIL2_BIG for vM ≤ 5365; the phase-8 entry, its first
 three continuation stages, the cascade's stages
 1–3 and its last two stages are formalised in
 Grind9.v / Grind10.v / Grind11.v, the stage-4
-boundary grind's segments in Grind12.v, and the
-tail's layers in Grind13.v), and the
+boundary grind's segments in Grind12.v, the
+tail's layers in Grind13.v, and the TAIL2_BIG
+descent in Grind14.v), and the
 general-residue era law at residues ρ ≥ 35 (both
 parities) are not yet formalised
 (`rocq/mechanisation-status.md` maps every proof component to
