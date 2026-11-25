@@ -1,4 +1,4 @@
-# Mechanisation status — BB(6) holdout #168016 in Rocq (Phase 44, 2026-11-25)
+# Mechanisation status — BB(6) holdout #168016 in Rocq (Phase 45, 2026-11-25)
 
 Step 2 of the user-approved community sequence (reproduction ✓ Phase 22 →
 **mechanisation** → submission prep ✓ Phase 24). This document maps every
@@ -973,6 +973,107 @@ headline lemmas across all phases (including
 under the global context" for every one; no admits, no
 axioms.
 
+**Phase 45 (2026-11-25): the stage-4 tail mechanised at
+the era slice; CASCADE_STAGE4_BIG reduced to the single
+residue core TAIL2_BIG.** Phase 44 left the core
+CASCADE_STAGE4_TAIL: the tail traversal at the bottom
+frame, over all q ≥ 5, v3, vM, a, β. Its only use in the
+whole development is `CASCADE_STAGE4_BIG_of`, which
+instantiates it at the **era slice** (q, v3, a) =
+(28, 34, 822) (via `S4s_era`). Phase 45 characterises
+the tail at that slice in the new harness
+`rocq/hsim45.py` (**ALL PHASE 45 CHECKS PASS**: primitive
+walks from the tail source at four small points; macro
+walks — proved lemmas as macros over a primitive
+fallback — at seven era points × β ∈ {2, 3} in the
+clean range, with every layer boundary asserted
+verbatim; boundary-regime probes at vM = 1653 / 2000 /
+5366; a primitive-step audit) and finds a three-layer
+parse:
+
+- **Layer 0** (q = 28): `pop12` 4, TUP, PUSH,
+  `GG_boundary` (3, 3), PUSHX, `pop12` 3, TUP2_1,
+  `GG_boundary` (13, 20), PX2Bgen, pops, TUP,
+  `hGRIND_even` 15, TUP2_1, `GG_clean` 4, TRANS2_1 —
+  landing at `HB [35; 20; 0] 15 1 3 (TAIL1s v3 vM a b)`.
+  Only the (48, 2) residue and its (1, 1) separator are
+  touched; (v3, vM, a, β) are carried symbolically.
+- **Layer 1** (v3 = 34): `pop12` 120, TUP,
+  `hGRIND_even` 119, TUP2_1, `GG_clean` 31, TRANS2_1 —
+  landing at `HB [243; 135; 35; 20; 0] 69 1 3
+  (TAIL2s vM β)`.
+- **Layer 2** (a = 822): `pop12` 824 reaches the
+  residue state `HB [243; 135; 35; 20; 0] 893 1 1651
+  ((2·vM + 2, 2) :: (1, 1) :: (1, 2)^(β − 1))`. For
+  **vM ≤ 1652** the residue closes cleanly: TUP,
+  `hGRIND_even` 823, then TRANS2_1 (vM = 0), TRANS2_2
+  (vM = 1), TDN + TRANS2_1 (vM = 2) or TUP2_1 +
+  `GG_clean` (vM − 3) + TRANS2_1 (3 ≤ vM ≤ 1652), then
+  the POP chain; final counters β + 1651 / β + 2 /
+  β + 4 / 2·vM + β, all ≥ β (asserted verbatim in
+  hsim45 Part 2). For **vM ≥ 1653** the pair
+  (2·vM − 2, 2) at counter 1650 is in the boundary
+  regime: `GG_boundary` (1650, vM − 3) lands at
+  `HC [893; 243; 135; 35; 20; 0] 0 3 2` (spine 1650 ++
+  ((2·vM − 3304, 2) :: (1, 1) :: spine (β − 1))) and
+  PX2A pops to [135; 35; 20; 0] with g0 = 891 — a
+  frame-dependent dip descent. The macro walk
+  *completes* there (vM = 1653 / 2000 / 5366, finals
+  asserted verbatim in hsim45 Part 3), but its length
+  grows with vM (4473 / 5165 / 14529 macro steps) and
+  the descent's sub-parses depend on the frame blocks:
+  no uniform cycle exists in the current lemma
+  vocabulary — the Phase 38 wall, one level down.
+
+What remains is the strictly smaller residual core:
+
+> **TAIL2_BIG**: for every vM ≥ 1653 and β ≥ 2, the
+> residue state `HB [243; 135; 35; 20; 0] 893 1 1651
+> ((2 * vM + 2, 2) :: (1, 1) :: repeat (1, 2) (β − 1)) 1`
+> reaches `HB pb A 1 (2 * β + 1) [] 1` for some pb, A
+> with β ≤ A.
+
+It is smaller than CASCADE_STAGE4_TAIL on every axis:
+one pair at one fixed state (frame, counter and
+shuttle all fixed), one parameter (vM, with β carried
+only in the final POP spine), and only the boundary
+range vM ≥ 1653 — the parameters q, v3, a are
+discharged, and the clean range is proved. Stated
+plainly: **Grind12's universal CASCADE_STAGE4_TAIL
+does NOT fall in Phase 45** — it is strictly stronger
+than the proof needs — **but H_LOOP's ESC side now
+rests on TAIL2_BIG alone**: via `TAIL_ERA_of`,
+**`CASCADE_STAGE4_BIG_45`** (Grind12's SEG1–T4
+composition with the era tail supplied by the slice)
+and **`ESC_ERA_LAW_45`**, and Loop.v Part 4f's
+**`ESC_ITER_BIG8_45` / `ESC_ITER_BIG8_45_step`**, the
+ESC instances at every even R ≥ 1278 discharge modulo
+TAIL2_BIG. No F-8: every Phase 45 segment statement
+was machine-tested in hsim45.py before mechanisation,
+and Grind13.v compiled on its first full build.
+
+**Mechanised (new file `rocq/Grind13.v`, 565 lines;
+Loop.v 1135 lines).** `TAIL_LAYER0`, `TAIL_LAYER1`,
+the Definition `TAIL2_BIG`, `TAIL2_CLEAN`,
+`TAIL2_ALL`, `TAIL_ERA_of`, `CASCADE_STAGE4_BIG_45`,
+`ESC_ERA_LAW_45`; Loop.v Part 4f adds
+`ESC_ITER_BIG8_45` / `ESC_ITER_BIG8_45_step`. Full
+clean rebuild of all **twenty-eight** files passes
+(~3.1 min); Grind13.v's own 7 audits and Loop.v's 31
+audits are closed, and a consolidated audit of 15
+headline lemmas (`TAIL_LAYER0`, `TAIL_LAYER1`,
+`TAIL2_CLEAN`, `TAIL2_ALL`, `TAIL_ERA_of`,
+`CASCADE_STAGE4_BIG_45`, `ESC_ERA_LAW_45`,
+`ESC_ITER_BIG8_45`, `ESC_ITER_BIG8_45_step`,
+`GG_boundary`, `CASCADE_STAGE4_BIG_of`,
+`ESC_ERA_LAW_44`, `ESC_ITER_BIG8_44`,
+`NONHALT_FROM_R`, `NONHALT_FROM_R_std`) reports
+"Closed under the global context" for every one; no
+Admitted / Axiom / Parameter in the 17,505 lines of
+.v sources. The checkpointed phase10 background run
+was not disturbed (read-only checks only; its
+checkpoint/log timestamps remain 2026-11-24).
+
 ## Toolchain
 
 - **Coq 8.18.0** (the proof assistant, pre-Rocq rename; compiled with OCaml
@@ -1008,7 +1109,8 @@ axioms.
   ./coqcw Grind10.v   # #19: cascade landing: CASCADE_STAGE4/POPFIN + reduction to CASCADE_LANDING (Phase 42)
   ./coqcw Grind11.v   # #19: cascade stages 1-3 in the era regime + reduction to CASCADE_STAGE4_BIG (Phase 43)
   ./coqcw Grind12.v   # #19: stage-4 boundary grind segments (GG_boundary) + reduction to CASCADE_STAGE4_TAIL (Phase 44)
-  ./coqcw Loop.v      # cross-era loop assembly (Phase 32; ESC_ITER_114 Phase 33; ESC_ITER_268 Phase 37; ESC_ITER_602 Phase 38; ESC_ITER_1276 Phase 40; ESC_ITER_BIG8 Phase 42; ESC_ITER_BIG8_43 Phase 43; ESC_ITER_BIG8_44 Phase 44)
+  ./coqcw Grind13.v   # #19: the stage-4 tail at the era slice (TAIL_LAYER0/1, TAIL2_CLEAN) + reduction to TAIL2_BIG (Phase 45)
+  ./coqcw Loop.v      # cross-era loop assembly (Phase 32; ESC_ITER_114 Phase 33; ESC_ITER_268 Phase 37; ESC_ITER_602 Phase 38; ESC_ITER_1276 Phase 40; ESC_ITER_BIG8 Phase 42; ESC_ITER_BIG8_43 Phase 43; ESC_ITER_BIG8_44 Phase 44; ESC_ITER_BIG8_45 Phase 45)
   ./coqcw Std.v       # standard-regime assembly: H_STD discharged (Phase 34)
   ```
 
@@ -1052,6 +1154,13 @@ axioms.
   closed; a consolidated audit of 28 headline lemmas across
   all phases (the 12 new Phase 44 lemmas among them) is
   closed.)
+  (Phase 45: the same clean rebuild over all twenty-eight
+  files, Grind13.v included, passes in ~3.1 min; Grind13.v's
+  own audits — TAIL_LAYER0, TAIL_LAYER1, TAIL2_CLEAN,
+  TAIL2_ALL, TAIL_ERA_of, CASCADE_STAGE4_BIG_45,
+  ESC_ERA_LAW_45 — and Loop.v's new ESC_ITER_BIG8_45 /
+  ESC_ITER_BIG8_45_step audits are closed; a consolidated
+  audit of 15 headline lemmas is closed.)
 - Representation: list-zipper configurations `(state, left, right)`,
   head on `hd right`, blanks implicit — the list-based style of the
   bbchallenge Coq developments (Coq-BB5), specialised to this machine.
