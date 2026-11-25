@@ -622,15 +622,38 @@ the one pair (2j, 2) at the one fixed TOP3
 state, j ≥ 32606 only, where the fourth
 descent is a new cascade with different
 constants (`ESC_ERA_LAW_49`, `ESC_ITER_BIG8_49`).
+And (Phase 50) the **TOP3 fourth descent is
+mechanised** (`rocq/hsim50.py`: the 82-waypoint
+CASCADE50 chain asserted verbatim at five (j, β)
+points, incl. a junk-tail probe; the fifth fence
+at j = 99729 / 99800 / 120000). The fourth descent
+is again a fixed parse, uniform in (j, β): the
+TOP3 front and DIPGRIND (32602, 2(j − 32605)),
+then the 64-segment **CASCADE50** at an arbitrary
+carried tail, landing on the TOP4 state
+`HB [9558; 1285; 774; 112; 20; 0] 47594 1
+67121`, which closes at r4 = 2, 4, 6 and
+throughout band 4 (r4 ≤ 134246, the pair grinding
+cleanly by CLEANG_even at counter 67120 — the
+shuttle moved into the counter slot by TUP2_1)
+(`Grind18.v`). The result: TAIL2_END4 is
+**proved for 32606 ≤ j ≤ 99728**, and for
+j ≥ 99729 the era law / loop iterations are
+discharged modulo the strictly smaller
+statement **TAIL2_END5** — the totality of
+the one pair (2j, 2) at the one fixed TOP4
+state, j ≥ 67124 only, where the fifth
+descent is a new cascade with different
+constants (`ESC_ERA_LAW_50`, `ESC_ITER_BIG8_50`).
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
 through R ≤ 1276 unconditionally, and for every
 even R ≥ 1278 modulo the single statement
-TAIL2_END4 — the totality of one pair (2j, 2)
-at the one fixed TOP3 state
-`HB [7493; 3816; 259; 93; 50; 14; 5] 16899 1
-32603`, j ≥ 32606 —
+TAIL2_END5 — the totality of one pair (2j, 2)
+at the one fixed TOP4 state
+`HB [9558; 1285; 774; 112; 20; 0] 47594 1
+67121`, j ≥ 67124 —
 via the tail at the era slice and the descent in
 Grind14.v, which proves the previous core
 TAIL2_BIG for vM ≤ 5365, the END re-descent
@@ -640,7 +663,9 @@ second descent in Grind16.v, which proves the
 previous core TAIL2_END2 for 7430 ≤ j ≤ 23730,
 and the TOP2 third descent in Grind17.v, which
 proves the previous core TAIL2_END3 for
-16302 ≤ j ≤ 48906;
+16302 ≤ j ≤ 48906, and the TOP3 fourth descent
+in Grind18.v, which proves the previous core
+TAIL2_END4 for 32606 ≤ j ≤ 99728;
 the phase-8 entry, its first
 three continuation stages, the cascade's stages
 1–3 and its last two stages are formalised in
