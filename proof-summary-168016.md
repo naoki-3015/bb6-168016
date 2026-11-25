@@ -467,15 +467,39 @@ remaining core is the cascade's first three
 stages, whose parses are parameter-dependent:
 a proof needs a totality theorem for the
 segment grind itself.
+And (Phase 43) those **first three stages are
+proved in the era regime** — the regime the
+trajectory actually presents, where the first
+residue is odd. The odd pair is ground by a new
+g0 = 1 totality (`GG_odd`: grind_prefix + an
+induction over the grind rounds, over an
+arbitrary deeper tail, with one explicit floor),
+stage 1 is a fixed step list, stages 2+3 merge
+into one lemma with two small dispatch branches
+(the r2 = 2 and r2 = 4 residues), and stage 4
+splits into a clean regime (M ≤ 1440, Phase 42),
+a degenerate M = 618 branch, and the boundary
+regime M ≥ 1441, where the grind exhausts its
+counter budget and re-routes through dips.
+Every stage boundary was machine-checked on the
+shrunk family first (`rocq/hsim43.py`). The
+result (`Grind11.v`): CASCADE_LANDING is proved
+modulo the strictly smaller statement
+**CASCADE_STAGE4_BIG** — the landing of the
+single pair (2M − 1234, 2) at the one fixed era
+frame [428; 57; 5], counter 822, for M ≥ 1441 —
+and the era law / loop iterations are discharged
+modulo that core (`ESC_ERA_LAW_43`,
+`ESC_ITER_BIG8_43`).
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
 through R ≤ 1276 unconditionally, and for every
 even R ≥ 1278 modulo the single statement
-CASCADE_LANDING; the phase-8 entry, its first
-three continuation stages and the cascade's
-last two stages are formalised in Grind9.v /
-Grind10.v), and the
+CASCADE_STAGE4_BIG; the phase-8 entry, its first
+three continuation stages, the cascade's stages
+1–3 and its last two stages are formalised in
+Grind9.v / Grind10.v / Grind11.v), and the
 general-residue era law at residues ρ ≥ 35 (both
 parities) are not yet formalised
 (`rocq/mechanisation-status.md` maps every proof component to
