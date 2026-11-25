@@ -12,6 +12,8 @@
 (*  - TUP2 chain k = 1 (all r1), TRANS2 turns k = 1, 2;              *)
 (*  - TUP2 defect (k = 1, r1 = 1): merge + F-step + TAIL13, with     *)
 (*    the MACHINE-corrected landing (see NOTES Phase 28 / F-3).      *)
+(*  - Phase 36 additions: PX2A0 (the [b; 0] dip bottom, b >= 5)     *)
+(*    and PX2B0 (the [0] dip bottom).                                *)
 (*  All lemmas are for all parameters (abstract pairs / G / tails).  *)
 (* ================================================================= *)
 
@@ -376,3 +378,59 @@ Lemma PX2B_b6' : forall pairs G,
   Some (gbsec ((false :: repeat true 4) ++ [false]) 3 1 3
           ((1, 2) :: (1, 2) :: pairs) G).
 Proof. intros. exact (PX2B_b6 _ _). Qed.
+
+(* ---------------------------------------------------------------- *)
+(* Phase 36: the third re-basing's dip-bottom step lists.           *)
+(* PX2A0: the PX2A dispatch at a two-block prefix [b; 0] whose      *)
+(* second block is 0 (PX2A_chunkA is stated for general p, p = 0    *)
+(* included, and its F-sweep is unchanged; the 23-step tail after   *)
+(* the sweep is the deviation: the sweep overshoots into the blank  *)
+(* past the empty block and the landing carries the residue pair    *)
+(* (b - 4, 2) over the usual (1, 1) :: (1, 2) :: (1, 2) extras).    *)
+(* b = S (S (S (S (S b'')))), cost b + 32 = b'' + 37.  Derived by   *)
+(* direct zipper tracing (rocq/hsim36.py), verified at             *)
+(* b in {5,6,7,8,10,12,16,20,24,30} and at stack/G variations.      *)
+(* ---------------------------------------------------------------- *)
+
+Lemma PX2A0_tail : forall b'' pairs G,
+  run 23 (mkCfg SF [false]
+            (true :: (repeat false (S (S b'')) ++
+              (true :: true ::
+                tail ((1, 1) :: (1, 2) :: (1, 2) :: pairs) G)))) =
+  Some (gbsec [false] 3 1 2
+          ((S b'', 2) :: (1, 1) :: (1, 2) :: (1, 2) :: pairs) G).
+Proof. intros. reflexivity. Qed.
+
+Lemma PX2A0 : forall b'' pairs G,
+  run (b'' + 37)
+    (gcsec (false :: repeat true (S (S (S (S (S b''))))) ++ [false])
+       0 3 2 pairs G) =
+  Some (gbsec [false] 3 1 2
+          ((S b'', 2) :: (1, 1) :: (1, 2) :: (1, 2) :: pairs) G).
+Proof.
+  intros b'' pairs G.
+  replace (b'' + 37) with (12 + (S (S b'') + 23)) by lia.
+  rewrite run_split.
+  replace (false :: repeat true (S (S (S (S (S b''))))) ++ [false])
+    with (false :: repeat true (S (S (S (S (S b''))))) ++
+           (false :: repeat true 0 ++ [])) by reflexivity.
+  rewrite PX2A_chunkA.
+  rewrite run_split.
+  rewrite sweepF. cbv beta iota.
+  replace (false :: repeat true 0 ++ []) with [false] by reflexivity.
+  apply PX2A0_tail.
+Qed.
+
+(* PX2B0: the PX2B dispatch at the empty single block [0] -- the    *)
+(* dip bottom of the deviated grind at pb = [0] (Phase 36).  The    *)
+(* 20-step excursion consumes the [0] prefix entirely and lands on  *)
+(* the B-section (a = 0, s = 5) over the pushed pair (1, 2); the    *)
+(* following POP (13 steps) gives the PUSHX-shaped landing          *)
+(* HB [] 1 1 7 P G, cf. PUSHX_core's 20 + 13 split.                 *)
+Lemma PX2B0 : forall pairs G,
+  run 20 (gcsec [false] 0 3 2 pairs G) =
+  Some (gbsec [] 0 1 5 ((1, 2) :: pairs) G).
+Proof. intros. reflexivity. Qed.
+
+Print Assumptions PX2A0.
+Print Assumptions PX2B0.

@@ -34,9 +34,14 @@
 (*   - SETTLED_ITER_GEN_odd (Phase 35): the same iteration with      *)
 (*     ERA_GEN discharged on its proved domain (EraGen.v:           *)
 (*     ERA_GEN_proved for odd rho <= 33) -- unconditional for odd    *)
-(*     B2 with 3 <= B2 <= 35.  Even B2 and B2 >= 37 remain on the    *)
-(*     conditional form (their residues are outside the era law's   *)
-(*     domain: parity / frame floor, fenced in EraGen.v).            *)
+(*     B2 with 3 <= B2 <= 35.                                      *)
+(*   - SETTLED_ITER_GEN_even (Phase 39): the same iteration at an    *)
+(*     even prefix, via EraEven.v's ERA_GEN_even (the even era       *)
+(*     law: the absorption rotates at the residue pair's gap 2,      *)
+(*     s1 = 2m + 1, beta' = 2 beta + 4 independent of B2) --          *)
+(*     unconditional for even B2 with 4 <= B2 <= 36.  With the       *)
+(*     odd case, the settled iteration is unconditional for every    *)
+(*     B2 with 3 <= B2 <= 36; only B2 >= 37 remains conditional.     *)
 (*   - ESC_ITER: one full ESC iteration at a single-block prefix     *)
 (*     (PASS + esc_bridge + ESC_ERA_LAW_31 of Grind3.v):             *)
 (*     beta  |->  beta' = 2 beta + 4, for the residue                *)
@@ -44,6 +49,15 @@
 (*   - ESC_ITER_114 (Phase 33): the same iteration via               *)
 (*     ESC_ERA_LAW_114 of Grind4.v (the second re-basing):           *)
 (*     beta  |->  beta' = 2 beta + 4 for every even R <= 114.        *)
+(*   - ESC_ITER_268 (Phase 37): the same iteration via               *)
+(*     ESC_ERA_LAW_268 of Grind6.v (the third re-basing's merged     *)
+(*     unwind at R = 116 and the phase-4/5 continuations):           *)
+(*     beta  |->  beta' = 2 beta + 4 for every even R <= 268.        *)
+(*   - ESC_ITER_602 (Phase 38): the same iteration via               *)
+(*     ESC_ERA_LAW_602 of Grind7.v (the phase-6 merged unwind:       *)
+(*     DIPDESC at [41; 14; 5], hPX2A, GRIND39_MID and the new-frame   *)
+(*     finishes): beta  |->  beta' = 2 beta + 4 for every even        *)
+(*     R <= 602.                                                     *)
 (*   - TWO_ITERS: the first two loop iterations composed from the    *)
 (*     entry landing entry_tgt 30 n, for n = 2j + 3, j <= 12         *)
 (*     (so iteration 2's residue R = n + 13 = 2j + 16 <= 40):        *)
@@ -69,17 +83,23 @@
 (*       (H_LOOP) loop_step at every entry section with beta >= 4.   *)
 (*     H_LOOP is DISCHARGED above for: settled entries entryP B2     *)
 (*     at B2 = 31 (fully) and at general B2 -- unconditionally for   *)
-(*     odd B2 <= 35 (SETTLED_ITER_GEN_odd, Phase 35, via             *)
-(*     ERA_GEN_proved), conditionally on the unrestricted ERA_GEN    *)
-(*     for even B2 and B2 >= 37; ESC entries at single-block         *)
+(*     every 3 <= B2 <= 36 (odd B2 <= 35: SETTLED_ITER_GEN_odd,      *)
+(*     Phase 35, via ERA_GEN_proved; even B2, 4 <= B2 <= 36:         *)
+(*     SETTLED_ITER_GEN_even, Phase 39, via ERA_GEN_even),           *)
+(*     conditionally on the unrestricted ERA_GEN for B2 >= 37;       *)
+(*     ESC entries at single-block                                   *)
 (*     prefixes with R <= 40 (fully, ESC_ITER) and with every even  *)
-(*     R <= 114 (fully, ESC_ITER_114, Phase 33).  The undischarged   *)
-(*     instances are exactly: ESC entries with R >= 116 (the third  *)
-(*     re-basing: the boundary grind at pb = [20; 0] dips to a      *)
-(*     section with no hstep constructor, fenced in Grind4.v),       *)
-(*     settled entries at entryP B2 with B2 even or B2 >= 37         *)
-(*     (residues outside ERA_GEN's proved domain, fenced in          *)
-(*     EraGen.v), and entry sections whose prefix is an ESC-era      *)
+(*     R <= 114 (fully, ESC_ITER_114, Phase 33) and with every even  *)
+(*     R <= 268 (fully, ESC_ITER_268, Phase 37) and with every even  *)
+(*     R <= 602 (fully, ESC_ITER_602, Phase 38).  The undischarged   *)
+(*     instances are exactly: ESC entries with R >= 604 (the         *)
+(*     phase-6 finish's rounds and final grind at the new frame      *)
+(*     [110; 19; 0] hit their floors at m = 279 -- a phase-7         *)
+(*     deviation, fenced in Grind7.v),                               *)
+(*     settled entries at entryP B2 with B2 >= 37 (residues          *)
+(*     beyond the frame-16 era laws of both parities, fenced in      *)
+(*     EraGen.v / EraEven.v), and entry sections whose prefix is     *)
+(*     an ESC-era                                                  *)
 (*     landing form 0 1^(a+1) ++ enc pb (iterations >= 3: their      *)
 (*     re-formation is the canonical two-block grind at general      *)
 (*     residue -- ERA_GEN on its domain plus stage 3 at a general    *)
@@ -95,7 +115,8 @@
 Require Import List Bool Arith Lia ZArith.
 Import ListNotations.
 Require Import TM Configs Finite Sections Mirror TokenPass DiagPass
-               Recoord Era EraGen Esc Dev Grind Grind2 Grind3 Grind4.
+               Recoord Era EraGen EraEven Esc Dev Grind Grind2 Grind3
+               Grind4 Grind5 Grind6 Grind7.
 
 (* ----------------------------------------------------------------- *)
 (* Part 0: run-totality infrastructure.                              *)
@@ -309,10 +330,10 @@ Qed.
 (* prefix, UNCONDITIONAL on ERA_GEN's proved domain.  The residue    *)
 (* is rho = B2 - 2; ERA_GEN_proved (EraGen.v) covers odd rho <= 33,  *)
 (* i.e. B2 odd with 3 <= B2 <= 35 (B2 = 31, the trajectory's block,   *)
-(* is the ERA_LAW case).  Outside this domain -- B2 even (rho even:  *)
-(* the absorption diverges and the era's G parity obstructs the      *)
-(* landing) or B2 >= 37 (rho >= 35: the residue grind's dip          *)
-(* exceeds the frame a2 = 16) -- the iteration remains the           *)
+(* is the ERA_LAW case).  Phase 39 (below) discharges the even       *)
+(* prefixes 4 <= B2 <= 36 by a different-shaped era law              *)
+(* (EraEven.v); B2 >= 37 (rho >= 35: the residue grind's dip         *)
+(* exceeds the frame a2 = 16 in both parities) remains the           *)
 (* conditional SETTLED_ITER_GEN above, i.e. an undischarged          *)
 (* instance of H_LOOP; such prefixes arise only inside the           *)
 (* iterations >= 3 re-formation.                                     *)
@@ -366,6 +387,70 @@ Proof.
     as [P' [t [c [Hr [Hs Ht]]]]].
   unfold loop_step.
   exists P', (B2 + 2 * n + 7), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* Phase 39: the same settled iteration at an EVEN two-block        *)
+(* prefix, UNCONDITIONAL via EraEven.ERA_GEN_even.  The residue is   *)
+(* rho = B2 - 2 = 2k+2 with k = B2/2 - 2; the even era law covers    *)
+(* k <= 16, i.e. even B2 with 4 <= B2 <= 36.  The era law's shape    *)
+(* differs from ERA_GEN's: the absorption rotates (the residue       *)
+(* pair's gap 2 becomes frame), so s1 = 2m + 1 and                   *)
+(* beta' = 2 beta + 4 = 2n + 8 -- INDEPENDENT of B2 (the same        *)
+(* closed form as the ESC era law), not B2 + 2n + 7.  Together       *)
+(* with SETTLED_ITER_GEN_odd, the settled iteration is now           *)
+(* unconditional for EVERY B2 with 3 <= B2 <= 36; B2 >= 37 remains   *)
+(* on the conditional form (fenced in EraEven.v / the status doc).   *)
+Lemma SETTLED_ITER_GEN_even : forall B2 n,
+  Nat.Even B2 -> 4 <= B2 -> B2 <= 36 -> 2 <= n ->
+  exists P' t c,
+    run t (entry_sec (entryP B2) (n + 2)) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * n + 8))
+    /\ 1 <= t.
+Proof.
+  intros B2 n Heven HB2lo HB2hi Hn.
+  assert (Hsrc : entry_sec (entryP B2) (n + 2)
+                 = rcsec (entryP B2) n [(1, 2)]).
+  { unfold entry_sec. replace (n + 2 - 2) with n by lia. reflexivity. }
+  pose proof (sim_entry (B2 - 1) n) as Hse.
+  replace (S (B2 - 1)) with B2 in Hse by lia.
+  assert (Hsim : cfg_sim (rcsec (entryP B2) n [(1, 2)])
+                         (entry_tgt (B2 - 1) n)).
+  { apply cfg_sim_sym. exact Hse. }
+  destruct (RECOORD2_uncond B2 n ltac:(lia) Hn) as [c1 [Hr1 Hs1]].
+  destruct (run_sim_transfer _ _ _ _ Hsim Hr1) as [c1' [Hr1' Hs1']].
+  assert (Hsim1 : cfg_sim c1'
+    (csec 16 (B2 - 2) 2 ((1, 1) :: repeat (1, 2) (S n)) 1))
+    by (eapply cfg_sim_trans; eassumption).
+  destruct Heven as [k' Hk'].
+  destruct (ERA_GEN_even (k' - 2) (n + 2) ltac:(lia) ltac:(lia))
+    as [P' [cost [c2 [Hr2 Hs2]]]].
+  replace (2 * (k' - 2) + 2) with (B2 - 2) in Hr2 by lia.
+  replace (n + 2 - 1) with (S n) in Hr2 by lia.
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1' Hsim1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec P' (2 * (n + 2) + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec P' (2 * (n + 2) + 2) [(1, 2)]
+                 = entry_sec P' (2 * n + 8)).
+  { unfold entry_sec.
+    replace (2 * (n + 2) + 2) with (2 * n + 6) by lia.
+    replace (2 * n + 8 - 2) with (2 * n + 6) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  rewrite <- Hsrc in Hr.
+  exists P'. eexists. exists c2'. split; [exact Hr |].
+  split; [exact Hs | lia].
+Qed.
+
+Lemma SETTLED_ITER_GEN_even_step : forall B2 n,
+  Nat.Even B2 -> 4 <= B2 -> B2 <= 36 -> 2 <= n ->
+  loop_step (entryP B2) (n + 2).
+Proof.
+  intros B2 n Heven HB2lo HB2hi Hn.
+  destruct (SETTLED_ITER_GEN_even B2 n Heven HB2lo HB2hi Hn)
+    as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * n + 8), t, c.
   split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
 Qed.
 
@@ -467,6 +552,121 @@ Lemma ESC_ITER_114_step : forall R beta,
 Proof.
   intros R beta HR Hb.
   destruct (ESC_ITER_114 R beta HR Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* ----------------------------------------------------------------- *)
+(* Part 4c (Phase 37): the ESC iteration past the third re-basing.   *)
+(* ----------------------------------------------------------------- *)
+
+(* One ESC iteration at a single-block prefix 0 1^(R+6) for every    *)
+(* even R <= 268: PASS + esc_bridge + ESC_ERA_LAW_268 (Grind6.v).    *)
+(* beta  |->  beta' = 2 beta + 4.  This discharges H_LOOP's ESC        *)
+(* instances for 116 <= R <= 268; R >= 270 is discharged by          *)
+(* ESC_ITER_602 below (Phase 38, Grind7.v).                            *)
+Lemma ESC_ITER_268 : forall R beta,
+  ((R = 2 \/ R = 4 \/ R = 6 \/ R = 8 \/ R = 10 \/ R = 12 \/ R = 14
+    \/ (exists m, R = 2 * m + 16 /\ m <= 12)
+    \/ R = 42 \/ R = 44 \/ (exists m, R = 2 * m + 46 /\ m <= 34))
+   \/ (R = 116 \/ R = 118 \/ R = 120
+       \/ (exists m, R = 2 * m + 46 /\ 38 <= m <= 111))) ->
+  4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (R + 6)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros R beta HR Hb.
+  destruct (PASS (false :: repeat true (R + 6)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (R + 6) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_268 R beta HR ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+Lemma ESC_ITER_268_step : forall R beta,
+  ((R = 2 \/ R = 4 \/ R = 6 \/ R = 8 \/ R = 10 \/ R = 12 \/ R = 14
+    \/ (exists m, R = 2 * m + 16 /\ m <= 12)
+    \/ R = 42 \/ R = 44 \/ (exists m, R = 2 * m + 46 /\ m <= 34))
+   \/ (R = 116 \/ R = 118 \/ R = 120
+       \/ (exists m, R = 2 * m + 46 /\ 38 <= m <= 111))) ->
+  4 <= beta -> loop_step (false :: repeat true (R + 6)) beta.
+Proof.
+  intros R beta HR Hb.
+  destruct (ESC_ITER_268 R beta HR Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* One ESC iteration at a single-block prefix 0 1^(R+6) for every    *)
+(* even R <= 602: PASS + esc_bridge + ESC_ERA_LAW_602 (Grind7.v).    *)
+(* beta  |->  beta' = 2 beta + 4.  This discharges H_LOOP's ESC        *)
+(* instances for 270 <= R <= 602; R >= 604 remains fenced            *)
+(* (Grind7.v: the phase-6 finish's new-frame floors bind at          *)
+(* m = 279 -- a phase-7 deviation).                                   *)
+Lemma ESC_ITER_602 : forall R beta,
+  (((R = 2 \/ R = 4 \/ R = 6 \/ R = 8 \/ R = 10 \/ R = 12 \/ R = 14
+    \/ (exists m, R = 2 * m + 16 /\ m <= 12)
+    \/ R = 42 \/ R = 44 \/ (exists m, R = 2 * m + 46 /\ m <= 34))
+   \/ (R = 116 \/ R = 118 \/ R = 120
+       \/ (exists m, R = 2 * m + 46 /\ 38 <= m <= 111)))
+   \/ (R = 270 \/ R = 272 \/ R = 274
+       \/ (exists m, R = 2 * m + 46 /\ 115 <= m <= 278))) ->
+  4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (R + 6)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros R beta HR Hb.
+  destruct (PASS (false :: repeat true (R + 6)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (R + 6) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_602 R beta HR ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+Lemma ESC_ITER_602_step : forall R beta,
+  (((R = 2 \/ R = 4 \/ R = 6 \/ R = 8 \/ R = 10 \/ R = 12 \/ R = 14
+    \/ (exists m, R = 2 * m + 16 /\ m <= 12)
+    \/ R = 42 \/ R = 44 \/ (exists m, R = 2 * m + 46 /\ m <= 34))
+   \/ (R = 116 \/ R = 118 \/ R = 120
+       \/ (exists m, R = 2 * m + 46 /\ 38 <= m <= 111)))
+   \/ (R = 270 \/ R = 272 \/ R = 274
+       \/ (exists m, R = 2 * m + 46 /\ 115 <= m <= 278))) ->
+  4 <= beta -> loop_step (false :: repeat true (R + 6)) beta.
+Proof.
+  intros R beta HR Hb.
+  destruct (ESC_ITER_602 R beta HR Hb) as [P' [t [c [Hr [Hs Ht]]]]].
   unfold loop_step.
   exists P', (2 * beta + 4), t, c.
   split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
@@ -600,10 +800,14 @@ Print Assumptions SETTLED_ITER_GEN.
 Print Assumptions SETTLED_ITER_GEN_step.
 Print Assumptions SETTLED_ITER_GEN_odd.
 Print Assumptions SETTLED_ITER_GEN_odd_step.
+Print Assumptions SETTLED_ITER_GEN_even.
+Print Assumptions SETTLED_ITER_GEN_even_step.
 Print Assumptions ESC_ITER.
 Print Assumptions ESC_ITER_step.
 Print Assumptions ESC_ITER_114.
 Print Assumptions ESC_ITER_114_step.
+Print Assumptions ESC_ITER_268.
+Print Assumptions ESC_ITER_268_step.
 Print Assumptions TWO_ITERS.
 Print Assumptions loop_chain.
 Print Assumptions LOOP_NONHALT.
