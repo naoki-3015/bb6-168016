@@ -434,3 +434,60 @@ Proof. intros. reflexivity. Qed.
 
 Print Assumptions PX2A0.
 Print Assumptions PX2B0.
+
+(* ---------------------------------------------------------------- *)
+(* Phase 41: PX2Bgen -- the PX2B dispatch at a single-block prefix  *)
+(* [b] with b >= 5.  The Phase 40 fence: the phase-8 final grind's  *)
+(* DIPDESC descent at frame ([235; 42; 19], 334) fires hPX2A onto   *)
+(* frame ([19], 41), whose own boundary grind's dip is at the       *)
+(* single block [19] -- the hPX2B rows covered only b <= 6, each    *)
+(* as a whole chunk, and no row fired at [19].  Direct zipper       *)
+(* tracing (rocq/hsim41.py) shows the dip is a UNIFORM family for   *)
+(* b >= 5: the same landing shape and cost b + 32 as PX2A0 at       *)
+(* [b; 0].  Decomposition (mirroring PX2A0): a 12-step chunk, the    *)
+(* F-sweep over the block (sweepF), and a 23-step tail;             *)
+(* b = S (S (S (S (S b'')))), cost b'' + 37.  Verified at            *)
+(* b in {5,6,7,8,9,10,12,14,16,19,20,24,30} and at several stack    *)
+(* shapes / G values (hsim41.py).  The small blocks are accidents:  *)
+(* b = 2, 3, 4 land at costs 28, 25, 22 in other shapes (the        *)
+(* existing hPX2B2..6 chunks are those accidents plus a step).      *)
+(* ---------------------------------------------------------------- *)
+
+Lemma PX2Bgen_chunk : forall b'' Q pairs G,
+  run 12 (gcsec (false :: repeat true (S (S (S (S (S b''))))) ++ Q)
+            0 3 2 pairs G) =
+  Some (mkCfg SF (repeat true (S (S b'')) ++ Q)
+          (true :: true :: true :: false :: true :: false ::
+           true :: true :: false :: true :: true ::
+           tail pairs G)).
+Proof. intros. reflexivity. Qed.
+
+Lemma PX2Bgen_tail : forall b'' pairs G,
+  run 23 (mkCfg SF []
+            (true :: (repeat false (S (S b'')) ++
+              (true :: true :: false :: true :: false ::
+               true :: true :: false :: true :: true ::
+               tail pairs G)))) =
+  Some (gbsec [false] 3 1 2
+          ((S b'', 2) :: (1, 1) :: (1, 2) :: (1, 2) :: pairs) G).
+Proof. intros. reflexivity. Qed.
+
+Lemma PX2Bgen : forall b'' pairs G,
+  run (b'' + 37)
+    (gcsec (false :: repeat true (S (S (S (S (S b'')))))) 0 3 2 pairs G) =
+  Some (gbsec [false] 3 1 2
+          ((S b'', 2) :: (1, 1) :: (1, 2) :: (1, 2) :: pairs) G).
+Proof.
+  intros b'' pairs G.
+  replace (b'' + 37) with (12 + (S (S b'') + 23)) by lia.
+  rewrite run_split.
+  replace (false :: repeat true (S (S (S (S (S b''))))))
+    with (false :: repeat true (S (S (S (S (S b''))))) ++ [])
+    by (rewrite app_nil_r; reflexivity).
+  rewrite PX2Bgen_chunk.
+  rewrite run_split.
+  rewrite sweepF. cbv beta iota.
+  apply PX2Bgen_tail.
+Qed.
+
+Print Assumptions PX2Bgen.

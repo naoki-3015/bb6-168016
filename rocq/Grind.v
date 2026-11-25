@@ -265,7 +265,24 @@ Inductive hstep : hsec -> hsec -> Prop :=
           (HC (S a :: pb) (S s') (S r1'') 2 ((S w2'', r2) :: rest) G)
 | hTUP2def : forall pb a s' w3' r2' rest G,
     hstep (HB pb a 1 (S s') ((2, 1) :: (S (S (S (S (S w3')))), S r2') :: rest) G)
-          (HC (S a :: pb) s' 3 2 ((S w3', S r2') :: rest) G).
+          (HC (S a :: pb) s' 3 2 ((S w3', S r2') :: rest) G)
+(* Phase 36: the third re-basing's dip bottoms.  hPX2A0 is the      *)
+(* PX2A dispatch at a two-block prefix whose second block is 0      *)
+(* (hPX2A needs S p', hPX2A2 needs b = 2); hPX2B0 is the PX2B       *)
+(* dispatch at the empty single block [0].                          *)
+| hPX2A0 : forall b'' pairs G,
+    hstep (HC (S (S (S (S (S b'')))) :: 0 :: nil) 0 3 2 pairs G)
+          (HB [0] 3 1 2
+             ((S b'', 2) :: (1, 1) :: (1, 2) :: (1, 2) :: pairs) G)
+| hPX2B0 : forall pairs G,
+    hstep (HC [0] 0 3 2 pairs G) (HB [] 0 1 5 ((1, 2) :: pairs) G)
+(* Phase 41: hPX2Bgen -- the PX2B dispatch at a single-block       *)
+(* prefix [b], b >= 5 (the phase-8 dip at [19]); Dev.v's uniform    *)
+(* PX2Bgen family, same landing shape and cost as hPX2A0.           *)
+| hPX2Bgen : forall b'' pairs G,
+    hstep (HC [S (S (S (S (S b''))))] 0 3 2 pairs G)
+          (HB [0] 3 1 2
+             ((S b'', 2) :: (1, 1) :: (1, 2) :: (1, 2) :: pairs) G).
 
 Theorem hstep_sound : forall x y, hstep x y ->
   exists n c, run n (hcfg x) = Some c /\ cfg_sim c (hcfg y).
@@ -324,6 +341,17 @@ Proof.
     split; [apply TUP2_1 | apply cfg_sim_refl].
   - exists (S s' + 23), (gcsec (enc (S a :: pb)) s' 3 2 ((S w3', S r2') :: rest) G).
     split; [apply TUP2_defect | apply cfg_sim_refl].
+  - exists (b'' + 37), (hcfg (HB [0] 3 1 2
+      ((S b'', 2) :: (1, 1) :: (1, 2) :: (1, 2) :: pairs) G)).
+    split; [| apply cfg_sim_refl].
+    unfold hcfg. cbn [enc]. rewrite !app_nil_r. apply PX2A0.
+  - exists 20, (hcfg (HB [] 0 1 5 ((1, 2) :: pairs) G)).
+    split; [| apply cfg_sim_refl].
+    unfold hcfg. cbn [enc]. rewrite app_nil_r. apply PX2B0.
+  - exists (b'' + 37), (hcfg (HB [0] 3 1 2
+      ((S b'', 2) :: (1, 1) :: (1, 2) :: (1, 2) :: pairs) G)).
+    split; [| apply cfg_sim_refl].
+    unfold hcfg. cbn [enc]. rewrite !app_nil_r. apply PX2Bgen.
 Qed.
 
 (* ================================================================= *)
