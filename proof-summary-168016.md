@@ -668,15 +668,35 @@ the one pair (2j, 2) at the one fixed TOP5
 state, j ≥ 134250 only, where the sixth
 descent is a new cascade with different
 constants (`ESC_ERA_LAW_51`, `ESC_ITER_BIG8_51`).
+
+A sixth boundary descent has since been
+mechanised the same way: the TOP5 front, then
+DIPGRIND (134246, 2(j − 134249)), then the
+227-step **CASCADE52** at an arbitrary carried
+tail, landing on the TOP6 state
+`HB [23252; 3931; 2847; 569; 287; 14; 5]
+175058 1 323287`, which closes at r6 = 2, 4, 6
+and throughout band 6 (r6 ≤ 646578, the pair
+grinding cleanly by CLEANG_even at counter
+323286) (`Grind20.v`). The result:
+TAIL2_END6 is **proved for
+134250 ≤ j ≤ 457538**, and for j ≥ 457539 the
+era law / loop iterations are discharged
+modulo the strictly smaller statement
+**TAIL2_END7** — the totality of the one
+pair (2j, 2) at the one fixed TOP6 state,
+j ≥ 323290 only, where the seventh descent
+is a new cascade with different constants
+(`ESC_ERA_LAW_52`, `ESC_ITER_BIG8_52`).
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
 through R ≤ 1276 unconditionally, and for every
 even R ≥ 1278 modulo the single statement
-TAIL2_END6 — the totality of one pair (2j, 2)
-at the one fixed TOP5 state
-`HB [20403; 10332; 112; 20; 0] 95597 1
-134247`, j ≥ 134250 —
+TAIL2_END7 — the totality of one pair (2j, 2)
+at the one fixed TOP6 state
+`HB [23252; 3931; 2847; 569; 287; 14; 5]
+175058 1 323287`, j ≥ 323290 —
 via the tail at the era slice and the descent in
 Grind14.v, which proves the previous core
 TAIL2_BIG for vM ≤ 5365, the END re-descent
@@ -691,7 +711,10 @@ in Grind18.v, which proves the previous core
 TAIL2_END4 for 32606 ≤ j ≤ 99728, and the
 TOP4 fifth descent in Grind19.v, which proves
 the previous core TAIL2_END5 for
-67124 ≤ j ≤ 201372;
+67124 ≤ j ≤ 201372, and the TOP5 sixth
+descent in Grind20.v, which proves the
+previous core TAIL2_END6 for
+134250 ≤ j ≤ 457538;
 the phase-8 entry, its first
 three continuation stages, the cascade's stages
 1–3 and its last two stages are formalised in
