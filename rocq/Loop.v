@@ -105,9 +105,17 @@
 (*     at the era slice (Grind13.v): layers 0-1 and the layer-2     *)
 (*     residue for vM <= 1652 are proved; the residual is the       *)
 (*     layer-2 residue totality at the single fixed state           *)
-(*     HB [243; 135; 35; 20; 0] 893 1 1651 for vM >= 1653).  The     *)
+(*     HB [243; 135; 35; 20; 0] 893 1 1651 for vM >= 1653) and      *)
+(*     with every even R >= 1278 modulo Grind14.TAIL2_END           *)
+(*     (ESC_ITER_BIG8_46, Phase 46: the descent from the PX2A       *)
+(*     landing is a fixed four-level DIPGRIND parse (DESCENT46),    *)
+(*     uniform in (k, beta); the END state it reaches closes for    *)
+(*     k <= 3713 (CLEANG_even's floor 2k - 6 <= 2 * 3710), so       *)
+(*     TAIL2_BIG is proved for vM <= 5365 and the residual is the   *)
+(*     END totality at HB [317; 40; 14; 5] 2204 1 3711 for          *)
+(*     k >= 3714 alone).  The                                      *)
 (*     undischarged instances are exactly: ESC entries with         *)
-(*     R >= 1278 modulo TAIL2_BIG,                                  *)
+(*     R >= 1278 modulo TAIL2_END,                                  *)
 (*     settled entries at entryP B2 with B2 >= 37 (residues          *)
 (*     beyond the frame-16 era laws of both parities, fenced in      *)
 (*     EraGen.v / EraEven.v), and entry sections whose prefix is     *)
@@ -129,7 +137,7 @@ Import ListNotations.
 Require Import TM Configs Finite Sections Mirror TokenPass DiagPass
                Recoord Era EraGen EraEven Esc Dev Grind Grind2 Grind3
                Grind4 Grind5 Grind6 Grind7 Grind8 Grind9 Grind10
-               Grind11 Grind12 Grind13.
+               Grind11 Grind12 Grind13 Grind14.
 
 (* ----------------------------------------------------------------- *)
 (* Part 0: run-totality infrastructure.                              *)
@@ -984,6 +992,68 @@ Proof.
 Qed.
 
 (* ----------------------------------------------------------------- *)
+(* Part 4g (Phase 46): the same discharge modulo the strictly       *)
+(* smaller core TAIL2_END (Grind14.v).  Phase 46 characterised      *)
+(* the TAIL2_BIG descent (rocq/hsim46.py, ALL PASS): from the       *)
+(* PX2A landing at frame [135; 35; 20; 0] the descent is a fixed    *)
+(* parse, uniform in (k, beta) with k = vM - 1652 -- four dip       *)
+(* levels closed by the new DIPGRIND, frame regrowth, and two       *)
+(* clean grinds (CLEANG_odd) -- landing on the END state            *)
+(* HB [317; 40; 14; 5] 2204 1 3711 ((2k, 2) :: (1, 1) ::            *)
+(* (1, 2)^(beta - 1)) (DESCENT46, no side conditions).  The END     *)
+(* state closes for 1 <= k <= 3713 (END46_1/2/3/big; the last       *)
+(* segment is CLEANG_even at counter 3710, whose floor              *)
+(* 2k - 6 <= 2 * 3710 is exactly k <= 3713).  Hence TAIL2_BIG is    *)
+(* proved for 1653 <= vM <= 5365, and for vM >= 5366 it rests on    *)
+(* TAIL2_END alone: the totality of the ONE pair (2k, 2) at the     *)
+(* ONE fixed END state, k >= 3714.  At k >= 3714 the END rounds     *)
+(* take the DIPDESC boundary and the walk descends again with       *)
+(* k-dependent finals -- no finite case analysis in the current     *)
+(* vocabulary closes every k.  Via TAIL2_BIG_of + ESC_ERA_LAW_46    *)
+(* the ESC instances at every even R >= 1278 now rest on            *)
+(* TAIL2_END alone.                                                 *)
+(* ----------------------------------------------------------------- *)
+
+Lemma ESC_ITER_BIG8_46 : TAIL2_END ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (2 * M + 52)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (PASS (false :: repeat true (2 * M + 52)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (2 * M + 52) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_46 Hend M beta HM ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+Lemma ESC_ITER_BIG8_46_step : TAIL2_END ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  loop_step (false :: repeat true (2 * M + 52)) beta.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (ESC_ITER_BIG8_46 Hend M beta HM Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* ----------------------------------------------------------------- *)
 (* Part 5: the first two iterations, fully proved.                   *)
 (* ----------------------------------------------------------------- *)
 
@@ -1129,6 +1199,8 @@ Print Assumptions ESC_ITER_BIG8_44.
 Print Assumptions ESC_ITER_BIG8_44_step.
 Print Assumptions ESC_ITER_BIG8_45.
 Print Assumptions ESC_ITER_BIG8_45_step.
+Print Assumptions ESC_ITER_BIG8_46.
+Print Assumptions ESC_ITER_BIG8_46_step.
 Print Assumptions TWO_ITERS.
 Print Assumptions loop_chain.
 Print Assumptions LOOP_NONHALT.
