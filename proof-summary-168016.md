@@ -331,14 +331,89 @@ machine-checked obstructions: the absorption landing is
 never reached at ρ = 30 or ρ = 35 in 20,000,000
 simulated steps (the residue grind's dip exceeds the
 frame a2 = 16, and Lemma G′ is odd-only).
+And (Phase 36) the **third re-basing's dip bottoms**:
+the boundary grind at prefix [20; 0] (R = 116) dips to
+the section HC [20; 0] 0 3 2 no word-model rule covered;
+the dispatch there is a new machine-level deviation step
+list, PX2A0 (for every b ≥ 5, HC [b; 0] 0 3 2 runs in
+b + 32 steps to HB [0] 3 1 2 over the residue pair
+(b − 4, 2) and the usual extras), derived by direct
+zipper tracing and proved for all parameters, and the
+unwind's own dip bottom HC [0] 0 3 2 has a second new
+step list, PX2B0 (20 steps), with the deviated grind at
+prefix [0] proved as an induction (hGRIND_dev0). The
+R ≥ 116 era law itself was not yet assembled at that
+point: the [20; 0] grind's base step consumes the
+prefix and leaves the residue pair (16, 2), so its
+endpoint had to be assembled through the merged
+unwind.
+And (Phase 37) that **merged unwind is assembled**:
+the R = 116 endpoint is an explicit chain (the phase-3
+prefix, 34 phase-3 rounds, the descent of the [20; 0]
+grind, PX2A0 at the dip, and the (16, 2) grind at
+prefix [0] over the carried era stack), and the
+pattern continues through phase 4 (R = 118) and
+phase 5 (R = 2m + 46, 38 ≤ m ≤ 111), giving the
+ESC-era law β_next = 2β + 4 for **every even R ≤ 268**
+(ESC_ERA_LAW_268), with the corresponding loop
+iterations discharged in Loop.v (ESC_ITER_268). The
+remaining fence is R ≥ 270, where phase 5's final
+grind becomes a boundary grind at the three-block
+prefix [41; 14; 5] — a phase-6 deviation not yet
+derived (`rocq/mechanisation-status.md`).
+And (Phase 38) the **phase-6 boundary grind is
+closed**: the boundary descent at t = a2 is a
+general lemma (DIPDESC: for every t, every prefix
+and every stack, the grind descends to its dip with
+the stack grown by (1, 2)^t — no floor hypothesis),
+its dip at [41; 14; 5] fires the existing PX2A
+dispatch, and the continuation grind at the new
+frame is assembled explicitly (GRIND39_MID),
+extending the ESC-era law to **every even R ≤ 602**
+(ESC_ERA_LAW_602), with the corresponding loop
+iterations discharged in Loop.v (ESC_ITER_602). The
+phase recursion does not admit a general induction
+over phase depth in the current lemma vocabulary —
+each phase's dip dispatch is a case split on the
+literal prefix blocks and its landing parameters
+are arithmetic accidents of those blocks — so the
+remaining fence is R ≥ 604, a phase-7 deviation of
+the same character (`rocq/mechanisation-status.md`
+states the verdict precisely).
+And (Phase 39) the **even-residue era law**: at an even
+residue the absorption does not grind the residue into
+the shuttle — when the residue pair reaches gap 2, the
+TUP-prefix excursion itself fires as a **frame
+rotation** (the shuttle becomes the new near block, the
+pair is consumed), landing on a B-section over the
+two-block frame with near block exactly ρ and s still
+2. Hence s₁ = 2m + 1, the Stage-A era's G₀ = 2m is even
+unconditionally, and β′ = 2m + 4 is **independent of
+ρ** — the same closed form as the ESC-era law. The law
+is proved for every even ρ ≤ 34 and every m ≥ 1
+(EVEN_GRIND, ERA_GEN_even in `EraEven.v`; the odd
+grind over a general frame, gGRIND, is proved along
+the way), discharging the general settled iteration
+unconditionally for even B2 with 4 ≤ B2 ≤ 36
+(SETTLED_ITER_GEN_even in Loop.v). With Phase 35, the
+settled iteration is now unconditional for **every
+B2 with 3 ≤ B2 ≤ 36**. Residues ρ ≥ 35 (B2 ≥ 37) are
+fenced with machine evidence in both parities: ρ = 35
+absorbs only after a sub-frame edge excursion grows
+the frame (landing bsec 17 1 39, after which the era's
+G parity obstructs), ρ = 36, 37, 39, 41 absorb by
+rotation onto a two-block frame of a different shape,
+and ρ = 38, 40 show no absorption landing of either
+form within 60,000,000 steps — mechanising them needs
+a sub-frame edge-grind theory the current vocabulary
+does not contain (`rocq/mechanisation-status.md`).
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
-third re-basing of the G″ grind (R ≥ 116: the boundary
-grind at prefix [20; 0] dips to a section no word-model
-rule covers, and a new machine-level deviation step list
-must be derived), and the
-general-residue era law outside its proved domain (even
-residues and ρ ≥ 35) are not yet formalised
+ESC entries at R ≥ 604 (the ESC-era law is proved
+through R ≤ 602; the phase-7 boundary grind
+is not yet formalised), and the
+general-residue era law at residues ρ ≥ 35 (both
+parities) are not yet formalised
 (`rocq/mechanisation-status.md` maps every proof component to
 its mechanisation status). The finite corollary bound is a
 by-product; the theorem is the unconditional non-halting
@@ -365,11 +440,13 @@ Rocq sources under `rocq/`.)*
   `phase21-derivations.md` — the post-R regimes and the loop.
 * `reproduce_168016.py`, `reproduction-report.md` — the
   independent reproduction (Phase 22).
-* `rocq/` — the Rocq mechanisation (Phases 23/25–35): `TM.v`,
+* `rocq/` — the Rocq mechanisation (Phases 23/25–39): `TM.v`,
   `Configs.v`, `Finite.v`, `Sections.v`, `Mirror.v`, `TokenPass.v`,
-  `DiagPass.v`, `Recoord.v`, `Era.v`, `EraGen.v`, `Esc.v`, `Dev.v`,
-  `Grind.v`, `Grind2.v`, `Grind3.v`, `Grind4.v`, `Loop.v`, `Std.v`,
-  and `mechanisation-status.md`.
-* `NOTES.md` — the project log (Phases 1–35). *(Not included in
+  `DiagPass.v`, `Recoord.v`, `Era.v`, `EraGen.v`, `EraEven.v`,
+  `Esc.v`, `Dev.v`,
+  `Grind.v`, `Grind2.v`, `Grind3.v`, `Grind4.v`, `Grind5.v`,
+  `Grind6.v`, `Grind7.v`, `Loop.v`, `Std.v`, and
+  `mechanisation-status.md`.
+* `NOTES.md` — the project log (Phases 1–39). *(Not included in
   this package — internal working log; available from the
   authors on request.)*

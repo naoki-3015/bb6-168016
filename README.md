@@ -57,9 +57,10 @@ exact steps for submitting them.
   entry landing entry_tgt 95 136), leaving iteration at
   the entry sections not yet discharged — of which the
   general settled iteration is now also discharged on the
-  era law's proved domain in `EraGen.v` (ERA_GEN for every
-  odd residue ρ ≤ 33; the general settled iteration
-  unconditional for odd B2 ≤ 35) —
+  era laws' proved domains in `EraGen.v` (ERA_GEN for every
+  odd residue ρ ≤ 33) and `EraEven.v` (ERA_GEN_even for
+  every even residue ρ ≤ 34; the general settled iteration
+  unconditional for every B2 with 3 ≤ B2 ≤ 36) —
   no axioms, no admits. It does **not** yet give an
   unconditional Rocq proof of non-halting;
   `rocq/mechanisation-status.md`
@@ -123,13 +124,17 @@ rocq/
   Recoord.v                  re-coordinatisation stages 1-3 + unconditional composition (proved)
   Era.v                      era law: Grind Lemma G' + ERA_LAW (proved)
   EraGen.v                   general-residue era law ERA_GEN for every odd rho <= 33 (proved)
+  EraEven.v                  even-residue era law ERA_GEN_even for every even rho <= 34: rotation absorption, beta' = 2m + 4 independent of rho (proved)
   Esc.v                      single-block escape pieces: POP2 + probe prefix (proved)
-  Dev.v                      deviation step lists: PUSHX/PX2A/PX2B/CGAP2/TRANS2/TUP2/defect (proved)
+  Dev.v                      deviation step lists: PUSHX/PX2A/PX2B/CGAP2/TRANS2/TUP2/defect + PX2A0/PX2B0 (proved)
   Grind.v                    word model + soundness, grind prefix, Predecessor analysis (proved)
   Grind2.v                   G'' endpoint induction + ESC-era law for R <= 10 (proved)
   Grind3.v                   REBASE (R >= 12 re-basing) + ESC-era law for every even R <= 40 (proved)
   Grind4.v                   second re-basing (deviated grind at prefix [5]) + ESC-era law for every even R <= 114 (proved)
-  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo two explicit hypotheses; general settled iteration unconditional for odd B2 <= 35)
+  Grind5.v                   third re-basing dip bottoms (PX2A0/PX2B0) + deviated grind at prefix [0] (proved)
+  Grind6.v                   merged unwind at R = 116 + phase-4/5 continuations: ESC-era law for every even R <= 268 (proved)
+  Grind7.v                   phase-6 merged unwind: general boundary descent DIPDESC + GRIND39_MID: ESC-era law for every even R <= 602 (proved)
+  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36)
   Std.v                      standard-regime assembly: STD_reach_entry, H_STD discharged, NONHALT_FROM_R_std (proved)
   gen_configs.py             generator for Configs.v
   trace_rules.py             zipper traces used to fix the segment lemmas' forms
@@ -137,12 +142,17 @@ rocq/
   trace_dev.py               zipper traces for the Dev/Grind forms
   std_verify.py              pre-verification of the Std.v chain on the real machine
   era_gen_verify.py          pre-verification of the EraGen.v boundary sequences on the real machine
+  era_even_verify.py         pre-verification of the EraEven.v boundary sequences on the real machine
+  era_fence35_verify.py      fence evidence for residues rho >= 35 (observed absorptions + 60M-step budget checks)
+  hsim36.py                  pre-verification of the Phase 36 step lists and deviated grinds (word simulator + machine recogniser)
+  hsim37.py                  pre-verification of the Phase 37 merged unwind (word simulator + machine recogniser)
+  hsim38.py                  pre-verification of the Phase 38 phase-6 unwind (word simulator + machine recogniser)
   mechanisation-status.md    component-by-component mechanisation status
   coqcw, env.sh              build wrapper for the authors' local Coq 8.18 toolchain
 ```
 
 Not included: the internal project log (`NOTES.md`, Phases
-1–33), simulators and run artefacts of the working phases, and
+1–39), simulators and run artefacts of the working phases, and
 the still-running long simulation from R (component #7 is
 corroboration only; the proof does not depend on it).
 
@@ -199,18 +209,22 @@ coqc DiagPass.v
 coqc Recoord.v
 coqc Era.v
 coqc EraGen.v
+coqc EraEven.v
 coqc Esc.v
 coqc Dev.v
 coqc Grind.v
 coqc Grind2.v
 coqc Grind3.v
 coqc Grind4.v
+coqc Grind5.v
+coqc Grind6.v
+coqc Grind7.v
 coqc Loop.v
 coqc Std.v
 ```
 
 (With the authors' workspace toolchain, `./coqcw <file>` does
-the same via `env.sh`.) Expected: all eighteen files compile with
+the same via `env.sh`.) Expected: all twenty-two files compile with
 **no errors**; the only warnings are benign large-nat-literal
 notices in `Finite.v`. Every headline lemma was checked with
 `Print Assumptions`: "Closed under the global context" — no
@@ -218,9 +232,9 @@ axioms, no admits.
 
 *Package verification (2026-11-25):* the packaged sources were
 copied to a clean directory and rebuilt from scratch: **all
-eighteen files compiled successfully**, producing `.vo` files
+twenty-two files compiled successfully**, producing `.vo` files
 identical in size to the authors' build (re-verified after the
-Phase 35 mechanisation update).
+Phase 39 mechanisation update).
 
 ## Authorship and disclosure
 
