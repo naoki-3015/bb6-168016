@@ -728,15 +728,35 @@ pair (2j, 2) at the one fixed TOP8 state,
 j ≥ 1425926 only, where the ninth descent
 is a new cascade with different constants
 (`ESC_ERA_LAW_54`, `ESC_ITER_BIG8_54`).
+
+A ninth boundary descent has since been
+mechanised the same way: the TOP8 front, then
+DIPGRIND (1425922, 2(j − 1425925)), then the
+17-step **CASCADE55** at an arbitrary carried
+tail, landing on the TOP9 state
+`HB [297773; 149464; 1260; 147;
+20; 0] 2020419 1 2851851`, which closes at
+r9 = 2, 4, 6 and throughout band 9
+(r9 ≤ 5703706, the pair grinding cleanly by
+CLEANG_even at counter 2851850) (`Grind23.v`).
+The result: TAIL2_END9 is **proved for
+1425926 ≤ j ≤ 4277778**, and for j ≥ 4277779 the
+era law / loop iterations are discharged
+modulo the strictly smaller statement
+**TAIL2_END10** — the totality of the one
+pair (2j, 2) at the one fixed TOP9 state,
+j ≥ 2851854 only, where the tenth descent
+is a new cascade with different constants
+(`ESC_ERA_LAW_55`, `ESC_ITER_BIG8_55`).
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
 through R ≤ 1276 unconditionally, and for every
 even R ≥ 1278 modulo the single statement
-TAIL2_END9 — the totality of one pair (2j, 2)
-at the one fixed TOP8 state
-`HB [135142; 27487; 14322; 1260; 147;
-20; 0] 864782 1 1425923`, j ≥ 1425926 —
+TAIL2_END10 — the totality of one pair (2j, 2)
+at the one fixed TOP9 state
+`HB [297773; 149464; 1260; 147;
+20; 0] 2020419 1 2851851`, j ≥ 2851854 —
 via the tail at the era slice and the descent in
 Grind14.v, which proves the previous core
 TAIL2_BIG for vM ≤ 5365, the END re-descent
@@ -760,7 +780,10 @@ previous core TAIL2_END7 for
 323290 ≤ j ≤ 969870, and the TOP7 eighth
 descent in Grind22.v, which proves the
 previous core TAIL2_END8 for
-646582 ≤ j ≤ 2072506;
+646582 ≤ j ≤ 2072506, and the TOP8 ninth
+descent in Grind23.v, which proves the
+previous core TAIL2_END9 for
+1425926 ≤ j ≤ 4277778;
 the phase-8 entry, its first
 three continuation stages, the cascade's stages
 1–3 and its last two stages are formalised in
@@ -774,8 +797,9 @@ Grind17.v, the TOP3 fourth descent in
 Grind18.v, the TOP4 fifth descent in
 Grind19.v, the TOP5 sixth descent in
 Grind20.v, the TOP6 seventh descent in
-Grind21.v, and the TOP7 eighth descent in
-Grind22.v), and the
+Grind21.v, the TOP7 eighth descent in
+Grind22.v, and the TOP8 ninth descent in
+Grind23.v), and the
 general-residue era law at residues ρ ≥ 35 (both
 parities) are not yet formalised
 (`rocq/mechanisation-status.md` maps every proof component to
