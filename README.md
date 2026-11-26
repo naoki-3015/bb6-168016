@@ -150,7 +150,8 @@ rocq/
   Grind21.v                  the TOP6 seventh descent (Phase 53): CASCADE53 (the 337-step fixed parse at an arbitrary carried tail), TOP53_TO_TOP7, TOP53_2 / TOP53_4 / TOP53_6 / TOP53_BAND (the TOP7 closings at r7 = 2, 4, 6 and in band 7, r7 <= 1293162); TAIL2_END7 proved for 323290 <= j <= 969870 and the era law proved modulo the strictly smaller core TAIL2_END8 (the TOP7 totality at r7 = 2j, j >= 646582 only, where the eighth descent is a new cascade with different constants); ESC_ERA_LAW_53
   Grind22.v                  the TOP7 eighth descent (Phase 54): CASCADE54 (the 176-step fixed parse at an arbitrary carried tail), TOP54_TO_TOP8, TOP54_2 / TOP54_4 / TOP54_6 / TOP54_BAND (the TOP8 closings at r8 = 2, 4, 6 and in band 8, r8 <= 2851850); TAIL2_END8 proved for 646582 <= j <= 2072506 and the era law proved modulo the strictly smaller core TAIL2_END9 (the TOP8 totality at r8 = 2j, j >= 1425926 only, where the ninth descent is a new cascade with different constants); ESC_ERA_LAW_54
   Grind23.v                  the TOP8 ninth descent (Phase 55): CASCADE55 (the 17-step fixed parse at an arbitrary carried tail), TOP55_TO_TOP9, TOP55_2 / TOP55_4 / TOP55_6 / TOP55_BAND (the TOP9 closings at r9 = 2, 4, 6 and in band 9, r9 <= 5703706); TAIL2_END9 proved for 1425926 <= j <= 4277778 and the era law proved modulo the strictly smaller core TAIL2_END10 (the TOP9 totality at r9 = 2j, j >= 2851854 only, where the tenth descent is a new cascade with different constants); ESC_ERA_LAW_55
-  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo TAIL2_END10 above)
+  Grind24.v                  the TOP9 tenth descent (Phase 56): CASCADE56 (the 799-step fixed parse at an arbitrary carried tail), TOP56_TO_TOP10, TOP56_2 / TOP56_4 / TOP56_6 / TOP56_BAND (the TOP10 closings at r10 = 2, 4, 6 and in band 10, r10 <= 11874954); TAIL2_END10 proved for 2851854 <= j <= 8789330 and the era law proved modulo the strictly smaller core TAIL2_END11 (the TOP10 totality at r10 = 2j, j >= 5937478 only, where the eleventh descent is a new cascade with different constants); ESC_ERA_LAW_56
+  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo TAIL2_END11 above)
   Std.v                      standard-regime assembly: STD_reach_entry, H_STD discharged, NONHALT_FROM_R_std (proved)
   gen_configs.py             generator for Configs.v
   trace_rules.py             zipper traces used to fix the segment lemmas' forms
@@ -179,6 +180,7 @@ rocq/
   hsim53.py                  pre-verification of the Phase 53 TOP6 seventh descent: the 344-waypoint CASCADE53 chain asserted verbatim, in order, at (j, beta) in {(323290, 2), (323290, 3), (323291, 2), (400000, 2), (969870, 2)} incl. a junk-tail probe; TOP7 finals asserted verbatim; the eighth fence (GRIND8 state + eighth DIPGRIND landing) at j = 969871 / 969872 / 1000000 (word simulator + machine recogniser; streaming walker)
   hsim54.py                  pre-verification of the Phase 54 TOP7 eighth descent: the 183-waypoint CASCADE54 chain asserted verbatim, in order, at (j, beta) in {(646582, 2), (646582, 3), (646583, 2), (800000, 2), (2072506, 2)} incl. a junk-tail probe; TOP8 finals asserted verbatim; the ninth fence (GRIND9 state + ninth DIPGRIND landing) at j = 2072507 / 2072508 / 2200000 (word simulator + machine recogniser; streaming walker)
   hsim55.py                  pre-verification of the Phase 55 TOP8 ninth descent: the 24-waypoint CASCADE55 chain asserted verbatim, in order, at (j, beta) in {(1425926, 2), (1425926, 3), (1425927, 2), (2000000, 2), (4277778, 2)} incl. a junk-tail probe; TOP9 finals asserted verbatim; the tenth fence (GRIND10 state + tenth DIPGRIND landing) at j = 4277779 / 4277780 / 4500000 (word simulator + machine recogniser; streaming walker; executed span-sliced, 192 slice jobs all OK)
+  hsim56.py                  pre-verification of the Phase 56 TOP9 tenth descent: the 799-waypoint CASCADE56 chain (run-length-encoded waypoint table, expanded lazily) asserted verbatim, in order, at (2851854, 2) incl. a junk-tail probe; the classified chain at (2851854, 3) identical on cascade steps 7-805 (beta-uniformity); TOP9 -> DIP10 front segments at five (j, beta) points; TOP10 finals asserted verbatim at eight points incl. the band edge j10 = 5937477; the eleventh fence (GRIND11 state + eleventh DIPGRIND landing) at j10 = 5937478 / 5937479 / 6148147 (word simulator + machine recogniser; streaming walker; canonical chain executed as checkpointed slice jobs)
   mechanisation-status.md    component-by-component mechanisation status
   coqcw, env.sh              build wrapper for the authors' local Coq 8.18 toolchain
 ```
@@ -267,22 +269,23 @@ coqc Grind20.v
 coqc Grind21.v
 coqc Grind22.v
 coqc Grind23.v
+coqc Grind24.v
 coqc Loop.v
 coqc Std.v
 ```
 
 (With the authors' workspace toolchain, `./coqcw <file>` does
-the same via `env.sh`.) Expected: all thirty-eight files compile with
+the same via `env.sh`.) Expected: all thirty-nine files compile with
 **no errors**; the only warnings are benign large-nat-literal
 notices in `Finite.v`. Every headline lemma was checked with
 `Print Assumptions`: "Closed under the global context" — no
 axioms, no admits.
 
-*Package verification (2026-11-26):* the packaged sources were
+*Package verification (2026-11-27):* the packaged sources were
 copied to a clean directory and rebuilt from scratch: **all
-thirty-eight files compiled successfully**, producing `.vo` files
+thirty-nine files compiled successfully**, producing `.vo` files
 identical in size to the authors' build (re-verified after the
-Phase 55 mechanisation update).
+Phase 56 mechanisation update).
 
 ## Authorship and disclosure
 
