@@ -140,7 +140,11 @@ Require Import TM Configs Finite Sections Mirror TokenPass DiagPass
                Grind11 Grind12 Grind13 Grind14 Grind15 Grind16
                Grind17 Grind18 Grind19 Grind20 Grind21 Grind22
                Grind23 Grind24 Grind25 Grind26 Grind26a Grind26b
-               Grind26c Grind26d Grind26e Grind26f Grind26g.
+               Grind26c Grind26d Grind26e Grind26f Grind26g
+               Grind27a Grind27h Grind27i Grind27j Grind27k
+               Grind27l Grind27m Grind27n Grind27o Grind27
+               Grind27b Grind27c Grind27d Grind27e Grind27f
+               Grind27g.
 
 (* ----------------------------------------------------------------- *)
 (* Part 0: run-totality infrastructure.                              *)
@@ -1807,6 +1811,70 @@ Proof.
 Qed.
 
 (* ----------------------------------------------------------------- *)
+(* Part 4t (Phase 59): the same discharge modulo the strictly       *)
+(* smaller core TAIL2_END14 (Grind27g.v).  Phase 59 characterised   *)
+(* the thirteenth re-descent of the TOP12 state (rocq/hsim59.py):   *)
+(* TOP12's front + GRIND13 + DIPGRIND (29403092, 2(j - 29403095))   *)
+(* lands on the DIP13 spine, from which a FIXED 586-step parse    *)
+(* CASCADE59 (arbitrary tail) regrows the stack onto the TOP13      *)
+(* state                                                            *)
+(* HB [7965811; 4012920; 308090; 49409; 7710; 1059; 199; 101; 0] 34304475 1 58806191                                            *)
+(* ((r13, 2) :: (1, 1) :: (1, 2)^(beta - 1)),                       *)
+(* r13 = 2(j - 29403095).  The frame is REPLACED, not grown:       *)
+(* eleven blocks become nine (contrast Phase 58).  TOP13 closes    *)
+(* for r13 = 2, 4, 6 outright                                       *)
+(* and for 8 <= r13 <= 117612386 by CLEANG_even at counter 58806190    *)
+(* (floor exactly r13 <= 117612386; the counter is again the shuttle  *)
+(* moved into the counter slot by TUP2_1), so TAIL2_END13 is proved *)
+(* for 29403096 <= j <= 88209288 (TOP12 parameters).  For               *)
+(* r13 >= 117612388 the GRIND14 pair takes the DIPDESC boundary a *)
+(* fourteenth time and the walk descends through a FOURTEENTH       *)
+(* cascade (new constants again, not a periodic cycle); the         *)
+(* residual is TAIL2_END14: the TOP13 totality at r13 = 2j,         *)
+(* j >= 58806194 (TOP13 parameters).  Via TAIL2_END13_of59 +          *)
+(* ESC_ERA_LAW_59 the ESC instances at every even R >= 1278 now     *)
+(* rest on TAIL2_END14 alone.                                       *)
+(* ----------------------------------------------------------------- *)
+
+Lemma ESC_ITER_BIG8_59 : TAIL2_END14 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (2 * M + 52)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (PASS (false :: repeat true (2 * M + 52)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (2 * M + 52) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_59 Hend M beta HM ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+Lemma ESC_ITER_BIG8_59_step : TAIL2_END14 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  loop_step (false :: repeat true (2 * M + 52)) beta.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (ESC_ITER_BIG8_59 Hend M beta HM Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* ----------------------------------------------------------------- *)
 (* Part 5: the first two iterations, fully proved.                   *)
 (* ----------------------------------------------------------------- *)
 
@@ -1978,6 +2046,8 @@ Print Assumptions ESC_ITER_BIG8_57.
 Print Assumptions ESC_ITER_BIG8_57_step.
 Print Assumptions ESC_ITER_BIG8_58.
 Print Assumptions ESC_ITER_BIG8_58_step.
+Print Assumptions ESC_ITER_BIG8_59.
+Print Assumptions ESC_ITER_BIG8_59_step.
 Print Assumptions TWO_ITERS.
 Print Assumptions loop_chain.
 Print Assumptions LOOP_NONHALT.
