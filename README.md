@@ -160,7 +160,23 @@ rocq/
   Grind26e.v                 TOP58_4 (Phase 58): the TOP12 closing at r12 = 4
   Grind26f.v                 TOP58_6 (Phase 58): the TOP12 closing at r12 = 6
   Grind26g.v                 TOP58_BAND (Phase 58): the TOP12 closing in band 12 (r12 <= 58806190, by CLEANG_even at counter 29403092); TAIL2_END12 proved for 11874958 <= j <= 41278052 and the era law proved modulo the strictly smaller core TAIL2_END13 (the TOP12 totality at r12 = 2j, j >= 29403096 only, where the thirteenth descent is a new cascade with different constants); ESC_ERA_LAW_58
-  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo TAIL2_END13 above)
+  Grind27.v                  the TOP12 thirteenth descent, part 1 (Phase 59): CASCADE59a-j (segments a-j of the 586-step fixed parse at an arbitrary carried tail; the frame is replaced, eleven blocks becoming nine), the factored numeral identities NUM59X and repeat-list identities REP59
+  Grind27a.v                 the Phase 59 factored closed facts, part 1 (Phase 59): the TOP12-front identities S59f1-f3, the DIPGRIND side goal S59a1 and the hGRIND_even 29403093 side goal S59g0, each proved once by eqb / leb + vm_compute
+  Grind27h.v                 the Phase 59 factored closed facts, part 2 (Phase 59): the hGRIND_even 29403093 side goals S59g1 / S59g2, the TOP13-front goal S59h0 and the successor identities NUM59b / NUM59e, each proved once by eqb / leb + vm_compute
+  Grind27i.v                 the Phase 59 factored closed facts, part 3 (Phase 59): the split-addend identities S59rs1 / S59rs2 (frame splits for the factored big-pop steps) and S59ru1 (the counter split behind S59ru2), each proved once by eqb + vm_compute
+  Grind27j.v                 NUM59a (Phase 59): the identity 58806190 = 2 * 29403093 + 4, proved by splitting the addend (29403093 = 14701546 + 14701547), reshaping symbolically by a variable-only ring identity, and evaluating only the right-associated sum (Nat.add is not tail-recursive in the VM, so the direct form OOM-kills)
+  Grind27k.v                 the Phase 59 successor identities NUM59f / NUM59g, each proved once by eqb + vm_compute (at most two 58.8M-scale identities per file)
+  Grind27l.v                 the Phase 59 identities NUM59h / NUM59i, each proved once by eqb + vm_compute
+  Grind27m.v                 the Phase 59 identities NUM59j / NUM59k, each proved once by eqb + vm_compute
+  Grind27n.v                 the Phase 59 identities NUM59m / NUM59n, each proved once by eqb + vm_compute
+  Grind27o.v                 S59ru2 (Phase 59): the identity 58806191 = 3 + 2 * 29403094, proved by the same split-addend / symbolic-reshape pattern as NUM59a
+  Grind27b.v                 the TOP12 thirteenth descent, part 2 (Phase 59): CASCADE59k-u (segments k-u) and the composition CASCADE59
+  Grind27c.v                 TOP59_TO_TOP13 (Phase 59): the TOP12 front onto GRIND13, the DIPGRIND (29403092, 2(j - 29403095)) landing on the DIP13 spine, then CASCADE59 onto the TOP13 state
+  Grind27d.v                 TOP59_2 (Phase 59): the TOP13 closing at r13 = 2
+  Grind27e.v                 TOP59_4 (Phase 59): the TOP13 closing at r13 = 4
+  Grind27f.v                 TOP59_6 (Phase 59): the TOP13 closing at r13 = 6
+  Grind27g.v                 TOP59_BAND (Phase 59): the TOP13 closing in band 13 (r13 <= 117612386, by CLEANG_even at counter 58806190); TAIL2_END13 proved for 29403096 <= j <= 88209288 and the era law proved modulo the strictly smaller core TAIL2_END14 (the TOP13 totality at r13 = 2j, j >= 58806194 only, where the fourteenth descent is a new cascade with different constants); ESC_ERA_LAW_59
+  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo TAIL2_END14 above)
   Std.v                      standard-regime assembly: STD_reach_entry, H_STD discharged, NONHALT_FROM_R_std (proved)
   gen_configs.py             generator for Configs.v
   trace_rules.py             zipper traces used to fix the segment lemmas' forms
@@ -192,6 +208,7 @@ rocq/
   hsim56.py                  pre-verification of the Phase 56 TOP9 tenth descent: the 799-waypoint CASCADE56 chain (run-length-encoded waypoint table, expanded lazily) asserted verbatim, in order, at (2851854, 2) incl. a junk-tail probe; the classified chain at (2851854, 3) identical on cascade steps 7-805 (beta-uniformity); TOP9 -> DIP10 front segments at five (j, beta) points; TOP10 finals asserted verbatim at eight points incl. the band edge j10 = 5937477; the eleventh fence (GRIND11 state + eleventh DIPGRIND landing) at j10 = 5937478 / 5937479 / 6148147 (word simulator + machine recogniser; streaming walker; canonical chain executed as checkpointed slice jobs)
   hsim57.py                  pre-verification of the Phase 57 TOP10 eleventh descent: the classifier validated by exact reproduction of the Phase 56 chain (807 steps, 0 mismatches); the 25-step classified chains at (5937478, 2) and (5937478, 3) waypoint-identical modulo the beta tail (beta-uniformity); TOP11 finals asserted verbatim at eight points incl. the band edge j11 = 11874957; the twelfth fence (GRIND12 state + twelfth DIPGRIND landing) at j11 = 11874958 / 11874959 / 12500000 (word simulator + machine recogniser; streaming walker; the span-sliced canonical/front/junk walk queues did not complete - see mechanisation-status.md)
   hsim58.py                  pre-verification of the Phase 58 TOP11 twelfth descent: the classifier validated by exact reproduction of the Phase 57 chain (25 steps, 0 mismatches); the 498-step classified chains at (11874958, 2) and (11874958, 3) waypoint-identical modulo the beta tail over all 490 cascade steps (beta-uniformity); TOP12 finals asserted verbatim at eight points incl. the band edge j12 = 29403095; the thirteenth fence (GRIND13 state + thirteenth DIPGRIND landing) at j12 = 29403096 / 29403097 / 30000000 (word simulator + machine recogniser; streaming walker; the span-sliced canonical/front/junk walk queues did not complete - see mechanisation-status.md)
+  hsim59.py                  pre-verification of the Phase 59 TOP12 thirteenth descent: the classifier validated by exact reproduction of the Phase 58 chain (498 steps, 0 mismatches); the 594-step classified chains at (29403096, 2) and (29403096, 3) identical modulo the beta tail over steps 1..592 (front + all 586 cascade steps; beta-uniformity); TOP13 finals asserted verbatim at eight points incl. the band edge j13 = 58806193; the fourteenth fence (GRIND14 state + fourteenth DIPGRIND landing) at j13 = 58806194 / 58806195 / 60000000 (word simulator + machine recogniser; streaming walker; no span-sliced walk queues were built this phase - see mechanisation-status.md)
   mechanisation-status.md    component-by-component mechanisation status
   coqcw, env.sh              build wrapper for the authors' local Coq 8.18 toolchain
 ```
@@ -290,12 +307,28 @@ coqc Grind26d.v
 coqc Grind26e.v
 coqc Grind26f.v
 coqc Grind26g.v
+coqc Grind27a.v
+coqc Grind27h.v
+coqc Grind27i.v
+coqc Grind27j.v
+coqc Grind27k.v
+coqc Grind27l.v
+coqc Grind27m.v
+coqc Grind27n.v
+coqc Grind27o.v
+coqc Grind27.v
+coqc Grind27b.v
+coqc Grind27c.v
+coqc Grind27d.v
+coqc Grind27e.v
+coqc Grind27f.v
+coqc Grind27g.v
 coqc Loop.v
 coqc Std.v
 ```
 
 (With the authors' workspace toolchain, `./coqcw <file>` does
-the same via `env.sh`.) Expected: all forty-eight files compile with
+the same via `env.sh`.) Expected: all sixty-four files compile with
 **no errors**; the only warnings are benign large-nat-literal
 notices in `Finite.v`. Every headline lemma was checked with
 `Print Assumptions`: "Closed under the global context" — no
@@ -303,9 +336,9 @@ axioms, no admits.
 
 *Package verification (2026-11-27):* the packaged sources were
 copied to a clean directory and rebuilt from scratch: **all
-forty-eight files compiled successfully**, producing `.vo` files
+sixty-four files compiled successfully**, producing `.vo` files
 identical in size to the authors' build (re-verified after the
-Phase 58 mechanisation update).
+Phase 59 mechanisation update).
 
 ## Authorship and disclosure
 

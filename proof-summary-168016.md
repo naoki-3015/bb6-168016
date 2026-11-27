@@ -807,15 +807,34 @@ j ≥ 29403096 only, where the thirteenth
 descent is a new cascade with different
 constants (`ESC_ERA_LAW_58`,
 `ESC_ITER_BIG8_58`).
+That thirteenth descent is now mechanised too
+(Phase 59): a 586-step CASCADE59 at an arbitrary
+carried tail, landing on the TOP13 state
+`HB [7965811; 4012920; 308090; 49409; 7710; 1059;
+199; 101; 0] 34304475 1 58806191`, which closes
+at r13 = 2, 4, 6 and throughout band 13
+(r13 ≤ 117612386, the pair grinding cleanly by
+CLEANG_even at counter 58806190) (`Grind27.v` +
+`Grind27a–o.v` + `Grind27b–g.v`). The result:
+TAIL2_END13 is **proved for
+29403096 ≤ j ≤ 88209288**, and for j ≥ 88209289
+the era law / loop iterations are discharged
+modulo the strictly smaller statement
+**TAIL2_END14** — the totality of the one
+pair (2j, 2) at the one fixed TOP13 state,
+j ≥ 58806194 only, where the fourteenth
+descent is a new cascade with different
+constants (`ESC_ERA_LAW_59`,
+`ESC_ITER_BIG8_59`).
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
 through R ≤ 1276 unconditionally, and for every
 even R ≥ 1278 modulo the single statement
-TAIL2_END13 — the totality of one pair (2j, 2)
-at the one fixed TOP12 state
-`HB [1523948; 426279; 308525; 58213; 30332;
-931; 608; 77; 35; 20; 0] 14897638 1 29403093`, j ≥ 29403096 —
+TAIL2_END14 — the totality of one pair (2j, 2)
+at the one fixed TOP13 state
+`HB [7965811; 4012920; 308090; 49409; 7710; 1059;
+199; 101; 0] 34304475 1 58806191`, j ≥ 58806194 —
 via the tail at the era slice and the descent in
 Grind14.v, which proves the previous core
 TAIL2_BIG for vM ≤ 5365, the END re-descent
@@ -851,7 +870,11 @@ previous core TAIL2_END11 for
 5937478 ≤ j ≤ 17812434, and the TOP11
 twelfth descent in Grind26.v + Grind26a–g.v,
 which proves the previous core TAIL2_END12
-for 11874958 ≤ j ≤ 41278052;
+for 11874958 ≤ j ≤ 41278052, and the TOP12
+thirteenth descent in Grind27.v +
+Grind27a–o.v + Grind27b–g.v, which proves the
+previous core TAIL2_END13 for
+29403096 ≤ j ≤ 88209288;
 the phase-8 entry, its first
 three continuation stages, the cascade's stages
 1–3 and its last two stages are formalised in
@@ -869,8 +892,10 @@ Grind21.v, the TOP7 eighth descent in
 Grind22.v, the TOP8 ninth descent in
 Grind23.v, the TOP9 tenth descent in
 Grind24.v, the TOP10 eleventh descent in
-Grind25.v, and the TOP11 twelfth descent in
-Grind26.v + Grind26a–g.v), and the
+Grind25.v, the TOP11 twelfth descent in
+Grind26.v + Grind26a–g.v, and the TOP12
+thirteenth descent in Grind27.v +
+Grind27a–o.v + Grind27b–g.v), and the
 general-residue era law at residues ρ ≥ 35 (both
 parities) are not yet formalised
 (`rocq/mechanisation-status.md` maps every proof component to
