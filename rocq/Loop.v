@@ -139,7 +139,8 @@ Require Import TM Configs Finite Sections Mirror TokenPass DiagPass
                Grind4 Grind5 Grind6 Grind7 Grind8 Grind9 Grind10
                Grind11 Grind12 Grind13 Grind14 Grind15 Grind16
                Grind17 Grind18 Grind19 Grind20 Grind21 Grind22
-               Grind23 Grind24 Grind25.
+               Grind23 Grind24 Grind25 Grind26 Grind26a Grind26b
+               Grind26c Grind26d Grind26e Grind26f Grind26g.
 
 (* ----------------------------------------------------------------- *)
 (* Part 0: run-totality infrastructure.                              *)
@@ -1741,6 +1742,71 @@ Proof.
 Qed.
 
 (* ----------------------------------------------------------------- *)
+(* Part 4s (Phase 58): the same discharge modulo the strictly       *)
+(* smaller core TAIL2_END13 (Grind26b.v).  Phase 58 characterised   *)
+(* the twelfth re-descent of the TOP11 state (rocq/hsim58.py):      *)
+(* TOP11's front + GRIND12 + DIPGRIND (11874954, 2(j - 11874957))   *)
+(* lands on the DIP12 spine, from which a FIXED 490-step parse      *)
+(* CASCADE58 (arbitrary tail; LONG again, the CASCADE56 pattern,    *)
+(* in contrast to CASCADE57's 17 steps) regrows the stack onto      *)
+(* the TOP12 state                                                  *)
+(* HB [1523948; 426279; 308525; 58213; 30332; 931; 608; 77; 35;     *)
+(* 20; 0] 14897638 1 29403093                                       *)
+(* ((r12, 2) :: (1, 1) :: (1, 2)^(beta - 1)),                       *)
+(* r12 = 2(j - 11874957).  The frame GROWS from ten blocks to       *)
+(* eleven.  TOP12 closes for r12 = 2, 4, 6 outright and for         *)
+(* 8 <= r12 <= 58806190 by CLEANG_even at counter 29403092 (floor   *)
+(* exactly r12 <= 58806190; the counter is again the shuttle moved  *)
+(* into the counter slot by TUP2_1), so TAIL2_END12 is proved       *)
+(* for 11874958 <= j <= 41278052 (TOP11 parameters).  For           *)
+(* r12 >= 58806192 the GRIND13 pair takes the DIPDESC boundary a    *)
+(* thirteenth time and the walk descends through a THIRTEENTH       *)
+(* cascade (new constants again, not a periodic cycle); the        *)
+(* residual is TAIL2_END13: the TOP12 totality at r12 = 2j,         *)
+(* j >= 29403096 (TOP12 parameters).  Via TAIL2_END12_of58 +        *)
+(* ESC_ERA_LAW_58 the ESC instances at every even R >= 1278 now    *)
+(* rest on TAIL2_END13 alone.                                       *)
+(* ----------------------------------------------------------------- *)
+
+Lemma ESC_ITER_BIG8_58 : TAIL2_END13 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (2 * M + 52)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (PASS (false :: repeat true (2 * M + 52)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (2 * M + 52) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_58 Hend M beta HM ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+Lemma ESC_ITER_BIG8_58_step : TAIL2_END13 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  loop_step (false :: repeat true (2 * M + 52)) beta.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (ESC_ITER_BIG8_58 Hend M beta HM Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* ----------------------------------------------------------------- *)
 (* Part 5: the first two iterations, fully proved.                   *)
 (* ----------------------------------------------------------------- *)
 
@@ -1910,6 +1976,8 @@ Print Assumptions ESC_ITER_BIG8_56.
 Print Assumptions ESC_ITER_BIG8_56_step.
 Print Assumptions ESC_ITER_BIG8_57.
 Print Assumptions ESC_ITER_BIG8_57_step.
+Print Assumptions ESC_ITER_BIG8_58.
+Print Assumptions ESC_ITER_BIG8_58_step.
 Print Assumptions TWO_ITERS.
 Print Assumptions loop_chain.
 Print Assumptions LOOP_NONHALT.
