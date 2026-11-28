@@ -897,17 +897,41 @@ j >= 595648560 in TOP16 parameters only, where the
 seventeenth descent is a new cascade with
 different constants (`ESC_ERA_LAW_62`,
 `ESC_ITER_BIG8_62`).
+That seventeenth descent is now mechanised too
+(Phase 63): a 17-step CASCADE63 at an arbitrary
+carried tail, landing on the TOP17 state
+`HB [130856035; 65515088; 349423; 101323; 57668;
+5526; 626; 189; 112; 33; 19; 0]
+842094153 1 1191297119`
+(the frame shrank to twelve blocks), which closes
+at r17 = 2, 4, 6 and throughout band 17
+(r17 <= 2382594242, the pair grinding cleanly by
+CLEANG_even at counter 1191297118) (`Grind31.v` +
+`Grind31a.v` + `Grind31ab.v` + `Grind31c1-c15.v` +
+`Grind31e1-e17.v` + `Grind31g1-g2.v` +
+`Grind31h.v` + `Grind31j.v` + `Grind31l-p.v` +
+`Grind31rep.v` + `Grind31s.v`). The result:
+TAIL2_END17 is **proved for
+595648560 <= j <= 1786945680**, and for j >= 1786945681
+the era law / loop iterations are discharged
+modulo the strictly smaller statement
+**TAIL2_END18** — the totality of the one
+pair (2j, 2) at the one fixed TOP17 state,
+j >= 1191297122 in TOP17 parameters only, where the
+eighteenth descent is a new cascade with
+different constants (`ESC_ERA_LAW_63`,
+`ESC_ITER_BIG8_63`).
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
 through R ≤ 1276 unconditionally, and for every
 even R ≥ 1278 modulo the single statement
-TAIL2_END17 — the totality of one pair (2j, 2)
-at the one fixed TOP16 state
-`HB [60654542; 9546949; 4860546; 349423; 101323;
-57668; 5526; 626; 189; 112; 33; 19; 0]
-367754682 1 595648557`, j ≥ 595648560 in TOP16
-parameters (j ≥ 867619041 in TOP15 parameters) —
+TAIL2_END18 — the totality of one pair (2j, 2)
+at the one fixed TOP17 state
+`HB [130856035; 65515088; 349423; 101323; 57668;
+5526; 626; 189; 112; 33; 19; 0]
+842094153 1 1191297119`, j ≥ 1191297122 in TOP17
+parameters (j ≥ 1786945681 in TOP16 parameters) —
 via the tail at the era slice and the descent in
 Grind14.v, which proves the previous core
 TAIL2_BIG for vM ≤ 5365, the END re-descent
