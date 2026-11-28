@@ -3599,6 +3599,208 @@ are stated in (V − 1) form throughout
 ever asks the kernel to convert a two-chain
 equality at that scale.
 
+**Phase 61 (2026-11-28): the TOP14 state's fifteenth
+descent mechanised as a fixed parse; TAIL2_END15
+proved for 135985240 ≤ j ≤ 407955720 and reduced to
+the TOP15-state core TAIL2_END16.** Phase 60 left
+the core TAIL2_END15 — the TOP14 totality at
+r14 = 2j, j ≥ 135985240, where the GRIND15 pair
+(r14 − 6, 2) at counter 135985236 exceeds the
+`CLEANG_even` floor r14 ≤ 271970478 and the rounds
+take the DIPDESC boundary a fifteenth time. Phase 61
+traces that fifteenth descent in the new harness
+`rocq/hsim61.py` (the classifier first validated
+by exact reproduction of the Phase 60 classified
+chain, 671 steps, 0 mismatches; the classified
+chains at (135985240, 2) and (135985240, 3) are
+1161 steps each to the era landing and identical
+modulo the β tail over steps 1..1159 (the front
+plus all 1153 cascade steps; the two closing steps
+are β-dependent by design) — the parse is
+(j, β)-uniform; the
+TOP15 finals asserted verbatim at eight (j15, β)
+points including the band edge j15 = 271970481,
+A = 543940962; the sixteenth fence — the GRIND16
+state and the DIPGRIND (271970478, r15′ − 543940962)
+landing — asserted at j15 = 271970482 / 271970483 /
+400000000; a primitive-step audit. NO span-sliced
+walk queues were built this phase (the Phase
+56/57/58 queues' remainders are still open; the
+harness runs were interrupted repeatedly — two
+OOM kills and several service restarts; the
+β = 2 chain was resumed from its on-disk progress
+each time and both chains completed; the
+front at the canonical points is
+covered by the classifier chains, and the
+assembled evidence is in
+`build-logs-61/hsim61-parts-summary.txt`. The
+mechanisation below does not depend on those
+queues: every CASCADE61 step statement was fixed
+by the streaming classifier chains at β = 2 and
+β = 3 before generation, and the files are
+kernel-verified) and finds the fifteenth descent is
+again a **fixed parse, uniform in (j, β)** — a
+**long** one again (the CASCADE56/58/59/60 pattern):
+
+- **TOP61_TO_TOP15**: TOP14's front (TUP +
+  `hGRIND_even` 67992616 + TUP2_1 + TDN + TUP —
+  the Phase 60 front verbatim, reusing Grind28h's
+  `NUM60h`, Grind28ab's `NUM60a`, Grind28af's
+  `NUM60b`, Grind28r's `NUM60i'` and `S60g1` /
+  `S60g2` / `S60h0`) reaches GRIND15, and **DIPGRIND
+  (135985236, 2(j − 135985239))** lands on the DIP15
+  spine
+  `HC [74737818; 10126538; 1236011; 698173; 177445;
+  95640; 10129; 1243; 207; 19] 0 3 2
+  ((1, 2)^135985236 ++ W)`,
+  W = ((2(j − 135985239), 2) :: (1, 1) ::
+  (1, 2)^(β − 1)).
+- **CASCADE61** (a fixed parse of **1153 steps**;
+  every frame and counter a literal; stated for an
+  **arbitrary tail w**): 259 TUP, 169 TDN, 153 pop12,
+  114 DIPGRIND, 92 TUP2_1, 71 hGRIND_even, 64 PUSH,
+  47 PX2A, 42 POP, 30 TRANS2_1, 28 PUSHX,
+  20 CLEANG_odd, 20 CLEANG_even, 15 PX2Bgen,
+  15 PX2B0, 10 PX2A0, 4 hGRIND; the frame
+  **grows from 9 to 13 blocks** (after Phase 59's
+  11 → 9 shrink and Phase 60's 9 → 9 standstill) —
+  landing at the **TOP15 state**
+  `HB [47892099; 24915618; 1835911; 568849; 317482;
+  29175; 9907; 6375; 799; 475; 93; 58; 5]
+  147491795 1 271970479 W`.
+- **TOP15 closes by the size of r15′ = 2(j −
+  135985239)**: r15′ = 2 (**TOP61_2**: TRANS2_1 +
+  CASCADE_POPFIN, A = 271970479 + β); r15′ = 4
+  (**TOP61_4**: TUP + `hGRIND_even` 135985237 +
+  TRANS2_2 + CASCADE_POPFIN, A = β + 2); r15′ = 6
+  (**TOP61_6**: TUP + `hGRIND_even` 135985237 +
+  TUP2_1 + TDN + TRANS2_1 + CASCADE_POPFIN,
+  A = β + 4); and band 15, 8 ≤ r15′ ≤ 543940962
+  (**TOP61_BAND**, r15′ = 2j15, 4 ≤ j15 ≤
+  (271970479 + 2): TUP + `hGRIND_even` 135985237 +
+  TUP2_1 + TDN + TUP
+  onto GRIND16, then `CLEANG_even` at counter
+  271970478 — the floor (r15′ − 8)/2 + 1 ≤ 271970478
+  is exactly r15′ ≤ 543940962 — then TRANS2_1 +
+  CASCADE_POPFIN, A = r15′ + β − 2).
+- **The sixteenth fence**: at r15′ ≥ 543940964
+  (j15 ≥ 271970482; TOP14 parameter j ≥ 407955721)
+  the pair (r15′ − 6, 2) at counter 271970478 again
+  exceeds the floor and the rounds take the
+  DIPDESC boundary a sixteenth time; hsim61.py
+  asserts the GRIND16 state and the sixteenth
+  DIPGRIND landing there. The sixteenth descent
+  is again expected to be a new cascade with
+  different constants — the bands remain finite
+  parses, not a cycle induction (the Phase 38
+  strategic verdict, holding).
+
+It is smaller than TAIL2_END15 on every axis: one
+pair at one fixed TOP15 state (one full cycle below
+the TOP14 state), and only the range j ≥ 407955721 in
+TOP14 parameters — the whole range
+135985240 ≤ j ≤ 407955720 is proved. The core's range
+shrank from [135985240, ∞) to [407955721, ∞); the band
+width grew again (135985239 → 271970481).
+Stated plainly: **TAIL2_END15 does NOT fall outright
+in Phase 61 — it is PROVED for
+135985240 ≤ j ≤ 407955720 and reduced, above that, to
+TAIL2_END16**: via **`TAIL2_END15_of61`** and
+**`ESC_ERA_LAW_61`**, and Loop.v Part 4v's
+**`ESC_ITER_BIG8_61` / `ESC_ITER_BIG8_61_step`**,
+**H_LOOP's ESC side now rests on TAIL2_END16
+alone**. The reduction chain CASCADE_LANDING →
+CASCADE_STAGE4_BIG → CASCADE_STAGE4_TAIL →
+TAIL2_BIG → TAIL2_END → TAIL2_END2 → TAIL2_END3 →
+TAIL2_END4 → TAIL2_END5 → TAIL2_END6 → TAIL2_END7
+→ TAIL2_END8 → TAIL2_END9 → TAIL2_END10 →
+TAIL2_END11 → TAIL2_END12 → TAIL2_END13 →
+TAIL2_END14 → TAIL2_END15 → TAIL2_END16
+is fully mechanised. No F-20: every Phase 61
+closing statement was machine-tested before
+mechanisation, and the fence statements were
+machine-tested at classify granularity (see the
+fix-up note).
+
+**Mechanised (new files Grind29.v, Grind29a.v,
+Grind29ab.v, Grind29c1–c14.v, Grind29e1–e14.v,
+Grind29g1–g24.v, Grind29h.v, Grind29j.v, Grind29l.v,
+Grind29m.v, Grind29m1.v, Grind29m2.v, Grind29n.v,
+Grind29o.v, Grind29p.v, Grind29rep.v, Grind29s.v —
+66 files; Loop.v 2193 lines).**
+`CASCADE61` (as the composition of the 42
+consecutive sub-lemmas `CASCADE61a`–`CASCADE61ap`),
+`TOP61_TO_TOP15`, `TOP61_2`, `TOP61_4`, `TOP61_6`,
+`TOP61_BAND`, the Definition `TAIL2_END16`,
+`TAIL2_END15_of61`, `ESC_ERA_LAW_61`; Loop.v
+Part 4v adds `ESC_ITER_BIG8_61` /
+`ESC_ITER_BIG8_61_step`.
+Full clean rebuild of all **170**
+files passes (fresh copy `rebuild61/`; every file's
+accepted build is untuned; all 170 .vo
+byte sizes identical to the working tree); the Phase 61 files' own 7
+audits
+and Loop.v's 61 audits report "Closed under the
+global context" (322 closed audits across
+all 170 build logs, no Axioms sections); no
+Admitted / Axiom / Parameter in the 59503
+of .v sources. The checkpointed phase10
+background run was not disturbed (read-only
+checks only; its checkpoint/log timestamps
+remain 2026-11-24), and neither were the Phase 56
+slice queues; the Phase 58 queues were stopped
+by hand for the Phase 61 compiles and the clean
+rebuild — and relaunched after the rebuild
+completed (driver log `phase58-work/queues-driver.log`; the
+queues' checkpoints persist on disk, the same
+stop-for-compiles pattern Phases 58-60 used).
+
+**Phase 61 fix-up note.** The Phase 52–60 lessons
+were applied from the start — CASCADE61 split
+into 42 sub-lemmas, the numeral identities
+factored into `NUM61X*`, the repeat-list
+identities as `REP61`, the factored S-forms and
+closed side goals through pre-proved lemmas
+(`S61f1`–`f3` / `S61a1` / `S61g1` / `S61g2` /
+`S61h0`), and the TOP15 front reusing Grind28h's
+`NUM60h`, Grind28ab's `NUM60a`, Grind28af's
+`NUM60b` / `NUM60i'` / `S60g1` / `S60g2` / `S60h0` verbatim.
+The phase's own new wall was the **abstract
+literal**: at ~2.7 × 10^8 every numeral > 5000 is
+parsed as a `Nat.of_num_uint` application, and any
+*tactic evaluation* of such a literal materialises
+a unary chain of ~4 GB (the Phase 60 routes —
+`eqb`/`vm_compute` identities, div/mod by
+`Nat.divmod`'s value recursion, `closearith`'s
+boolean-leb fallback, even a kernel conversion
+`271970479 + 2 ≡ 271970481` — all OOM at this
+scale, and plain `lia` cannot read the atoms at
+all). The working replacement, used uniformly for
+the `Grind29c*` div/mod certificates, the
+`NUM61X` identities, the `S61r` singletons, the
+`S61*` premises and the segment files'
+`closearith`: **the Horner route** — `cbn` unfolds
+the literal into its digit fold over small atoms
+(`Nat.of_num_uint` / `Nat.of_uint` /
+`Nat.of_uint_acc` only), `Nat.tail_mul_spec`
+rewrites the folds to ordinary products, and
+`nia` finishes in binary; div/mod values then
+follow from `Nat.div_unique` / `Nat.mod_unique`
+with NO evaluation anywhere. Two statement-level
+adjustments keep kernel conversions syntactic:
+`TOP61_BAND`'s bound is stated as
+`j ≤ (271970479 + 2)`, not the folded numeral, and
+the fence was verified at classify granularity
+(the primitive walker decomposes inside the
+sixteenth DIPGRIND span and its residue pairs
+accumulate past the memory limit; every classify
+step is a proved segment, so occurrence carries
+over). With the Horner route the whole Phase 61
+arithmetic compiles in seconds per file; the
+only slow files are the legacy-weight segment
+closures and Loop.v itself.
+
+
 ## Toolchain
 
 - **Coq 8.18.0** (the proof assistant, pre-Rocq rename; compiled with OCaml

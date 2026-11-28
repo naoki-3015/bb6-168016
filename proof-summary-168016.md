@@ -848,15 +848,41 @@ j ≥ 135985240 only, where the fifteenth
 descent is a new cascade with different
 constants (`ESC_ERA_LAW_60`,
 `ESC_ITER_BIG8_60`).
+That fifteenth descent is now mechanised too
+(Phase 61): a 1153-step CASCADE61 at an arbitrary
+carried tail, landing on the TOP15 state
+`HB [47892099; 24915618; 1835911; 568849; 317482;
+29175; 9907; 6375; 799; 475; 93; 58; 5]
+147491795 1 271970479`
+(the frame grows — nine blocks become
+thirteen), which closes
+at r15 = 2, 4, 6 and throughout band 15
+(r15 <= 543940962, the pair grinding cleanly by
+CLEANG_even at counter 271970478) (`Grind29.v` +
+`Grind29a.v` + `Grind29ab.v` + `Grind29c1-c14.v` +
+`Grind29e1-e14.v` + `Grind29g1-g24.v` +
+`Grind29h.v` + `Grind29j.v` + `Grind29l-p.v` +
+`Grind29rep.v` + `Grind29s.v`). The result:
+TAIL2_END15 is **proved for
+135985240 <= j <= 407955720**, and for j >= 407955721
+the era law / loop iterations are discharged
+modulo the strictly smaller statement
+**TAIL2_END16** — the totality of the one
+pair (2j, 2) at the one fixed TOP15 state,
+j >= 271970482 only, where the sixteenth
+descent is a new cascade with different
+constants (`ESC_ERA_LAW_61`,
+`ESC_ITER_BIG8_61`).
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
 through R ≤ 1276 unconditionally, and for every
 even R ≥ 1278 modulo the single statement
-TAIL2_END15 — the totality of one pair (2j, 2)
-at the one fixed TOP14 state
-`HB [10126538; 1236011; 698173; 177445; 95640;
-10129; 1243; 207; 19] 74737818 1 135985237`, j ≥ 135985240 —
+TAIL2_END16 — the totality of one pair (2j, 2)
+at the one fixed TOP15 state
+`HB [47892099; 24915618; 1835911; 568849; 317482;
+29175; 9907; 6375; 799; 475; 93; 58; 5]
+147491795 1 271970479`, j ≥ 271970482 —
 via the tail at the era slice and the descent in
 Grind14.v, which proves the previous core
 TAIL2_BIG for vM ≤ 5365, the END re-descent
@@ -900,7 +926,14 @@ previous core TAIL2_END13 for
 fourteenth descent in Grind28.v +
 Grind28a–am.v + Grind28ag–al.v + Grind28l–p.v,
 which proves the previous core TAIL2_END14
-for 58806194 ≤ j ≤ 194791432;
+for 58806194 ≤ j ≤ 194791432, and the TOP14
+fifteenth descent in Grind29.v +
+Grind29a.v + Grind29ab.v + Grind29c1–c14.v +
+Grind29e1–e14.v + Grind29g1–g24.v + Grind29h.v +
+Grind29j.v + Grind29l–p.v + Grind29rep.v +
+Grind29s.v, which proves the previous core
+TAIL2_END15
+for 135985240 ≤ j ≤ 407955720;
 the phase-8 entry, its first
 three continuation stages, the cascade's stages
 1–3 and its last two stages are formalised in
