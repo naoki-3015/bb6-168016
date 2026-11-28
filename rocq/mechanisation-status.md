@@ -4021,6 +4021,217 @@ arithmetic compiles in seconds per file; the
 only slow files are the legacy-weight segment
 closures and Loop.v itself.
 
+**Phase 63 (2026-11-28): the TOP16 state's seventeenth
+descent mechanised as a fixed parse; TAIL2_END17
+proved for 595648560 ≤ j ≤ 1786945680 and reduced to
+the TOP17-state core TAIL2_END18.** Phase 62 left
+the core TAIL2_END17 — the TOP16 totality at
+r16 = 2j, j ≥ 595648560, where the GRIND17 pair
+(r16 − 6, 2) at counter 595648556 exceeds the
+`CLEANG_even` floor r16 ≤ 1191297118 and the rounds
+take the DIPDESC boundary a seventeenth time. Phase 63
+traces that seventeenth descent in the new harness
+`rocq/hsim63.py` (the RLE stepper first validated
+by exact reproduction of the Phase 62 classified
+chains, 758 steps at β = 2 and β = 3, and of the
+Phase 59/60/61 chains — 6368 steps in total,
+0 mismatches; the classified chains at
+(595648560, 2) and (595648560, 3) are 25 steps each
+to the era landing and identical modulo the β tail
+over steps 1..23 (the front plus all 17 cascade
+steps; the two closing steps are β-dependent by
+design) — the parse is (j, β)-uniform; the
+TOP17 finals asserted verbatim at eight (j17, β)
+points including the band edge j17 = 1191297121,
+A = 2382594242 — seven walked primitively, the
+band edge at classify granularity (see the fix-up
+note); the eighteenth fence — the GRIND18 state
+and the DIPGRIND (1191297118, r17 − 2382594242)
+landing — asserted at j17 = 1191297122 /
+1191297123 / 1600000000 at classify granularity;
+a primitive-step audit. NO span-sliced walk queues
+were built this phase (the Phase 56/57/58 queues'
+remainders are still open; the assembled evidence
+is in `build-logs-63/hsim63-parts-summary.txt`. The
+mechanisation below does not depend on those
+queues: every CASCADE63 step statement was fixed
+by the chains at β = 2 and β = 3 before generation,
+and the files are kernel-verified) and finds the
+seventeenth descent is again a **fixed parse,
+uniform in (j, β)** — a **very short** one this
+time (against the CASCADE56/58/59/60/61/62 pattern
+of long parses):
+
+- **TOP63_TO_TOP17**: TOP16's front (TUP +
+  `hGRIND_even` 297824276 + TUP2_1 + TDN + TUP —
+  the Phase 62 front verbatim, reusing Grind30h's
+  `NUM62h`, Grind30a's and Grind30ab's `NUM62a` /
+  `NUM62b` / `NUM62i'` and `S62g1` / `S62g2` /
+  `S62h0`) reaches GRIND17, and **DIPGRIND
+  (595648556, 2(j − 595648559))** lands on the DIP17
+  spine
+  `HC [367754682; 60654542; 9546949; 4860546;
+  349423; 101323; 57668; 5526; 626; 189; 112; 33;
+  19; 0] 0 3 2 ((1, 2)^595648556 ++ W)`,
+  W = ((2(j − 595648559), 2) :: (1, 1) ::
+  (1, 2)^(β − 1)).
+- **CASCADE63** (a fixed parse of **17 steps**;
+  every frame and counter a literal; stated for an
+  **arbitrary tail w**): 3 TUP, 2 TDN, 2 PX2A,
+  2 pop12, 1 PUSH, 1 DIPGRIND, 1 hGRIND, 1 POP,
+  1 hGRIND_even, 1 TUP2_1, 1 CLEANG_even,
+  1 TRANS2_1; the frame **shrank to 12 blocks**
+  (after Phase 59's 11 → 9 shrink, Phase 60's
+  9 → 9 standstill, Phase 61's 9 → 13 growth and
+  Phase 62's 13 → 13 standstill) —
+  landing at the **TOP17 state**
+  `HB [130856035; 65515088; 349423; 101323; 57668;
+  5526; 626; 189; 112; 33; 19; 0]
+  842094153 1 1191297119 W`.
+- **TOP17 closes by the size of r17 = 2(j −
+  595648559)**: r17 = 2 (**TOP63_2**: TRANS2_1 +
+  CASCADE_POPFIN, A = 1191297119 + β); r17 = 4
+  (**TOP63_4**: TUP + `hGRIND_even` 595648557 +
+  TRANS2_2 + CASCADE_POPFIN, A = β + 2); r17 = 6
+  (**TOP63_6**: TUP + `hGRIND_even` 595648557 +
+  TUP2_1 + TDN + TRANS2_1 + CASCADE_POPFIN,
+  A = β + 4); and band 17, 8 ≤ r17 ≤ 2382594242
+  (**TOP63_BAND**, r17 = 2j17, 4 ≤ j17 ≤
+  (1191297119 + 2): TUP + `hGRIND_even` 595648557 +
+  TUP2_1 + TDN + TUP
+  onto GRIND18, then `CLEANG_even` at counter
+  1191297118 — the floor (r17 − 8)/2 + 1 ≤ 1191297118
+  is exactly r17 ≤ 2382594242 — then TRANS2_1 +
+  CASCADE_POPFIN, A = r17 + β − 2).
+- **The eighteenth fence**: at r17 ≥ 2382594244
+  (j17 ≥ 1191297122; TOP16 parameter j ≥ 1786945681)
+  the pair (r17 − 6, 2) at counter 1191297118 again
+  exceeds the floor and the rounds take the
+  DIPDESC boundary an eighteenth time; hsim63.py
+  asserts the GRIND18 state and the eighteenth
+  DIPGRIND landing there. The eighteenth descent
+  is again expected to be a new cascade with
+  different constants — the bands remain finite
+  parses, not a cycle induction (the Phase 38
+  strategic verdict, holding).
+
+It is smaller than TAIL2_END17 on every axis: one
+pair at one fixed TOP17 state (one full cycle below
+the TOP16 state), and only the range j ≥ 1786945681 in
+TOP16 parameters — the whole range
+595648560 ≤ j ≤ 1786945680 is proved. The core's range
+shrank from [595648560, ∞) to [1786945681, ∞); the band
+width grew again (595648559 → 1191297121).
+Stated plainly: **TAIL2_END17 does NOT fall outright
+in Phase 63 — it is PROVED for
+595648560 ≤ j ≤ 1786945680 and reduced, above that, to
+TAIL2_END18**: via **`TAIL2_END17_of63`** and
+**`ESC_ERA_LAW_63`**, and Loop.v Part 4x's
+**`ESC_ITER_BIG8_63` / `ESC_ITER_BIG8_63_step`**,
+**H_LOOP's ESC side now rests on TAIL2_END18
+alone**. The reduction chain CASCADE_LANDING →
+CASCADE_STAGE4_BIG → CASCADE_STAGE4_TAIL →
+TAIL2_BIG → TAIL2_END → TAIL2_END2 → TAIL2_END3 →
+TAIL2_END4 → TAIL2_END5 → TAIL2_END6 → TAIL2_END7
+→ TAIL2_END8 → TAIL2_END9 → TAIL2_END10 →
+TAIL2_END11 → TAIL2_END12 → TAIL2_END13 →
+TAIL2_END14 → TAIL2_END15 → TAIL2_END16 → TAIL2_END17
+→ TAIL2_END18
+is fully mechanised. No F-21: every Phase 63
+closing statement was machine-tested before
+mechanisation, and the fence statements (and the
+band edge) were machine-tested at classify
+granularity (see the fix-up note).
+
+**Mechanised (new files Grind31.v, Grind31a.v,
+Grind31ab.v, Grind31c1–c15.v, Grind31e1–e17.v,
+Grind31g1–g2.v, Grind31h.v, Grind31j.v, Grind31l.v,
+Grind31m.v, Grind31m1–m3.v, Grind31n.v,
+Grind31o.v, Grind31p.v, Grind31rep.v, Grind31s.v —
+49 files; Loop.v 2317 lines).**
+`CASCADE63` (as the composition of the 4
+consecutive sub-lemmas `CASCADE63a`–`CASCADE63d`),
+`TOP63_TO_TOP17`, `TOP63_2`, `TOP63_4`, `TOP63_6`,
+`TOP63_BAND`, the Definition `TAIL2_END18`,
+`TAIL2_END17_of63`, `ESC_ERA_LAW_63`; Loop.v
+Part 4x adds `ESC_ITER_BIG8_63` /
+`ESC_ITER_BIG8_63_step`.
+Full clean rebuild of all **280**
+files passes (fresh copy `rebuild63/`; every file's
+accepted build is untuned; all 280 .vo
+byte-identical to the working tree); the Phase 63 files' own 7
+audits
+and Loop.v's 61 audits report "Closed under the
+global context" (336 closed audits across
+all 280 build logs, no Axioms sections); no
+Admitted / Axiom / Parameter in the 68,912 lines
+of .v sources. The checkpointed phase10
+background run was not disturbed (read-only
+checks only; its checkpoint/log timestamps
+remain 2026-11-24), and neither were the Phase 56
+slice queues; the Phase 58 queues were stopped
+by hand for the Phase 63 compiles and the clean
+rebuild — and relaunched after the rebuild
+completed (driver log `phase58-work/queues-driver.log`; the
+queues' checkpoints persist on disk, the same
+stop-for-compiles pattern Phases 58-62 used).
+
+**Phase 63 fix-up note.** The Phase 62 lessons
+were applied from the start — CASCADE63 split
+into 4 sub-lemmas, the numeral identities
+factored into `NUM63X*`, the repeat-list
+identities as `REP63`, the factored S-forms and
+closed side goals through pre-proved lemmas
+(`S63f1`–`f3` / `S63a1` / `S63g1` / `S63g2` /
+`S63h0`), the TOP17 front reusing Grind30h's
+`NUM62h`, Grind30a's / Grind30ab's `NUM62a` /
+`NUM62b` / `NUM62i'` and `S62g1` / `S62g2` /
+`S62h0` verbatim, and the **Horner route**
+throughout for the `Grind31c*` div/mod
+certificates, the `NUM63X` identities, the `S63r`
+singletons, the `S63*` premises and the segment
+files' `closearith`; `TOP63_BAND`'s bound is
+stated as `j ≤ (1191297119 + 2)`, not the folded
+numeral, keeping kernel conversions syntactic.
+The phase's own new walls were **memory, twice
+over**. First, the P-lemma route: the
+`Nat.leb_le` + `vm_compute` discharge of the
+pre-proved floor premises (the pattern of Phases
+56–62) OOM-kills at this phase's scale — the
+unary `leb` chain at `123222794 + 1 ≤ 130856034`
+was measured at 5.1 GB and still growing when
+killed (the Phase 62 case at 9.6 × 10^7 still
+fits) — so all four `P63` premises are proved by
+the Horner route instead (the Grind31h S-lemma
+route), in `Grind31m1`–`Grind31m3`; the statements
+are unchanged, and the generator (gen63.py)
+records the reason. Second, the band edge: the
+primitive walker from `TOP17(1191297121, 2)`
+materialises the `SP(1191297118)` run as a
+~9.5 GB tuple list and OOM-kills (before being
+stopped it also killed a neighbouring compile);
+the band-edge final was therefore verified at
+classify granularity with the validated RLE
+stepper — the walk TUP, `hGRIND_even` 595648557,
+TUP2_1, TDN, TUP, `CLEANG_even` 1191297117,
+TRANS2_1, pop12 lands exactly on
+`HB [1191297119; 842094153; TOP17F] 2382594242 1 5 []`
+— the same carry-over argument as the fence
+(every classify step is a proved segment, so
+occurrence carries over). The fence was verified
+at classify granularity as in Phases 61/62; its
+third test point is 1600000000, chosen outside
+this phase's band (j17 ≤ 1191297121). One
+arithmetic non-event: `NUM63a`'s summand
+decomposition has **no carry** (2 · 57389 + 4 =
+114782, exactly `(SH17 − 1) mod 2^20`), so the
+recombination finishes via the small identity
+`E63a2` (568 + 568 = 1136) instead of `R63a2`,
+as in Phase 62. With these, the whole Phase 63
+arithmetic compiles in seconds per file; the
+only slow files are the legacy-weight segment
+closures and Loop.v itself.
+
 ## Toolchain
 
 - **Coq 8.18.0** (the proof assistant, pre-Rocq rename; compiled with OCaml

@@ -156,7 +156,7 @@ Require Import TM Configs Finite Sections Mirror TokenPass DiagPass
                Grind28m
                Grind28n
                Grind28o
-               Grind28p Grind29p Grind30p.
+               Grind28p Grind29p Grind30p Grind31p.
 
 (* ----------------------------------------------------------------- *)
 (* Part 0: run-totality infrastructure.                              *)
@@ -2068,6 +2068,68 @@ Lemma ESC_ITER_BIG8_62_step : TAIL2_END17 ->
 Proof.
   intros Hend M beta HM Hb.
   destruct (ESC_ITER_BIG8_62 Hend M beta HM Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* ----------------------------------------------------------------- *)
+(* Part 4x (Phase 63): the same discharge modulo the strictly       *)
+(* smaller core TAIL2_END18 (Grind31p.v).  Phase 63 characterised  *)
+(* the seventeenth re-descent of the TOP16 state (rocq/hsim63.py): *)
+(* TOP16's front + GRIND17 + DIPGRIND (595648556, 2(j - 595648559)) *)
+(* lands on the DIP17 spine, from which a FIXED 17-step parse      *)
+(* CASCADE63 (arbitrary tail) regrows the stack onto the TOP17     *)
+(* state                                                            *)
+(* HB [130856035; 65515088; 349423; 101323; 57668; 5526; 626; 189; 112; 33; 19; 0] 842094153 1 1191297119                                    *)
+(* ((r17, 2) :: (1, 1) :: (1, 2)^(beta - 1)),                      *)
+(* r17 = 2(j - 595648559).  TOP17 closes for r17 = 2, 4, 6         *)
+(* outright and for 8 <= r17 <= 2382594242 by CLEANG_even at counter       *)
+(* 1191297118 (floor exactly r17 <= 2382594242; the counter is again the shuttle   *)
+(* moved into the counter slot by TUP2_1), so TAIL2_END17 is       *)
+(* proved for 595648560 <= j <= 1786945680 (TOP16 parameters).  For        *)
+(* r17 >= 2382594244 the GRIND18 pair takes the DIPDESC boundary an         *)
+(* eighteenth time and the walk descends through an EIGHTEENTH     *)
+(* cascade (new constants again, not a periodic cycle); the        *)
+(* residual is TAIL2_END18: the TOP17 totality at r17 = 2j,        *)
+(* j >= 1191297122 (TOP17 parameters).  Via TAIL2_END17_of63 +             *)
+(* ESC_ERA_LAW_63 the ESC instances at every even R >= 1278 now    *)
+(* rest on TAIL2_END18 alone.                                      *)
+(* ----------------------------------------------------------------- *)
+
+Lemma ESC_ITER_BIG8_63 : TAIL2_END18 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (2 * M + 52)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (PASS (false :: repeat true (2 * M + 52)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (2 * M + 52) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_63 Hend M beta HM ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+Lemma ESC_ITER_BIG8_63_step : TAIL2_END18 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  loop_step (false :: repeat true (2 * M + 52)) beta.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (ESC_ITER_BIG8_63 Hend M beta HM Hb) as [P' [t [c [Hr [Hs Ht]]]]].
   unfold loop_step.
   exists P', (2 * beta + 4), t, c.
   split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
