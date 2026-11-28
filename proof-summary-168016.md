@@ -873,16 +873,41 @@ j >= 271970482 only, where the sixteenth
 descent is a new cascade with different
 constants (`ESC_ERA_LAW_61`,
 `ESC_ITER_BIG8_61`).
+That sixteenth descent is now mechanised too
+(Phase 62): a 750-step CASCADE62 at an arbitrary
+carried tail, landing on the TOP16 state
+`HB [60654542; 9546949; 4860546; 349423; 101323;
+57668; 5526; 626; 189; 112; 33; 19; 0]
+367754682 1 595648557`
+(the frame stays at thirteen blocks), which closes
+at r16 = 2, 4, 6 and throughout band 16
+(r16 <= 1191297118, the pair grinding cleanly by
+CLEANG_even at counter 595648556) (`Grind30.v` +
+`Grind30a.v` + `Grind30ab.v` + `Grind30c1-c15.v` +
+`Grind30e1-e16.v` + `Grind30g1-g15.v` +
+`Grind30h.v` + `Grind30j.v` + `Grind30l-p.v` +
+`Grind30rep.v` + `Grind30s.v`). The result:
+TAIL2_END16 is **proved for
+271970482 <= j <= 867619040**, and for j >= 867619041
+the era law / loop iterations are discharged
+modulo the strictly smaller statement
+**TAIL2_END17** — the totality of the one
+pair (2j, 2) at the one fixed TOP16 state,
+j >= 595648560 in TOP16 parameters only, where the
+seventeenth descent is a new cascade with
+different constants (`ESC_ERA_LAW_62`,
+`ESC_ITER_BIG8_62`).
 **Not yet claimed:** a complete
 mechanised proof — the S/S′ inductions, the dip clause of G′, the
 ESC entries at R ≥ 1278 (the ESC-era law is proved
 through R ≤ 1276 unconditionally, and for every
 even R ≥ 1278 modulo the single statement
-TAIL2_END16 — the totality of one pair (2j, 2)
-at the one fixed TOP15 state
-`HB [47892099; 24915618; 1835911; 568849; 317482;
-29175; 9907; 6375; 799; 475; 93; 58; 5]
-147491795 1 271970479`, j ≥ 271970482 —
+TAIL2_END17 — the totality of one pair (2j, 2)
+at the one fixed TOP16 state
+`HB [60654542; 9546949; 4860546; 349423; 101323;
+57668; 5526; 626; 189; 112; 33; 19; 0]
+367754682 1 595648557`, j ≥ 595648560 in TOP16
+parameters (j ≥ 867619041 in TOP15 parameters) —
 via the tail at the era slice and the descent in
 Grind14.v, which proves the previous core
 TAIL2_BIG for vM ≤ 5365, the END re-descent

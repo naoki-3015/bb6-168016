@@ -232,7 +232,23 @@ rocq/
   Grind29n.v                 TOP61_4 (Phase 61): the TOP15 closing at r15' = 4 (TUP + hGRIND_even 135985237 + TRANS2_2 + CASCADE_POPFIN)
   Grind29o.v                 TOP61_6 (Phase 61): the TOP15 closing at r15' = 6 (TUP + hGRIND_even 135985237 + TUP2_1 + TDN + TRANS2_1 + CASCADE_POPFIN)
   Grind29p.v                 TOP61_BAND (Phase 61): the TOP15 closing in band 15 (r15' <= 543940962, by CLEANG_even at counter 271970478); TAIL2_END15 proved for 135985240 <= j <= 407955720 and the era law proved modulo the strictly smaller core TAIL2_END16 (the TOP15 totality at r15 = 2j, j >= 271970482 only, where the sixteenth descent is a new cascade with different constants); ESC_ERA_LAW_61
-  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo TAIL2_END16 above)
+  Grind30.v                  the TOP15 sixteenth descent, part 1 (Phase 62): CASCADE62a (the first segment of the 750-step fixed parse at an arbitrary carried tail; the frame stays at thirteen blocks)
+  Grind30g1.v-Grind30g15.v   the TOP15 sixteenth descent, parts 2-16 (Phase 62): CASCADE62b-CASCADE62z (the remaining segments but the last)
+  Grind30j.v                 the TOP15 sixteenth descent, part 17 (Phase 62): CASCADE62aa and the composition CASCADE62
+  Grind30rep.v               the CASCADE62 prelude (Phase 62): the factored repeat-list identities REP62a-h and their numeral certificates (div/mod values certified by Horner/nia equations + the uniqueness lemmas, no evaluated comparisons)
+  Grind30s.v                 the factored closed identities S62r for the big pop12 singletons of CASCADE62 (Phase 62), by the Horner/nia route
+  Grind30e1.v-Grind30e16.v   the CASCADE62 numeral prelude (Phase 62): the factored identities NUM62X, each proved once by the Horner/nia route and used via plain rewrite
+  Grind30m1.v-Grind30m3.v    the pre-proved leb premises P62s/P62u for the big-floor CLEANG / hGRIND steps of CASCADE62 (Phase 62)
+  Grind30c1.v-Grind30c15.v   the Phase 62 div/mod certificates (Phase 62): for each tail identity, E (the Horner/nia equation expr = 1048576 * q + r), HLT (r < 1048576) and the div/mod values by Nat.div_unique / Nat.mod_unique
+  Grind30a.v                 the Phase 62 factored closed identities (Phase 62): the TOP15-front identities S62f1-f3 and the TOP16 S-identities NUM62h and companions, each proved by div/mod decomposition at k = 2^20 from the Grind30c* certificates
+  Grind30ab.v                NUM62a (Phase 62): the hGRIND_even bridge 595648556 = 2 * 297824276 + 4 of the TOP16 closings, by div/mod decomposition (this phase the summand split has no carry - 2 * 28692 + 4 = 57388 < 1048576 - so the recombination finishes via the small identity E62a2)
+  Grind30h.v                 the Phase 62 symbolic helpers (Phase 62): the closed premises S62a1 / S62h0 / S62g1 / S62g2, by the Horner/nia route
+  Grind30l.v                 TOP62_TO_TOP16 (Phase 62): the TOP15 front onto GRIND16, the DIPGRIND (271970478, 2(j - 271970481)) landing on the DIP16 spine, then CASCADE62 onto the TOP16 state
+  Grind30m.v                 TOP62_2 (Phase 62): the TOP16 closing at r16' = 2 (TRANS2_1 + CASCADE_POPFIN)
+  Grind30n.v                 TOP62_4 (Phase 62): the TOP16 closing at r16' = 4 (TUP + hGRIND_even 297824276 + TRANS2_2 + CASCADE_POPFIN)
+  Grind30o.v                 TOP62_6 (Phase 62): the TOP16 closing at r16' = 6 (TUP + hGRIND_even 297824276 + TUP2_1 + TDN + TRANS2_1 + CASCADE_POPFIN)
+  Grind30p.v                 TOP62_BAND (Phase 62): the TOP16 closing in band 16 (r16' <= 1191297118, by CLEANG_even at counter 595648556); TAIL2_END16 proved for 271970482 <= j <= 867619040 and the era law proved modulo the strictly smaller core TAIL2_END17 (the TOP16 totality at r16 = 2j, j >= 595648560 in TOP16 parameters only, where the seventeenth descent is a new cascade with different constants); ESC_ERA_LAW_62
+  Loop.v                     cross-era loop assembly: PASS, both era iterations, LOOP_NONHALT, NONHALT_FROM_R (proved modulo one explicit hypothesis H_LOOP; general settled iteration unconditional for every 3 <= B2 <= 36; ESC iteration unconditional for every even R <= 1276 and modulo TAIL2_END17 above)
   Std.v                      standard-regime assembly: STD_reach_entry, H_STD discharged, NONHALT_FROM_R_std (proved)
   gen_configs.py             generator for Configs.v
   trace_rules.py             zipper traces used to fix the segment lemmas' forms
@@ -265,6 +281,7 @@ rocq/
   hsim57.py                  pre-verification of the Phase 57 TOP10 eleventh descent: the classifier validated by exact reproduction of the Phase 56 chain (807 steps, 0 mismatches); the 25-step classified chains at (5937478, 2) and (5937478, 3) waypoint-identical modulo the beta tail (beta-uniformity); TOP11 finals asserted verbatim at eight points incl. the band edge j11 = 11874957; the twelfth fence (GRIND12 state + twelfth DIPGRIND landing) at j11 = 11874958 / 11874959 / 12500000 (word simulator + machine recogniser; streaming walker; the span-sliced canonical/front/junk walk queues did not complete - see mechanisation-status.md)
   hsim58.py                  pre-verification of the Phase 58 TOP11 twelfth descent: the classifier validated by exact reproduction of the Phase 57 chain (25 steps, 0 mismatches); the 498-step classified chains at (11874958, 2) and (11874958, 3) waypoint-identical modulo the beta tail over all 490 cascade steps (beta-uniformity); TOP12 finals asserted verbatim at eight points incl. the band edge j12 = 29403095; the thirteenth fence (GRIND13 state + thirteenth DIPGRIND landing) at j12 = 29403096 / 29403097 / 30000000 (word simulator + machine recogniser; streaming walker; the span-sliced canonical/front/junk walk queues did not complete - see mechanisation-status.md)
   hsim59.py                  pre-verification of the Phase 59 TOP12 thirteenth descent: the classifier validated by exact reproduction of the Phase 58 chain (498 steps, 0 mismatches); the 594-step classified chains at (29403096, 2) and (29403096, 3) identical modulo the beta tail over steps 1..592 (front + all 586 cascade steps; beta-uniformity); TOP13 finals asserted verbatim at eight points incl. the band edge j13 = 58806193; the fourteenth fence (GRIND14 state + fourteenth DIPGRIND landing) at j13 = 58806194 / 58806195 / 60000000 (word simulator + machine recogniser; streaming walker; no span-sliced walk queues were built this phase - see mechanisation-status.md)
+  hsim62.py                  pre-verification of the Phase 62 TOP15 sixteenth descent: the classifier validated by exact reproduction of the Phase 61 chain (1161 steps, 0 mismatches; run in a checkpointed tuple-equality form after service restarts); the 758-step chains at (271970482, 2) and (271970482, 3) identical modulo the beta tail over steps 1..756 (front + all 750 cascade steps; beta-uniformity) - produced by the RLE stepper rle_classify.py, a branch-for-branch run-length-encoded transcription of the classifier validated by exact reproduction of the Phase 59/60/61 chains at beta = 2 and beta = 3 (4852 steps, 0 mismatches), because the tuple classifier's step transient at 272M pairs (~3 stack copies, ~6.2 GB) OOM-kills in this cell; TOP16 finals asserted verbatim at eight points incl. the band edge j16 = 595648559; the seventeenth fence (GRIND17 state + seventeenth DIPGRIND landing) at j16 = 595648560 / 595648561 / 800000000, verified at classify granularity (word simulator + machine recogniser; no span-sliced walk queues were built this phase - see mechanisation-status.md)
   hsim60.py                  pre-verification of the Phase 60 TOP13 fourteenth descent: the classifier validated by exact reproduction of the Phase 59 chain (594 steps, 0 mismatches); the 671-step classified chains at (58806194, 2) and (58806194, 3) identical modulo the beta tail over steps 1..669 (front + all 663 cascade steps; beta-uniformity); TOP14 finals asserted verbatim at eight points incl. the band edge j14 = 135985239; the fifteenth fence (GRIND15 state + fifteenth DIPGRIND landing) at j14 = 135985240 / 135985241 / 200000000 (word simulator + machine recogniser; streaming walker; no span-sliced walk queues were built this phase - see mechanisation-status.md)
   hsim61.py                  pre-verification of the Phase 61 TOP14 fifteenth descent: the classifier validated by exact reproduction of the Phase 60 chain (671 steps, 0 mismatches); the 1161-step classified chains at (135985240, 2) and (135985240, 3) identical modulo the beta tail over steps 1..1159 (front + all 1153 cascade steps; beta-uniformity); TOP15 finals asserted verbatim at eight points incl. the band edge j15 = 271970481; the sixteenth fence (GRIND16 state + sixteenth DIPGRIND landing) at j15 = 271970482 / 271970483 / 400000000, verified at classify granularity - the primitive walker OOMs inside the sixteenth DIPGRIND span (word simulator + machine recogniser; streaming walker; no span-sliced walk queues were built this phase - see mechanisation-status.md)
   mechanisation-status.md    component-by-component mechanisation status
@@ -487,12 +504,73 @@ coqc Grind29m.v
 coqc Grind29n.v
 coqc Grind29o.v
 coqc Grind29p.v
+coqc Grind30c1.v
+coqc Grind30c10.v
+coqc Grind30c11.v
+coqc Grind30c12.v
+coqc Grind30c13.v
+coqc Grind30c14.v
+coqc Grind30c15.v
+coqc Grind30c2.v
+coqc Grind30c3.v
+coqc Grind30c4.v
+coqc Grind30c5.v
+coqc Grind30c6.v
+coqc Grind30c7.v
+coqc Grind30c8.v
+coqc Grind30c9.v
+coqc Grind30e1.v
+coqc Grind30e10.v
+coqc Grind30e11.v
+coqc Grind30e12.v
+coqc Grind30e13.v
+coqc Grind30e14.v
+coqc Grind30e15.v
+coqc Grind30e16.v
+coqc Grind30e2.v
+coqc Grind30e3.v
+coqc Grind30e4.v
+coqc Grind30e5.v
+coqc Grind30e6.v
+coqc Grind30e7.v
+coqc Grind30e8.v
+coqc Grind30e9.v
+coqc Grind30h.v
+coqc Grind30s.v
+coqc Grind30a.v
+coqc Grind30ab.v
+coqc Grind30m1.v
+coqc Grind30m2.v
+coqc Grind30m3.v
+coqc Grind30rep.v
+coqc Grind30.v
+coqc Grind30m.v
+coqc Grind30n.v
+coqc Grind30o.v
+coqc Grind30g1.v
+coqc Grind30g2.v
+coqc Grind30g3.v
+coqc Grind30g4.v
+coqc Grind30g5.v
+coqc Grind30g6.v
+coqc Grind30g7.v
+coqc Grind30g8.v
+coqc Grind30g9.v
+coqc Grind30g10.v
+coqc Grind30g11.v
+coqc Grind30g12.v
+coqc Grind30g13.v
+coqc Grind30g14.v
+coqc Grind30g15.v
+coqc Grind30j.v
+coqc Grind30l.v
+coqc Grind30p.v
 coqc Loop.v
 coqc Std.v
 ```
 
 (With the authors' workspace toolchain, `./coqcw <file>` does
-the same via `env.sh`.) Expected: all one hundred and seventy files compile with
+the same via `env.sh`.) Expected: all two hundred and thirty-one files compile with
 **no errors**; the only warnings are benign large-nat-literal
 notices in `Finite.v`. Every headline lemma was checked with
 `Print Assumptions`: "Closed under the global context" — no
@@ -500,7 +578,7 @@ axioms, no admits.
 
 *Package verification (2026-11-28):* the packaged sources were
 copied to a clean directory and rebuilt from scratch: **all
-one hundred and seventy files compiled successfully**, producing `.vo` files
+two hundred and thirty-one files compiled successfully**, producing `.vo` files
 identical in size to the authors' build (re-verified after the
 Phase 61 mechanisation update).
 
