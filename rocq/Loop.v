@@ -156,7 +156,7 @@ Require Import TM Configs Finite Sections Mirror TokenPass DiagPass
                Grind28m
                Grind28n
                Grind28o
-               Grind28p.
+               Grind28p Grind29p.
 
 (* ----------------------------------------------------------------- *)
 (* Part 0: run-totality infrastructure.                              *)
@@ -1944,6 +1944,68 @@ Lemma ESC_ITER_BIG8_60_step : TAIL2_END15 ->
 Proof.
   intros Hend M beta HM Hb.
   destruct (ESC_ITER_BIG8_60 Hend M beta HM Hb) as [P' [t [c [Hr [Hs Ht]]]]].
+  unfold loop_step.
+  exists P', (2 * beta + 4), t, c.
+  split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+
+(* ----------------------------------------------------------------- *)
+(* Part 4v (Phase 61): the same discharge modulo the strictly       *)
+(* smaller core TAIL2_END16 (Grind29p.v).  Phase 61 characterised  *)
+(* the fifteenth re-descent of the TOP14 state (rocq/hsim61.py):   *)
+(* TOP14's front + GRIND15 + DIPGRIND (135985236, 2(j - 135985239)) *)
+(* lands on the DIP15 spine, from which a FIXED 1153-step parse      *)
+(* CASCADE61 (arbitrary tail) regrows the stack onto the TOP15     *)
+(* state                                                            *)
+(* HB [47892099; 24915618; 1835911; 568849; 317482; 29175; 9907; 6375; 799; 475; 93; 58; 5] 147491795 1 271970479                                    *)
+(* ((r15, 2) :: (1, 1) :: (1, 2)^(beta - 1)),                      *)
+(* r15 = 2(j - 135985239).  TOP15 closes for r15 = 2, 4, 6         *)
+(* outright and for 8 <= r15 <= 543940962 by CLEANG_even at counter       *)
+(* 271970478 (floor exactly r15 <= 543940962; the counter is again the shuttle   *)
+(* moved into the counter slot by TUP2_1), so TAIL2_END15 is       *)
+(* proved for 135985240 <= j <= 407955720 (TOP14 parameters).  For        *)
+(* r15 >= 543940964 the GRIND16 pair takes the DIPDESC boundary a         *)
+(* sixteenth time and the walk descends through a SIXTEENTH        *)
+(* cascade (new constants again, not a periodic cycle); the        *)
+(* residual is TAIL2_END16: the TOP15 totality at r15 = 2j,        *)
+(* j >= 271970482 (TOP15 parameters).  Via TAIL2_END15_of61 +             *)
+(* ESC_ERA_LAW_61 the ESC instances at every even R >= 1278 now    *)
+(* rest on TAIL2_END16 alone.                                      *)
+(* ----------------------------------------------------------------- *)
+
+Lemma ESC_ITER_BIG8_61 : TAIL2_END16 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  exists P' t c, run t (entry_sec (false :: repeat true (2 * M + 52)) beta) = Some c
+    /\ cfg_sim c (entry_sec P' (2 * beta + 4))
+    /\ 1 <= t.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (PASS (false :: repeat true (2 * M + 52)) (beta - 2) ltac:(lia))
+    as [c1 [Hr1 Hs1]].
+  rewrite (esc_bridge (2 * M + 52) (beta - 2)) in Hs1.
+  destruct (ESC_ERA_LAW_61 Hend M beta HM ltac:(lia))
+    as [n2 [c2 [pb [a [Hr2 [Hs2 Ha]]]]]].
+  destruct (run_trans_sim _ _ _ _ _ _ Hr1 Hs1 Hr2) as [c2' [Hr HsT]].
+  assert (Hs : cfg_sim c2' (rcsec (false :: repeat true (S a) ++ enc pb)
+                                  (2 * beta + 2) [(1, 2)]))
+    by (eapply cfg_sim_trans; eassumption).
+  assert (Hfin : rcsec (false :: repeat true (S a) ++ enc pb)
+                       (2 * beta + 2) [(1, 2)]
+                 = entry_sec (false :: repeat true (S a) ++ enc pb)
+                             (2 * beta + 4)).
+  { unfold entry_sec.
+    replace (2 * beta + 4 - 2) with (2 * beta + 2) by lia.
+    reflexivity. }
+  rewrite Hfin in Hs.
+  exists (false :: repeat true (S a) ++ enc pb).
+  eexists. exists c2'. split; [exact Hr |]. split; [exact Hs | lia].
+Qed.
+Lemma ESC_ITER_BIG8_61_step : TAIL2_END16 ->
+  forall M beta, 616 <= M -> 4 <= beta ->
+  loop_step (false :: repeat true (2 * M + 52)) beta.
+Proof.
+  intros Hend M beta HM Hb.
+  destruct (ESC_ITER_BIG8_61 Hend M beta HM Hb) as [P' [t [c [Hr [Hs Ht]]]]].
   unfold loop_step.
   exists P', (2 * beta + 4), t, c.
   split; [exact Ht |]. split; [exact Hr |]. split; [exact Hs | lia].
